@@ -68,7 +68,7 @@ export default async function ProtectedPage() {
           <h1 className="text-2xl sm:text-3xl font-bold">Panel de Control</h1>
           <p className="text-sm sm:text-base text-muted-foreground">Bienvenido, {user.email}</p>
         </div>
-        <Link href="/dashboard/activos">
+        <Link href="/app/activos">
           <Button className="gap-2">
             <Car className="h-4 w-4" />
             Gestionar Activos

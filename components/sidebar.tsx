@@ -16,13 +16,13 @@ const navigationItems = [
         icon: Home,
     },
     {
-        name: "Dashboard",
-        href: "/dashboard",
+        name: "Panel de Control",
+        href: "/app",
         icon: LayoutDashboard,
     },
     {
         name: "Activos",
-        href: "/dashboard/activos",
+        href: "/app/activos",
         icon: Package,
     },
 ];
@@ -48,8 +48,8 @@ export function Sidebar() {
                 />
             )}
 
-            <aside id="sidebar" className={cn( "fixed left-0 top-0 z-40 h-screen bg-background border-r border-border transition-all duration-300 flex flex-col", isExpanded ? "w-64" : "w-16", "translate-x-0 max-lg:-translate-x-full", isMobileOpen && "max-lg:translate-x-0" )} >
-                
+            <aside id="sidebar" className={cn("fixed left-0 top-0 z-40 h-screen bg-background border-r border-border transition-all duration-300 flex flex-col", isExpanded ? "w-64" : "w-16", "translate-x-0 max-lg:-translate-x-full", isMobileOpen && "max-lg:translate-x-0")} >
+
                 <div id="sidebar-header" className="h-16 flex items-center justify-between px-4 border-b border-border">
                     {isExpanded && (
                         <Link href="/" className="text-xl font-bold">
@@ -106,7 +106,7 @@ export function Sidebar() {
 
             </aside>
 
-            <div id="sidebar-spacer" className={cn( "transition-all duration-300 hidden lg:block", isExpanded ? "w-64" : "w-16" )} />
+            <div id="sidebar-spacer" className={cn("transition-all duration-300 hidden lg:block", isExpanded ? "w-64" : "w-16")} />
         </>
     );
 }
