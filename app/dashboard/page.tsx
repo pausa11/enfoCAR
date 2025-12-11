@@ -59,17 +59,17 @@ export default async function ProtectedPage() {
   const sortedMonths = Object.keys(monthlyStats).sort();
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-8 p-4">
+    <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-3 sm:p-4 md:p-6">
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">Welcome back, {user.email}</p>
+        <h1 className="text-2xl sm:text-3xl font-bold">Panel de Control</h1>
+        <p className="text-sm sm:text-base text-muted-foreground">Bienvenido, {user.email}</p>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Assets</CardTitle>
+            <CardTitle className="text-sm font-medium">Total de Activos</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -92,7 +92,7 @@ export default async function ProtectedPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Income</CardTitle>
+            <CardTitle className="text-sm font-medium">Ingresos Totales</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -114,7 +114,7 @@ export default async function ProtectedPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
+            <CardTitle className="text-sm font-medium">Gastos Totales</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -137,20 +137,20 @@ export default async function ProtectedPage() {
       </div>
 
       {/* Monthly Breakdown */}
-      <h2 className="text-xl font-semibold mt-4">Monthly Breakdown</h2>
-      <div className="border rounded-md">
-        <div className="grid grid-cols-3 p-4 font-medium border-b bg-muted/50">
-          <div>Month</div>
-          <div>Income</div>
-          <div>Expenses</div>
+      <h2 className="text-lg sm:text-xl font-semibold mt-2 sm:mt-4">Desglose Mensual</h2>
+      <div className="border rounded-md overflow-x-auto">
+        <div className="grid grid-cols-3 p-3 sm:p-4 font-medium border-b bg-muted/50 text-sm sm:text-base min-w-[300px]">
+          <div>Mes</div>
+          <div>Ingresos</div>
+          <div>Gastos</div>
         </div>
         {sortedMonths.length === 0 ? (
-          <div className="p-4 text-center text-muted-foreground">
-            No financial records found.
+          <div className="p-4 text-center text-muted-foreground text-sm sm:text-base">
+            No se encontraron registros financieros.
           </div>
         ) : (
           sortedMonths.map((month) => (
-            <div key={month} className="grid grid-cols-3 p-4 border-b last:border-0 hover:bg-muted/10 transition-colors">
+            <div key={month} className="grid grid-cols-3 p-3 sm:p-4 border-b last:border-0 hover:bg-muted/10 transition-colors text-sm sm:text-base min-w-[300px]">
               <div>{month}</div>
               <div className="text-green-600">
                 ${monthlyStats[month].income.toFixed(2)}
