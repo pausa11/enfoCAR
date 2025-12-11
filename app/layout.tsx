@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import { Sidebar } from "@/components/sidebar";
 
 const defaultUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
 
@@ -28,12 +27,7 @@ export default function RootLayout({ children, }: Readonly<{ children: React.Rea
           enableSystem
           disableTransitionOnChange
         >
-          <div id="root" className="flex min-h-screen">
-            <Sidebar />
-            <main id="main" className="flex-1 overflow-auto">
-              {children}
-            </main>
-          </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>
