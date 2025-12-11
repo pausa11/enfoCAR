@@ -12,16 +12,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-import { Plus } from "lucide-react";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 const VEHICLE_TYPES = [
     { value: "CARRO", label: "Carro" },
@@ -32,7 +23,6 @@ const VEHICLE_TYPES = [
 
 export function CreateAssetForm() {
     const router = useRouter();
-    const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -47,18 +37,6 @@ export function CreateAssetForm() {
     const [año, setAño] = useState("");
     const [placa, setPlaca] = useState("");
     const [kilometraje, setKilometraje] = useState("");
-
-    const resetForm = () => {
-        setName("");
-        setType("");
-        setMarca("");
-        setColor("");
-        setModelo("");
-        setAño("");
-        setPlaca("");
-        setKilometraje("");
-        setError("");
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -98,10 +76,9 @@ export function CreateAssetForm() {
                 throw new Error(data.error || "Error al crear el activo");
             }
 
-            // Success - close dialog and refresh
-            setOpen(false);
-            resetForm();
+            // Success - redirect to list
             router.refresh();
+            router.push("/app/activos");
         } catch (err) {
             setError(err instanceof Error ? err.message : "Error al crear el activo");
         } finally {
@@ -110,23 +87,16 @@ export function CreateAssetForm() {
     };
 
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button className="gap-2">
-                    <Plus className="h-4 w-4" />
-                    Crear Nuevo Activo
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
-                <form onSubmit={handleSubmit}>
-                    <DialogHeader>
-                        <DialogTitle>Crear Nuevo Activo</DialogTitle>
-                        <DialogDescription>
-                            Agrega un nuevo vehículo a tu inventario. Los campos marcados son obligatorios.
-                        </DialogDescription>
-                    </DialogHeader>
-
-                    <div className="grid gap-4 py-4">
+        <Card className="w-full max-w-2xl mx-auto">
+            <CardHeader>
+                <CardTitle>Crear Nuevo Activo</CardTitle>
+                <CardDescription>
+                    Agrega un nuevo vehículo a tu inventario. Los campos marcados son obligatorios.
+                </CardDescription>
+            </CardHeader>
+            <form onSubmit={handleSubmit}>
+                <CardContent className="grid gap-6">
+                    <div className="grid gap-4">
                         {/* Required Fields */}
                         <div className="grid gap-2">
                             <Label htmlFor="name">
@@ -160,27 +130,17 @@ export function CreateAssetForm() {
                         </div>
 
                         {/* Custom Attributes */}
-                        <div className="border-t pt-4 mt-2">
+                        <div className="border-t pt-4">
                             <h4 className="text-sm font-medium mb-3">Atributos Personalizados (Opcionales)</h4>
 
-                            <div className="grid gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="grid gap-2">
                                     <Label htmlFor="marca">Marca</Label>
                                     <Input
                                         id="marca"
-                                        placeholder="Ej: Toyota, Chevrolet"
+                                        placeholder="Ej: Toyota"
                                         value={marca}
                                         onChange={(e) => setMarca(e.target.value)}
-                                    />
-                                </div>
-
-                                <div className="grid gap-2">
-                                    <Label htmlFor="color">Color</Label>
-                                    <Input
-                                        id="color"
-                                        placeholder="Ej: Blanco, Rojo"
-                                        value={color}
-                                        onChange={(e) => setColor(e.target.value)}
                                     />
                                 </div>
 
@@ -188,9 +148,19 @@ export function CreateAssetForm() {
                                     <Label htmlFor="modelo">Modelo</Label>
                                     <Input
                                         id="modelo"
-                                        placeholder="Ej: Hilux, Spark"
+                                        placeholder="Ej: Hilux"
                                         value={modelo}
                                         onChange={(e) => setModelo(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="grid gap-2">
+                                    <Label htmlFor="color">Color</Label>
+                                    <Input
+                                        id="color"
+                                        placeholder="Ej: Blanco"
+                                        value={color}
+                                        onChange={(e) => setColor(e.target.value)}
                                     />
                                 </div>
 
@@ -230,29 +200,25 @@ export function CreateAssetForm() {
                     </div>
 
                     {error && (
-                        <div className="text-sm text-red-500 mb-4">
+                        <div className="text-sm text-red-500">
                             {error}
                         </div>
                     )}
-
-                    <DialogFooter>
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => {
-                                setOpen(false);
-                                resetForm();
-                            }}
-                            disabled={loading}
-                        >
-                            Cancelar
-                        </Button>
-                        <Button type="submit" disabled={loading}>
-                            {loading ? "Creando..." : "Crear Activo"}
-                        </Button>
-                    </DialogFooter>
-                </form>
-            </DialogContent>
-        </Dialog>
+                </CardContent>
+                <CardFooter className="flex justify-between">
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => router.back()}
+                        disabled={loading}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button type="submit" disabled={loading}>
+                        {loading ? "Creando..." : "Crear Activo"}
+                    </Button>
+                </CardFooter>
+            </form>
+        </Card>
     );
 }

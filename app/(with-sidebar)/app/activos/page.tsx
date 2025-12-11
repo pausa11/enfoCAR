@@ -1,8 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { CreateAssetForm } from "@/components/create-asset-form";
 import { AssetsTable } from "@/components/assets-table";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -28,7 +30,7 @@ export default async function AssetsPage() {
     });
 
     return (
-         <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">
+        <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div className="flex flex-col gap-2">
                     <h1 className="text-2xl sm:text-3xl font-bold">Gestión de Activos</h1>
@@ -36,7 +38,12 @@ export default async function AssetsPage() {
                         Administra tus vehículos y su información
                     </p>
                 </div>
-                <CreateAssetForm />
+                <Link href="/app/activos/new">
+                    <Button className="gap-2">
+                        <Plus className="h-4 w-4" />
+                        Crear Nuevo Activo
+                    </Button>
+                </Link>
             </div>
 
             <AssetsTable assets={assets} />
