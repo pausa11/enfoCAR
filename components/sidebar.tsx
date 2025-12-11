@@ -37,9 +37,17 @@ export function Sidebar() {
 
     return (
         <>
-            <Button id="sidebar-toggle" variant="ghost" size="icon" className="fixed top-4 left-4 z-50 lg:hidden" onClick={toggleMobileSidebar} >
-                {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
-            </Button>
+            {!isMobileOpen && (
+                <Button
+                    id="sidebar-toggle"
+                    variant="ghost"
+                    size="icon"
+                    className="fixed top-4 left-4 z-50 lg:hidden"
+                    onClick={toggleMobileSidebar}
+                >
+                    <Menu size={24} />
+                </Button>
+            )}
 
             {isMobileOpen && (
                 <div
@@ -59,10 +67,13 @@ export function Sidebar() {
                     <Button
                         variant="ghost"
                         size="icon"
-                        onClick={toggleSidebar}
-                        className="hidden lg:flex ml-auto"
+                        onClick={isMobileOpen ? toggleMobileSidebar : toggleSidebar}
+                        className={cn(
+                            isMobileOpen ? "lg:hidden" : "hidden lg:flex",
+                            "ml-auto"
+                        )}
                     >
-                        {isExpanded ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+                        {isMobileOpen ? <X size={24} /> : isExpanded ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
                     </Button>
                 </div>
 

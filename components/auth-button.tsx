@@ -35,8 +35,7 @@ export function AuthButton() {
   }
 
   return user ? (
-    <div className="flex items-center gap-4 w-full">
-      Hola, {user.email}!
+    <div className="flex items-center w-full flex-col">
       <LogoutButton />
     </div>
   ) : (
