@@ -65,13 +65,13 @@ export default async function ProtectedPage() {
     <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex flex-col gap-2">
-          <h1 className="text-2xl sm:text-3xl font-bold">Panel de Control</h1>
-          <p className="text-sm sm:text-base text-muted-foreground">Bienvenido, {user.email}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">Mi Tablero</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">¡Todo bien, {user.email}! Aquí tienes el resumen de la jugada.</p>
         </div>
         <Link href="/app/activos">
           <Button className="gap-2">
             <Car className="h-4 w-4" />
-            Gestionar Activos
+            Ver mis Naves
           </Button>
         </Link>
       </div>
@@ -80,7 +80,7 @@ export default async function ProtectedPage() {
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total de Activos</CardTitle>
+            <CardTitle className="text-sm font-medium">Total de Naves</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -103,7 +103,7 @@ export default async function ProtectedPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Ingresos Totales</CardTitle>
+            <CardTitle className="text-sm font-medium">Lo que entra (Ingresos)</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -125,7 +125,7 @@ export default async function ProtectedPage() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Gastos Totales</CardTitle>
+            <CardTitle className="text-sm font-medium">Lo que sale (Gastos)</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -148,7 +148,7 @@ export default async function ProtectedPage() {
       </div>
 
       {/* Monthly Breakdown */}
-      <h2 className="text-lg sm:text-xl font-semibold mt-2 sm:mt-4">Desglose Mensual</h2>
+      <h2 className="text-lg sm:text-xl font-semibold mt-2 sm:mt-4">La movida del mes</h2>
       <div className="border rounded-md overflow-x-auto">
         <div className="grid grid-cols-3 p-3 sm:p-4 font-medium border-b bg-muted/50 text-sm sm:text-base min-w-[300px]">
           <div>Mes</div>
@@ -157,7 +157,7 @@ export default async function ProtectedPage() {
         </div>
         {sortedMonths.length === 0 ? (
           <div className="p-4 text-center text-muted-foreground text-sm sm:text-base">
-            No se encontraron registros financieros.
+            Todavía no hay movimiento, ¡a camellar!
           </div>
         ) : (
           sortedMonths.map((month) => (

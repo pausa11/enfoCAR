@@ -16,12 +16,12 @@ const navigationItems = [
         icon: Home,
     },
     {
-        name: "Panel de Control",
+        name: "Mi Tablero",
         href: "/app",
         icon: LayoutDashboard,
     },
     {
-        name: "Activos",
+        name: "Mis Naves",
         href: "/app/activos",
         icon: Package,
     },
