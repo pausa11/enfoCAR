@@ -3,7 +3,9 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FinancialRecord } from "@prisma/client";
-import { CreateAssetForm } from "@/components/create-asset-form";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Car } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -66,7 +68,12 @@ export default async function ProtectedPage() {
           <h1 className="text-2xl sm:text-3xl font-bold">Panel de Control</h1>
           <p className="text-sm sm:text-base text-muted-foreground">Bienvenido, {user.email}</p>
         </div>
-        <CreateAssetForm />
+        <Link href="/dashboard/activos">
+          <Button className="gap-2">
+            <Car className="h-4 w-4" />
+            Gestionar Activos
+          </Button>
+        </Link>
       </div>
 
       {/* Summary Cards */}

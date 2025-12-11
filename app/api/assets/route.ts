@@ -2,6 +2,41 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+export async function GET() {
+    try {
+        // Verify authentication
+        const supabase = await createClient();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+            return NextResponse.json(
+                { error: "No autenticado" },
+                { status: 401 }
+            );
+        }
+
+        // Fetch all assets for the user
+        const assets = await prisma.asset.findMany({
+            where: {
+                userId: user.id,
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+
+        return NextResponse.json(assets);
+    } catch (error) {
+        console.error("Error fetching assets:", error);
+        return NextResponse.json(
+            { error: "Error al obtener los activos" },
+            { status: 500 }
+        );
+    }
+}
+
 export async function POST(request: Request) {
     try {
         // Verify authentication
