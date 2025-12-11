@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { Sidebar } from "@/components/sidebar";
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -37,15 +36,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-full flex flex-col gap-20 items-center">
-              <Header />
-              <div className="flex-1 w-full flex flex-col items-center">
-                {children}
-              </div>
-              <Footer />
-            </div>
-          </main>
+          <div className="flex min-h-screen">
+            <Sidebar />
+            <main className="flex-1 overflow-auto">
+              {children}
+            </main>
+          </div>
         </ThemeProvider>
       </body>
     </html>
