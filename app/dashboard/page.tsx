@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FinancialRecord } from "@prisma/client";
+import { CreateAssetForm } from "@/components/create-asset-form";
 
 export const dynamic = "force-dynamic";
 
@@ -60,9 +61,12 @@ export default async function ProtectedPage() {
 
   return (
     <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-3 sm:p-4 md:p-6">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-2xl sm:text-3xl font-bold">Panel de Control</h1>
-        <p className="text-sm sm:text-base text-muted-foreground">Bienvenido, {user.email}</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-2xl sm:text-3xl font-bold">Panel de Control</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Bienvenido, {user.email}</p>
+        </div>
+        <CreateAssetForm />
       </div>
 
       {/* Summary Cards */}

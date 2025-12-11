@@ -39,9 +39,10 @@ model FinancialRecord {
 }
 
 enum AssetType {
-  CAR
-  BUS
-  TRUCK
+  CARRO
+  JEEP
+  BUSETA
+  TURBO
 }
 
 enum FinancialRecordType {
