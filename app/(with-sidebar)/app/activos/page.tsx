@@ -19,6 +19,18 @@ export default async function AssetsPage() {
         return redirect("/auth/login");
     }
 
+    // Ensure user exists in Prisma database (important for OAuth users)
+    await prisma.user.upsert({
+        where: { id: user.id },
+        update: {
+            email: user.email || "",
+        },
+        create: {
+            id: user.id,
+            email: user.email || "",
+        },
+    });
+
     // Fetch all assets for the user
     const assets = await prisma.asset.findMany({
         where: {

@@ -20,6 +20,18 @@ export default async function ProtectedPage() {
     return redirect("/auth/login");
   }
 
+  // Ensure user exists in Prisma database (important for OAuth users)
+  await prisma.user.upsert({
+    where: { id: user.id },
+    update: {
+      email: user.email || "",
+    },
+    create: {
+      id: user.id,
+      email: user.email || "",
+    },
+  });
+
   // Fetch data
   const assetCount = await prisma.asset.count({
     where: {
