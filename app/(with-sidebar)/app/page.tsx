@@ -6,6 +6,7 @@ import { FinancialRecord } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Car } from "lucide-react";
+import { DashboardAnalysis } from "@/components/dashboard-analysis";
 
 export const dynamic = "force-dynamic";
 
@@ -97,6 +98,16 @@ export default async function ProtectedPage() {
           </Button>
         </Link>
       </div>
+
+      {/* AI Analysis */}
+      <DashboardAnalysis
+        stats={{
+          totalIncome,
+          totalExpenses,
+          assetCount,
+          monthlyStats
+        }}
+      />
 
       {/* Summary Cards */}
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
