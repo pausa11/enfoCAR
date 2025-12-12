@@ -1,4 +1,6 @@
 import { Sidebar } from "@/components/sidebar";
+import { InstallPrompt } from "@/components/install-prompt";
+import { UpdatePrompt } from "@/components/update-prompt";
 
 export default function WithSidebarLayout({
     children,
@@ -11,6 +13,8 @@ export default function WithSidebarLayout({
             <main id="main" className="flex-1 overflow-auto">
                 {children}
             </main>
+            <InstallPrompt />
+            <UpdatePrompt />
         </div>
     );
 }
