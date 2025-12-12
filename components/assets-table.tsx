@@ -33,109 +33,119 @@ export function AssetsTable({ assets }: AssetsTableProps) {
 
     return (
         <>
-            <div className="border rounded-lg overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full min-w-[600px]">
-                        <thead className="bg-muted/50 border-b">
-                            <tr>
-                                <th className="text-left p-3 sm:p-4 font-medium text-sm">Activo</th>
-                                <th className="text-left p-3 sm:p-4 font-medium text-sm">Tipo</th>
-                                <th className="text-left p-3 sm:p-4 font-medium text-sm">Detalles</th>
-                                <th className="text-left p-3 sm:p-4 font-medium text-sm">Fecha de Creación</th>
-                                <th className="text-right p-3 sm:p-4 font-medium text-sm">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {assets.map((asset) => {
-                                const customAttrs = asset.customAttributes as Record<string, string> | null;
-                                return (
-                                    <tr key={asset.id} className="border-b last:border-0 hover:bg-muted/10 transition-colors">
-                                        <td className="p-3 sm:p-4">
-                                            <div className="flex items-center gap-3">
-                                                {/* @ts-ignore - imageUrl exists after migration */}
-                                                {asset.imageUrl ? (
-                                                    <div className="h-10 w-10 relative rounded-md overflow-hidden bg-muted">
-                                                        <img
-                                                            /* @ts-ignore */
-                                                            src={asset.imageUrl}
-                                                            alt={asset.name}
-                                                            className="h-full w-full object-cover"
-                                                        />
-                                                    </div>
-                                                ) : (
-                                                    <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center text-muted-foreground">
-                                                        <span className="text-xs uppercase">{asset.name.substring(0, 2)}</span>
-                                                    </div>
-                                                )}
-                                                <div className="font-medium">{asset.name}</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {assets.map((asset) => {
+                    const customAttrs = asset.customAttributes as Record<string, string> | null;
+                    return (
+                        <div
+                            key={asset.id}
+                            className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-card"
+                        >
+                            {/* Image Section */}
+                            <div className="relative aspect-video bg-muted">
+                                {/* @ts-ignore - imageUrl exists after migration */}
+                                {asset.imageUrl ? (
+                                    <img
+                                        /* @ts-ignore */
+                                        src={asset.imageUrl}
+                                        alt={asset.name}
+                                        className="h-full w-full object-cover"
+                                    />
+                                ) : (
+                                    <div className="h-full w-full flex items-center justify-center text-muted-foreground">
+                                        <span className="text-4xl font-bold uppercase">{asset.name.substring(0, 2)}</span>
+                                    </div>
+                                )}
+
+                                {/* Action Buttons Overlay */}
+                                <div className="absolute top-2 right-2 flex gap-2">
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        onClick={() => setEditingAsset(asset)}
+                                        className="h-8 w-8 p-0 bg-background/90 hover:bg-background"
+                                    >
+                                        <Edit className="h-4 w-4" />
+                                        <span className="sr-only">Editar</span>
+                                    </Button>
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        onClick={() => setDeletingAsset(asset)}
+                                        className="h-8 w-8 p-0 bg-background/90 hover:bg-background text-destructive hover:text-destructive"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                        <span className="sr-only">Eliminar</span>
+                                    </Button>
+                                </div>
+                            </div>
+
+                            {/* Card Content */}
+                            <div className="p-4 space-y-3">
+                                {/* Title and Type Badge */}
+                                <div className="space-y-2">
+                                    <h3 className="font-semibold text-lg leading-tight">{asset.name}</h3>
+                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                                        {VEHICLE_TYPE_LABELS[asset.type] || asset.type}
+                                    </span>
+                                </div>
+
+                                {/* Custom Attributes */}
+                                {customAttrs && Object.keys(customAttrs).length > 0 ? (
+                                    <div className="text-sm space-y-1.5 text-muted-foreground">
+                                        {customAttrs.marca && (
+                                            <div className="flex justify-between">
+                                                <span className="font-medium text-foreground">Marca:</span>
+                                                <span>{customAttrs.marca}</span>
                                             </div>
-                                        </td>
-                                        <td className="p-3 sm:p-4">
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                                                {VEHICLE_TYPE_LABELS[asset.type] || asset.type}
-                                            </span>
-                                        </td>
-                                        <td className="p-3 sm:p-4">
-                                            {customAttrs && Object.keys(customAttrs).length > 0 ? (
-                                                <div className="text-sm text-muted-foreground space-y-1">
-                                                    {customAttrs.marca && (
-                                                        <div><span className="font-medium">Marca:</span> {customAttrs.marca}</div>
-                                                    )}
-                                                    {customAttrs.modelo && (
-                                                        <div><span className="font-medium">Modelo:</span> {customAttrs.modelo}</div>
-                                                    )}
-                                                    {customAttrs.año && (
-                                                        <div><span className="font-medium">Año:</span> {customAttrs.año}</div>
-                                                    )}
-                                                    {customAttrs.placa && (
-                                                        <div><span className="font-medium">Placa:</span> {customAttrs.placa}</div>
-                                                    )}
-                                                    {customAttrs.color && (
-                                                        <div><span className="font-medium">Color:</span> {customAttrs.color}</div>
-                                                    )}
-                                                    {customAttrs.kilometraje && (
-                                                        <div><span className="font-medium">Kilometraje:</span> {customAttrs.kilometraje} km</div>
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <span className="text-sm text-muted-foreground">Sin detalles</span>
-                                            )}
-                                        </td>
-                                        <td className="p-3 sm:p-4 text-sm text-muted-foreground">
-                                            {new Date(asset.createdAt).toLocaleDateString("es-CO", {
-                                                year: "numeric",
-                                                month: "short",
-                                                day: "numeric",
-                                            })}
-                                        </td>
-                                        <td className="p-3 sm:p-4">
-                                            <div className="flex items-center justify-end gap-2">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={() => setEditingAsset(asset)}
-                                                    className="h-8 w-8 p-0"
-                                                >
-                                                    <Edit className="h-4 w-4" />
-                                                    <span className="sr-only">Editar</span>
-                                                </Button>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    onClick={() => setDeletingAsset(asset)}
-                                                    className="h-8 w-8 p-0 text-destructive hover:text-destructive"
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                    <span className="sr-only">Eliminar</span>
-                                                </Button>
+                                        )}
+                                        {customAttrs.modelo && (
+                                            <div className="flex justify-between">
+                                                <span className="font-medium text-foreground">Modelo:</span>
+                                                <span>{customAttrs.modelo}</span>
                                             </div>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                </div>
+                                        )}
+                                        {customAttrs.año && (
+                                            <div className="flex justify-between">
+                                                <span className="font-medium text-foreground">Año:</span>
+                                                <span>{customAttrs.año}</span>
+                                            </div>
+                                        )}
+                                        {customAttrs.placa && (
+                                            <div className="flex justify-between">
+                                                <span className="font-medium text-foreground">Placa:</span>
+                                                <span className="uppercase">{customAttrs.placa}</span>
+                                            </div>
+                                        )}
+                                        {customAttrs.color && (
+                                            <div className="flex justify-between">
+                                                <span className="font-medium text-foreground">Color:</span>
+                                                <span>{customAttrs.color}</span>
+                                            </div>
+                                        )}
+                                        {customAttrs.kilometraje && (
+                                            <div className="flex justify-between">
+                                                <span className="font-medium text-foreground">Kilometraje:</span>
+                                                <span>{customAttrs.kilometraje} km</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <p className="text-sm text-muted-foreground italic">Sin detalles adicionales</p>
+                                )}
+
+                                {/* Creation Date */}
+                                <div className="pt-2 border-t text-xs text-muted-foreground">
+                                    Creado: {new Date(asset.createdAt).toLocaleDateString("es-CO", {
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "numeric",
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
 
             {editingAsset && (
