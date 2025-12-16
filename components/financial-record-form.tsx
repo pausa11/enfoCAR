@@ -50,7 +50,9 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
                 return;
             }
 
-            if (!amount || parseFloat(amount) <= 0) {
+            const cleanAmount = parseFloat(amount.replace(/\./g, ""));
+
+            if (!cleanAmount || cleanAmount <= 0) {
                 setError("¡Ojo! La plata tiene que ser mayor a cero");
                 setIsLoading(false);
                 return;
@@ -76,7 +78,7 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
                 body: JSON.stringify({
                     assetId,
                     type,
-                    amount: parseFloat(amount),
+                    amount: cleanAmount,
                     date: startDate.toISOString(),
                     endDate: dateMode === "range" && endDate ? endDate.toISOString() : null,
                     description: description || null,
@@ -170,12 +172,18 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
                             </span>
                             <Input
                                 id="amount"
-                                type="number"
-                                step="0.01"
-                                min="0"
-                                placeholder="150000"
+                                type="text"
+                                inputMode="numeric"
+                                placeholder="150.000"
                                 value={amount}
-                                onChange={(e) => setAmount(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Remove non-digits
+                                    const number = value.replace(/\D/g, "");
+                                    // Format with thousands separator
+                                    const formatted = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                                    setAmount(formatted);
+                                }}
                                 className="pl-7"
                             />
                         </div>

@@ -71,7 +71,10 @@ export default async function AssetFinancesPage({ params }: { params: Promise<{ 
             </div>
 
             {/* Financial Summary */}
-            <FinancialSummary records={recordsWithNumbers} />
+            <FinancialSummary
+                records={recordsWithNumbers}
+                ownershipPercentage={asset.ownershipPercentage}
+            />
 
             {/* Form and List Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">

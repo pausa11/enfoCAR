@@ -41,6 +41,7 @@ export function CreateAssetForm() {
     const [placa, setPlaca] = useState("");
     const [kilometraje, setKilometraje] = useState("");
     const [conductor, setConductor] = useState("");
+    const [ownershipPercentage, setOwnershipPercentage] = useState("100");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -97,6 +98,7 @@ export function CreateAssetForm() {
                     type,
                     imageUrl,
                     customAttributes: Object.keys(customAttributes).length > 0 ? customAttributes : null,
+                    ownershipPercentage,
                 }),
             });
 
@@ -173,86 +175,107 @@ export function CreateAssetForm() {
                                 </SelectContent>
                             </Select>
                         </div>
+                    </div>
 
-                        {/* Custom Attributes */}
-                        <div className="border-t pt-4">
-                            <h4 className="text-sm font-medium mb-3">Más Detalles de tu Carro (Si querés)</h4>
+                    <div className="grid gap-2">
+                        <Label htmlFor="ownershipPercentage">
+                            ¿Qué porcentaje te pertenece? (%) <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                            id="ownershipPercentage"
+                            type="number"
+                            min="0"
+                            max="100"
+                            step="0.1"
+                            placeholder="100"
+                            value={ownershipPercentage}
+                            onChange={(e) => setOwnershipPercentage(e.target.value)}
+                            required
+                        />
+                        <p className="text-xs text-muted-foreground">
+                            Si es compartido, pon el porcentaje que es tuyo.
+                        </p>
+                    </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="grid gap-2">
-                                    <Label htmlFor="marca">Marca</Label>
-                                    <Input
-                                        id="marca"
-                                        placeholder="Ej: Toyota"
-                                        value={marca}
-                                        onChange={(e) => setMarca(e.target.value)}
-                                    />
-                                </div>
+                    {/* Custom Attributes */}
+                    <div className="border-t pt-4">
+                        <h4 className="text-sm font-medium mb-3">Más Detalles de tu Carro (Si querés)</h4>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="modelo">Modelo</Label>
-                                    <Input
-                                        id="modelo"
-                                        placeholder="Ej: Hilux"
-                                        value={modelo}
-                                        onChange={(e) => setModelo(e.target.value)}
-                                    />
-                                </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="marca">Marca</Label>
+                                <Input
+                                    id="marca"
+                                    placeholder="Ej: Toyota"
+                                    value={marca}
+                                    onChange={(e) => setMarca(e.target.value)}
+                                />
+                            </div>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="color">Color</Label>
-                                    <Input
-                                        id="color"
-                                        placeholder="Ej: Blanco"
-                                        value={color}
-                                        onChange={(e) => setColor(e.target.value)}
-                                    />
-                                </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="modelo">Modelo</Label>
+                                <Input
+                                    id="modelo"
+                                    placeholder="Ej: Hilux"
+                                    value={modelo}
+                                    onChange={(e) => setModelo(e.target.value)}
+                                />
+                            </div>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="año">Año</Label>
-                                    <Input
-                                        id="año"
-                                        type="number"
-                                        placeholder="Ej: 2020"
-                                        value={año}
-                                        onChange={(e) => setAño(e.target.value)}
-                                    />
-                                </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="color">Color</Label>
+                                <Input
+                                    id="color"
+                                    placeholder="Ej: Blanco"
+                                    value={color}
+                                    onChange={(e) => setColor(e.target.value)}
+                                />
+                            </div>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="placa">Placa</Label>
-                                    <Input
-                                        id="placa"
-                                        placeholder="Ej: ABC-123"
-                                        value={placa}
-                                        onChange={(e) => setPlaca(e.target.value)}
-                                    />
-                                </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="año">Año</Label>
+                                <Input
+                                    id="año"
+                                    type="number"
+                                    placeholder="Ej: 2020"
+                                    value={año}
+                                    onChange={(e) => setAño(e.target.value)}
+                                />
+                            </div>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="kilometraje">Kilometraje</Label>
-                                    <Input
-                                        id="kilometraje"
-                                        type="number"
-                                        placeholder="Ej: 50000"
-                                        value={kilometraje}
-                                        onChange={(e) => setKilometraje(e.target.value)}
-                                    />
-                                </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="placa">Placa</Label>
+                                <Input
+                                    id="placa"
+                                    placeholder="Ej: ABC-123"
+                                    value={placa}
+                                    onChange={(e) => setPlaca(e.target.value)}
+                                />
+                            </div>
 
-                                <div className="grid gap-2">
-                                    <Label htmlFor="conductor">Conductor</Label>
-                                    <Input
-                                        id="conductor"
-                                        placeholder="Ej: Juan Pérez"
-                                        value={conductor}
-                                        onChange={(e) => setConductor(e.target.value)}
-                                    />
-                                </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="kilometraje">Kilometraje</Label>
+                                <Input
+                                    id="kilometraje"
+                                    type="number"
+                                    placeholder="Ej: 50000"
+                                    value={kilometraje}
+                                    onChange={(e) => setKilometraje(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="conductor">Conductor</Label>
+                                <Input
+                                    id="conductor"
+                                    placeholder="Ej: Juan Pérez"
+                                    value={conductor}
+                                    onChange={(e) => setConductor(e.target.value)}
+                                />
                             </div>
                         </div>
                     </div>
+
 
                     {error && (
                         <div className="text-sm text-red-500">
@@ -274,6 +297,6 @@ export function CreateAssetForm() {
                     </Button>
                 </CardFooter>
             </form>
-        </Card>
+        </Card >
     );
 }

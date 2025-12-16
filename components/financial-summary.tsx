@@ -17,9 +17,10 @@ interface FinancialRecord {
 
 interface FinancialSummaryProps {
     records: FinancialRecord[];
+    ownershipPercentage?: number;
 }
 
-export function FinancialSummary({ records }: FinancialSummaryProps) {
+export function FinancialSummary({ records, ownershipPercentage = 100 }: FinancialSummaryProps) {
     const totalIncome = records
         .filter((r) => r.type === "INCOME")
         .reduce((sum, r) => sum + Number(r.amount), 0);
@@ -67,11 +68,26 @@ export function FinancialSummary({ records }: FinancialSummaryProps) {
                 </CardHeader>
             </Card>
 
+            {/* User Share (if not 100%) */}
+            {ownershipPercentage < 100 && (
+                <Card className="border-l-4 border-l-purple-500">
+                    <CardHeader className="pb-3">
+                        <CardDescription className="flex items-center gap-2">
+                            <DollarSign className="h-4 w-4 text-purple-600" />
+                            Tu Ganancia ({ownershipPercentage}%)
+                        </CardDescription>
+                        <CardTitle className="text-3xl text-purple-700 dark:text-purple-400">
+                            {formatCurrency(netProfit * (ownershipPercentage / 100))}
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
+            )}
+
             {/* Net Profit/Loss */}
             <Card
                 className={`border-l-4 ${netProfit >= 0
-                        ? "border-l-blue-500"
-                        : "border-l-orange-500"
+                    ? "border-l-blue-500"
+                    : "border-l-orange-500"
                     }`}
             >
                 <CardHeader className="pb-3">
@@ -81,8 +97,8 @@ export function FinancialSummary({ records }: FinancialSummaryProps) {
                     </CardDescription>
                     <CardTitle
                         className={`text-3xl ${netProfit >= 0
-                                ? "text-blue-700 dark:text-blue-400"
-                                : "text-orange-700 dark:text-orange-400"
+                            ? "text-blue-700 dark:text-blue-400"
+                            : "text-orange-700 dark:text-orange-400"
                             }`}
                     >
                         {formatCurrency(Math.abs(netProfit))}

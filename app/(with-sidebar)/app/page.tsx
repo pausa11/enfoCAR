@@ -56,27 +56,40 @@ export default async function ProtectedPage() {
         userId: user.id,
       },
     },
+    include: {
+      asset: {
+        select: {
+          ownershipPercentage: true,
+        },
+      },
+    },
   });
 
-  // Aggregate data
+  // Helper to calculate user share
+  const getUserAmount = (record: FinancialRecord & { asset: { ownershipPercentage: number } }) => {
+    return Number(record.amount) * (record.asset.ownershipPercentage / 100);
+  };
+
+  // Aggregate data (User Share)
   const totalIncome = financialRecords
-    .filter((r: FinancialRecord) => r.type === "INCOME")
-    .reduce((acc: number, curr: FinancialRecord) => acc + Number(curr.amount), 0);
+    .filter((r) => r.type === "INCOME")
+    .reduce((acc, curr) => acc + getUserAmount(curr), 0);
 
   const totalExpenses = financialRecords
-    .filter((r: FinancialRecord) => r.type === "EXPENSE")
-    .reduce((acc: number, curr: FinancialRecord) => acc + Number(curr.amount), 0);
+    .filter((r) => r.type === "EXPENSE")
+    .reduce((acc, curr) => acc + getUserAmount(curr), 0);
 
   // Group by month
-  const monthlyStats = financialRecords.reduce((acc: Record<string, { income: number; expense: number }>, record: FinancialRecord) => {
+  const monthlyStats = financialRecords.reduce((acc: Record<string, { income: number; expense: number }>, record) => {
     const month = record.date.toISOString().slice(0, 7); // YYYY-MM
     if (!acc[month]) {
       acc[month] = { income: 0, expense: 0 };
     }
+    const amount = getUserAmount(record);
     if (record.type === "INCOME") {
-      acc[month].income += Number(record.amount);
+      acc[month].income += amount;
     } else {
-      acc[month].expense += Number(record.amount);
+      acc[month].expense += amount;
     }
     return acc;
   }, {} as Record<string, { income: number; expense: number }>);
