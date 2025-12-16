@@ -14,8 +14,13 @@ import {
 } from "@/components/ui/dialog";
 import { AlertTriangle } from "lucide-react";
 
+// Type for asset with Decimal converted to number for client components
+type SerializedAsset = Omit<Asset, 'value'> & {
+    value: number | null;
+};
+
 interface DeleteAssetDialogProps {
-    asset: Asset;
+    asset: SerializedAsset;
     open: boolean;
     onOpenChange: (open: boolean) => void;
 }

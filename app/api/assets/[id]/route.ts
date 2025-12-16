@@ -59,7 +59,7 @@ export async function PUT(
         }
 
         // Update asset
-        const asset = await prisma.asset.update({
+        const assetRaw = await prisma.asset.update({
             where: { id },
             data: {
                 name,
@@ -67,6 +67,12 @@ export async function PUT(
                 customAttributes: customAttributes || null,
             },
         });
+
+        // Convert Decimal fields to plain numbers for JSON serialization
+        const asset = {
+            ...assetRaw,
+            value: assetRaw.value ? assetRaw.value.toNumber() : null,
+        };
 
         return NextResponse.json(asset);
     } catch (error) {

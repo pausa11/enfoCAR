@@ -17,8 +17,13 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { TrendingUp, TrendingDown, Calendar } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+// Type for asset with Decimal converted to number for client components
+type SerializedAsset = Omit<Asset, 'value'> & {
+    value: number | null;
+};
+
 interface FinancialRecordFormProps {
-    assets: Asset[];
+    assets: SerializedAsset[];
     preselectedAssetId?: string;
     onSuccess?: () => void;
 }

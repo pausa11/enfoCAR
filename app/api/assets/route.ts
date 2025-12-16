@@ -18,7 +18,7 @@ export async function GET() {
         }
 
         // Fetch all assets for the user
-        const assets = await prisma.asset.findMany({
+        const assetsRaw = await prisma.asset.findMany({
             where: {
                 userId: user.id,
             },
@@ -26,6 +26,12 @@ export async function GET() {
                 createdAt: "desc",
             },
         });
+
+        // Convert Decimal fields to plain numbers for JSON serialization
+        const assets = assetsRaw.map(asset => ({
+            ...asset,
+            value: asset.value ? asset.value.toNumber() : null,
+        }));
 
         return NextResponse.json(assets);
     } catch (error) {
@@ -87,7 +93,7 @@ export async function POST(request: Request) {
         }
 
         // Create asset
-        const asset = await prisma.asset.create({
+        const assetRaw = await prisma.asset.create({
             data: {
                 name,
                 type,
@@ -98,6 +104,12 @@ export async function POST(request: Request) {
                 value: value ? parseFloat(value) : null,
             },
         });
+
+        // Convert Decimal fields to plain numbers for JSON serialization
+        const asset = {
+            ...assetRaw,
+            value: assetRaw.value ? assetRaw.value.toNumber() : null,
+        };
 
         return NextResponse.json(asset, { status: 201 });
     } catch (error) {

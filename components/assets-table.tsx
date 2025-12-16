@@ -8,8 +8,13 @@ import { DeleteAssetDialog } from "@/components/delete-asset-dialog"
 import { useState } from "react";
 import Link from "next/link";
 
+// Type for asset with Decimal converted to number for client components
+type SerializedAsset = Omit<Asset, 'value'> & {
+    value: number | null;
+};
+
 interface AssetsTableProps {
-    assets: Asset[];
+    assets: SerializedAsset[];
 }
 
 const VEHICLE_TYPE_LABELS: Record<string, string> = {
@@ -20,8 +25,8 @@ const VEHICLE_TYPE_LABELS: Record<string, string> = {
 };
 
 export function AssetsTable({ assets }: AssetsTableProps) {
-    const [editingAsset, setEditingAsset] = useState<Asset | null>(null);
-    const [deletingAsset, setDeletingAsset] = useState<Asset | null>(null);
+    const [editingAsset, setEditingAsset] = useState<SerializedAsset | null>(null);
+    const [deletingAsset, setDeletingAsset] = useState<SerializedAsset | null>(null);
 
     if (assets.length === 0) {
         return (

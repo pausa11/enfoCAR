@@ -7,6 +7,12 @@ import { FinancialSummary } from "@/components/financial-summary";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Asset } from "@prisma/client";
+
+// Type for asset with Decimal converted to number for client components
+type SerializedAsset = Omit<Asset, 'value'> & {
+    value: number | null;
+};
 
 export const dynamic = "force-dynamic";
 
@@ -25,16 +31,22 @@ export default async function AssetFinancesPage({ params }: { params: Promise<{ 
     const { id } = await params;
 
     // Fetch the asset
-    const asset = await prisma.asset.findFirst({
+    const assetRaw = await prisma.asset.findFirst({
         where: {
             id: id,
             userId: user.id,
         },
     });
 
-    if (!asset) {
+    if (!assetRaw) {
         return redirect("/app/activos");
     }
+
+    // Convert Decimal to number for client components
+    const asset = {
+        ...assetRaw,
+        value: assetRaw.value ? assetRaw.value.toNumber() : null,
+    };
 
     // Fetch all financial records for this asset
     const records = await prisma.financialRecord.findMany({
