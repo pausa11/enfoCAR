@@ -28,6 +28,22 @@ model Asset {
   imageUrl         String?
   ownershipPercentage Float          @default(100.0)
   value            Decimal?          @db.Decimal(15, 2)
+  driverPercentage Float             @default(0.0)
+  driverPaymentMode DriverPaymentMode?
+  driverSalaries   DriverSalary[]
+}
+
+model DriverSalary {
+  id        String   @id @default(uuid())
+  assetId   String
+  asset     Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  month     Int      // 1-12
+  year      Int
+  amount    Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([assetId, year, month])
 }
 
 model FinancialRecord {
@@ -53,4 +69,9 @@ enum AssetType {
 enum FinancialRecordType {
   INCOME
   EXPENSE
+}
+
+enum DriverPaymentMode {
+  PERCENTAGE
+  FIXED_SALARY
 }

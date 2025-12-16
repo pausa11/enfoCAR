@@ -24,7 +24,7 @@ export async function PUT(
 
         // Parse request body
         const body = await request.json();
-        const { name, type, customAttributes } = body;
+        const { name, type, customAttributes, driverPercentage, driverPaymentMode } = body;
 
         // Validate required fields
         if (!name || !type) {
@@ -65,6 +65,8 @@ export async function PUT(
                 name,
                 type,
                 customAttributes: customAttributes || null,
+                driverPercentage: driverPercentage !== undefined ? parseFloat(driverPercentage) : undefined,
+                driverPaymentMode: driverPaymentMode !== undefined ? driverPaymentMode : undefined,
             },
         });
 

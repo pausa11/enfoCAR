@@ -44,6 +44,8 @@ export function CreateAssetForm() {
 
     const [ownershipPercentage, setOwnershipPercentage] = useState("100");
     const [assetValue, setAssetValue] = useState("");
+    const [driverPercentage, setDriverPercentage] = useState("0");
+    const [driverPaymentMode, setDriverPaymentMode] = useState<"PERCENTAGE" | "FIXED_SALARY">("PERCENTAGE");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -102,6 +104,8 @@ export function CreateAssetForm() {
                     customAttributes: Object.keys(customAttributes).length > 0 ? customAttributes : null,
                     ownershipPercentage,
                     value: assetValue ? parseFloat(assetValue.replace(/\./g, "")) : null,
+                    driverPercentage: parseFloat(driverPercentage),
+                    driverPaymentMode: conductor ? driverPaymentMode : null,
                 }),
             });
 
@@ -307,6 +311,57 @@ export function CreateAssetForm() {
                                     onChange={(e) => setConductor(e.target.value)}
                                 />
                             </div>
+
+                            {conductor && (
+                                <>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="driverPaymentMode">
+                                            Modo de Pago del Conductor
+                                        </Label>
+                                        <Select
+                                            value={driverPaymentMode}
+                                            onValueChange={(value) => setDriverPaymentMode(value as "PERCENTAGE" | "FIXED_SALARY")}
+                                        >
+                                            <SelectTrigger id="driverPaymentMode">
+                                                <SelectValue placeholder="Selecciona el modo de pago" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="PERCENTAGE">Porcentaje de Ganancias</SelectItem>
+                                                <SelectItem value="FIXED_SALARY">Salario Fijo Mensual</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+
+                                    {driverPaymentMode === "PERCENTAGE" && (
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="driverPercentage">
+                                                % de Ganancia del Conductor
+                                            </Label>
+                                            <Input
+                                                id="driverPercentage"
+                                                type="number"
+                                                min="0"
+                                                max="100"
+                                                step="0.1"
+                                                placeholder="30"
+                                                value={driverPercentage}
+                                                onChange={(e) => setDriverPercentage(e.target.value)}
+                                            />
+                                            <p className="text-xs text-muted-foreground">
+                                                Porcentaje de las ganancias que le corresponde al conductor
+                                            </p>
+                                        </div>
+                                    )}
+
+                                    {driverPaymentMode === "FIXED_SALARY" && (
+                                        <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded-md text-sm">
+                                            <p className="text-blue-800 dark:text-blue-200">
+                                                💡 Podrás configurar el salario mensual del conductor después de crear el activo.
+                                            </p>
+                                        </div>
+                                    )}
+                                </>
+                            )}
                         </div>
                     </div>
 

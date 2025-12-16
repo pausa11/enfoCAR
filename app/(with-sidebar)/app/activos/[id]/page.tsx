@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { FinancialRecordForm } from "@/components/financial-record-form";
 import { FinancialRecordsList } from "@/components/financial-records-list";
 import { FinancialSummary } from "@/components/financial-summary";
+import { DriverSalaryManager } from "@/components/driver-salary-manager";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -64,6 +65,35 @@ export default async function AssetFinancesPage({ params }: { params: Promise<{ 
         amount: Number(record.amount),
     }));
 
+    // Fetch current month's driver salary if payment mode is FIXED_SALARY
+    let currentMonthlySalary: number | null = null;
+    if (asset.driverPaymentMode === 'FIXED_SALARY') {
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentYear = currentDate.getFullYear();
+
+        const salary = await prisma.driverSalary.findUnique({
+            where: {
+                assetId_year_month: {
+                    assetId: id,
+                    year: currentYear,
+                    month: currentMonth,
+                },
+            },
+        });
+
+        if (salary) {
+            currentMonthlySalary = salary.amount.toNumber();
+        }
+    }
+
+    // Extract driver name from customAttributes
+    const driverName = asset.customAttributes &&
+        typeof asset.customAttributes === 'object' &&
+        'conductor' in asset.customAttributes
+        ? (asset.customAttributes as { conductor?: string }).conductor || null
+        : null;
+
     return (
         <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">
             {/* Header */}
@@ -86,7 +116,19 @@ export default async function AssetFinancesPage({ params }: { params: Promise<{ 
             <FinancialSummary
                 records={recordsWithNumbers}
                 ownershipPercentage={asset.ownershipPercentage}
+                driverPercentage={asset.driverPercentage}
+                driverPaymentMode={asset.driverPaymentMode}
+                driverMonthlySalary={currentMonthlySalary}
+                driverName={driverName}
             />
+
+            {/* Driver Salary Manager (only for FIXED_SALARY mode) */}
+            {asset.driverPaymentMode === 'FIXED_SALARY' && driverName && (
+                <DriverSalaryManager
+                    assetId={asset.id}
+                    driverName={driverName}
+                />
+            )}
 
             {/* Form and List Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">

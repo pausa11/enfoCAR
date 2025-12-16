@@ -58,6 +58,8 @@ export function EditAssetDialog({ asset, open, onOpenChange }: EditAssetDialogPr
     const [placa, setPlaca] = useState(customAttrs.placa || "");
     const [kilometraje, setKilometraje] = useState(customAttrs.kilometraje || "");
     const [conductor, setConductor] = useState(customAttrs.conductor || "");
+    const [driverPercentage, setDriverPercentage] = useState(asset.driverPercentage.toString());
+    const [driverPaymentMode, setDriverPaymentMode] = useState<"PERCENTAGE" | "FIXED_SALARY">(asset.driverPaymentMode || "PERCENTAGE");
 
     // Reset form when asset changes
     useEffect(() => {
@@ -71,6 +73,8 @@ export function EditAssetDialog({ asset, open, onOpenChange }: EditAssetDialogPr
         setPlaca(attrs.placa || "");
         setKilometraje(attrs.kilometraje || "");
         setConductor(attrs.conductor || "");
+        setDriverPercentage(asset.driverPercentage.toString());
+        setDriverPaymentMode(asset.driverPaymentMode || "PERCENTAGE");
         setError("");
     }, [asset]);
 
@@ -105,6 +109,8 @@ export function EditAssetDialog({ asset, open, onOpenChange }: EditAssetDialogPr
                     name,
                     type,
                     customAttributes: Object.keys(customAttributes).length > 0 ? customAttributes : null,
+                    driverPercentage: parseFloat(driverPercentage),
+                    driverPaymentMode: conductor ? driverPaymentMode : null,
                 }),
             });
 
@@ -243,6 +249,57 @@ export function EditAssetDialog({ asset, open, onOpenChange }: EditAssetDialogPr
                                         onChange={(e) => setConductor(e.target.value)}
                                     />
                                 </div>
+
+                                {conductor && (
+                                    <>
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="edit-driverPaymentMode">
+                                                Modo de Pago del Conductor
+                                            </Label>
+                                            <Select
+                                                value={driverPaymentMode}
+                                                onValueChange={(value) => setDriverPaymentMode(value as "PERCENTAGE" | "FIXED_SALARY")}
+                                            >
+                                                <SelectTrigger id="edit-driverPaymentMode">
+                                                    <SelectValue placeholder="Selecciona el modo de pago" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="PERCENTAGE">Porcentaje de Ganancias</SelectItem>
+                                                    <SelectItem value="FIXED_SALARY">Salario Fijo Mensual</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+
+                                        {driverPaymentMode === "PERCENTAGE" && (
+                                            <div className="grid gap-2">
+                                                <Label htmlFor="edit-driverPercentage">
+                                                    % de Ganancia del Conductor
+                                                </Label>
+                                                <Input
+                                                    id="edit-driverPercentage"
+                                                    type="number"
+                                                    min="0"
+                                                    max="100"
+                                                    step="0.1"
+                                                    placeholder="30"
+                                                    value={driverPercentage}
+                                                    onChange={(e) => setDriverPercentage(e.target.value)}
+                                                />
+                                                <p className="text-xs text-muted-foreground">
+                                                    Porcentaje de las ganancias que le corresponde al conductor
+                                                </p>
+                                            </div>
+                                        )}
+
+                                        {driverPaymentMode === "FIXED_SALARY" && (
+                                            <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded-md text-sm">
+                                                <p className="text-blue-800 dark:text-blue-200">
+                                                    💡 Configura el salario mensual en la página del activo.
+                                                </p>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

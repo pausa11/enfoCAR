@@ -73,7 +73,7 @@ export async function POST(request: Request) {
 
         // Parse request body
         const body = await request.json();
-        const { name, type, customAttributes, imageUrl, ownershipPercentage, value } = body;
+        const { name, type, customAttributes, imageUrl, ownershipPercentage, value, driverPercentage, driverPaymentMode } = body;
 
         // Validate required fields
         if (!name || !type) {
@@ -102,6 +102,8 @@ export async function POST(request: Request) {
                 userId: user.id,
                 ownershipPercentage: ownershipPercentage ? parseFloat(ownershipPercentage) : 100.0,
                 value: value ? parseFloat(value) : null,
+                driverPercentage: driverPercentage ? parseFloat(driverPercentage) : 0.0,
+                driverPaymentMode: driverPaymentMode || null,
             },
         });
 

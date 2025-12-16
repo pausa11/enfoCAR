@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Asset" ADD COLUMN     "driverPercentage" DOUBLE PRECISION NOT NULL DEFAULT 0.0;
