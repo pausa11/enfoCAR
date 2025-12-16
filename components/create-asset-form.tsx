@@ -41,7 +41,9 @@ export function CreateAssetForm() {
     const [placa, setPlaca] = useState("");
     const [kilometraje, setKilometraje] = useState("");
     const [conductor, setConductor] = useState("");
+
     const [ownershipPercentage, setOwnershipPercentage] = useState("100");
+    const [assetValue, setAssetValue] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -99,6 +101,7 @@ export function CreateAssetForm() {
                     imageUrl,
                     customAttributes: Object.keys(customAttributes).length > 0 ? customAttributes : null,
                     ownershipPercentage,
+                    value: assetValue ? parseFloat(assetValue.replace(/\./g, "")) : null,
                 }),
             });
 
@@ -195,6 +198,37 @@ export function CreateAssetForm() {
                         <p className="text-xs text-muted-foreground">
                             Si es compartido, pon el porcentaje que es tuyo.
                         </p>
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="assetValue">
+                            ¿Cuánto vale la nave? (Opcional)
+                        </Label>
+                        <Input
+                            id="assetValue"
+                            type="text"
+                            inputMode="numeric"
+                            placeholder="Ej: 50.000.000"
+                            value={assetValue}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                const number = value.replace(/\D/g, "");
+                                const formatted = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                                setAssetValue(formatted);
+                            }}
+                        />
+                        {assetValue && ownershipPercentage && (
+                            <div className="p-3 bg-muted rounded-md text-sm">
+                                <span className="text-muted-foreground">Tu participación vale: </span>
+                                <span className="font-semibold text-green-600">
+                                    {new Intl.NumberFormat("es-CO", {
+                                        style: "currency",
+                                        currency: "COP",
+                                        maximumFractionDigits: 0
+                                    }).format((parseFloat(assetValue.replace(/\./g, "")) * parseFloat(ownershipPercentage)) / 100)}
+                                </span>
+                            </div>
+                        )}
                     </div>
 
                     {/* Custom Attributes */}

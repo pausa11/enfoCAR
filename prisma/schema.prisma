@@ -27,6 +27,7 @@ model Asset {
   updatedAt        DateTime          @updatedAt
   imageUrl         String?
   ownershipPercentage Float          @default(100.0)
+  value            Decimal?          @db.Decimal(15, 2)
 }
 
 model FinancialRecord {
