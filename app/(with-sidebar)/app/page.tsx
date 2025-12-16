@@ -97,6 +97,16 @@ export default async function ProtectedPage() {
   // Sort months
   const sortedMonths = Object.keys(monthlyStats).sort();
 
+  // Helper to format currency
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
   return (
     <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -165,7 +175,7 @@ export default async function ProtectedPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
-              ${totalIncome.toFixed(2)}
+              {formatCurrency(totalIncome)}
             </div>
           </CardContent>
         </Card>
@@ -187,7 +197,7 @@ export default async function ProtectedPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
-              ${totalExpenses.toFixed(2)}
+              {formatCurrency(totalExpenses)}
             </div>
           </CardContent>
         </Card>
@@ -210,10 +220,10 @@ export default async function ProtectedPage() {
             <div key={month} className="grid grid-cols-3 p-3 sm:p-4 border-b last:border-0 hover:bg-muted/10 transition-colors text-sm sm:text-base min-w-[300px]">
               <div>{month}</div>
               <div className="text-green-600">
-                ${monthlyStats[month].income.toFixed(2)}
+                {formatCurrency(monthlyStats[month].income)}
               </div>
               <div className="text-red-600">
-                ${monthlyStats[month].expense.toFixed(2)}
+                {formatCurrency(monthlyStats[month].expense)}
               </div>
             </div>
           ))
