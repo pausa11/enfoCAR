@@ -1,7 +1,7 @@
 "use client";
 
 import { Asset } from "@prisma/client";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { EditAssetDialog } from "@/components/edit-asset-dialog"
 import { DeleteAssetDialog } from "@/components/delete-asset-dialog"
@@ -151,7 +151,7 @@ export function AssetsTable({ assets }: AssetsTableProps) {
                                     <Link href={`/app/activos/${asset.id}`}>
                                         <Button variant="outline" size="sm" className="w-full gap-2">
                                             <span>Ver Finanzas</span>
-                                            <span className="text-xs">💰</span>
+                                            <DollarSign className="h-4 w-4" />
                                         </Button>
                                     </Link>
                                 </div>

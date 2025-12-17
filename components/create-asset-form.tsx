@@ -13,6 +13,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Lightbulb } from "lucide-react";
 
 const VEHICLE_TYPES = [
     { value: "CARRO", label: "Carro" },
@@ -355,8 +356,9 @@ export function CreateAssetForm() {
 
                                     {driverPaymentMode === "FIXED_SALARY" && (
                                         <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded-md text-sm">
-                                            <p className="text-blue-800 dark:text-blue-200">
-                                                💡 Podrás configurar el salario mensual del conductor después de crear el activo.
+                                            <p className="text-blue-800 dark:text-blue-200 flex items-center gap-2">
+                                                <Lightbulb className="h-4 w-4 flex-shrink-0" />
+                                                <span>Podrás configurar el salario mensual del conductor después de crear el activo.</span>
                                             </p>
                                         </div>
                                     )}
