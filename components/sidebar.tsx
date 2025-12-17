@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { AuthButton } from "@/components/auth-button";
-import { Home, LayoutDashboard, Package, Menu, X, ChevronLeft, ChevronRight, } from "lucide-react";
+import { Home, LayoutDashboard, Car, Menu, X, ChevronLeft, ChevronRight, } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navigationItems = [
@@ -23,7 +23,7 @@ const navigationItems = [
     {
         name: "Mis Naves",
         href: "/app/activos",
-        icon: Package,
+        icon: Car,
     },
 ];
 
