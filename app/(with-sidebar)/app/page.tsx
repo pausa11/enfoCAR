@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Car } from "lucide-react";
 import { DashboardAnalysis } from "@/components/dashboard-analysis";
+import { FinancialCharts } from "@/components/financial-charts";
 
 export const dynamic = "force-dynamic";
 
@@ -60,6 +61,7 @@ export default async function ProtectedPage() {
       asset: {
         select: {
           ownershipPercentage: true,
+          type: true,
         },
       },
     },
@@ -97,6 +99,36 @@ export default async function ProtectedPage() {
   // Sort months
   const sortedMonths = Object.keys(monthlyStats).sort();
 
+  // Calculate Net Income and Margin
+  const netIncome = totalIncome - totalExpenses;
+  const profitMargin = totalIncome > 0 ? (netIncome / totalIncome) * 100 : 0;
+
+  // Aggregate data for Charts
+  // 1. Monthly Stats Array for Bar Chart
+  const monthlyStatsArray = sortedMonths.map((month) => ({
+    month,
+    income: monthlyStats[month].income,
+    expense: monthlyStats[month].expense,
+  }));
+
+  // 2. Income by Asset Type for Pie Chart
+  const incomeByType = financialRecords
+    .filter((r) => r.type === "INCOME")
+    .reduce((acc: Record<string, number>, curr) => {
+      const type = curr.asset.type;
+      const amount = getUserAmount(curr);
+      if (!acc[type]) {
+        acc[type] = 0;
+      }
+      acc[type] += amount;
+      return acc;
+    }, {});
+
+  const incomeByAssetTypeData = Object.entries(incomeByType).map(([name, value]) => ({
+    name,
+    value,
+  }));
+
   // Helper to format currency
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("es-CO", {
@@ -105,6 +137,15 @@ export default async function ProtectedPage() {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
+  };
+
+  // Format percentage
+  const formatPercentage = (percent: number) => {
+    return new Intl.NumberFormat("es-CO", {
+      style: "percent",
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    }).format(percent / 100);
   };
 
   return (
@@ -132,10 +173,20 @@ export default async function ProtectedPage() {
       />
 
       {/* Summary Cards */}
-      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total de Naves</CardTitle>
+            <Car className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{assetCount}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Margen de Ganancia</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -146,16 +197,19 @@ export default async function ProtectedPage() {
               strokeWidth="2"
               className="h-4 w-4 text-muted-foreground"
             >
-              <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0" />
-              <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0" />
-              <path d="M5 17h-2v-6l2-5h9l2 5v6h-2" />
-              <path d="M9 17v-5h6v5" />
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{assetCount}</div>
+            <div className={`text-2xl font-bold ${profitMargin >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              {formatPercentage(profitMargin)}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Eficiencia de tu operación
+            </p>
           </CardContent>
         </Card>
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Lo que entra (Ingresos)</CardTitle>
@@ -178,6 +232,7 @@ export default async function ProtectedPage() {
             </div>
           </CardContent>
         </Card>
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Lo que sale (Gastos)</CardTitle>
@@ -202,31 +257,67 @@ export default async function ProtectedPage() {
         </Card>
       </div>
 
-      {/* Monthly Breakdown */}
-      <h2 className="text-lg sm:text-xl font-semibold mt-2 sm:mt-4">La movida del mes</h2>
-      <div className="border rounded-md overflow-x-auto">
-        <div className="grid grid-cols-3 p-3 sm:p-4 font-medium border-b bg-muted/50 text-sm sm:text-base min-w-[300px]">
-          <div>Mes</div>
-          <div>Ingresos</div>
-          <div>Gastos</div>
-        </div>
-        {sortedMonths.length === 0 ? (
-          <div className="p-4 text-center text-muted-foreground text-sm sm:text-base">
-            Todavía no hay movimiento, ¡a camellar!
-          </div>
-        ) : (
-          sortedMonths.map((month) => (
-            <div key={month} className="grid grid-cols-3 p-3 sm:p-4 border-b last:border-0 hover:bg-muted/10 transition-colors text-sm sm:text-base min-w-[300px]">
-              <div>{month}</div>
-              <div className="text-green-600">
-                {formatCurrency(monthlyStats[month].income)}
-              </div>
-              <div className="text-red-600">
-                {formatCurrency(monthlyStats[month].expense)}
-              </div>
+      {/* Net Income Highlight */}
+      <div className="grid gap-4 grid-cols-1">
+        <Card className={`${netIncome >= 0 ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-800" : "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800"}`}>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Utilidad Neta (Lo que te queda libre)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className={`text-4xl font-bold ${netIncome >= 0 ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"}`}>
+              {formatCurrency(netIncome)}
             </div>
-          ))
-        )}
+            <p className="text-muted-foreground mt-1">
+              Ingresos - Gastos
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Visual Charts */}
+      <h2 className="text-lg sm:text-xl font-semibold mt-2">Echele pues el ojo</h2>
+      <FinancialCharts
+        monthlyStats={monthlyStatsArray}
+        incomeByAssetType={incomeByAssetTypeData}
+      />
+
+      {/* Monthly Breakdown Table */}
+      <div className="flex flex-col gap-4">
+        <h2 className="text-lg sm:text-xl font-semibold mt-4">Detalle Mensual</h2>
+        <div className="border rounded-md overflow-x-auto">
+          <div className="grid grid-cols-4 p-3 sm:p-4 font-medium border-b bg-muted/50 text-sm sm:text-base min-w-[500px]">
+            <div>Mes</div>
+            <div>Ingresos</div>
+            <div>Gastos</div>
+            <div>Utilidad</div>
+          </div>
+          {sortedMonths.length === 0 ? (
+            <div className="p-4 text-center text-muted-foreground text-sm sm:text-base">
+              Todavía no hay movimiento, ¡a camellar!
+            </div>
+          ) : (
+            sortedMonths.map((month) => {
+              const inc = monthlyStats[month].income;
+              const exp = monthlyStats[month].expense;
+              const util = inc - exp;
+
+              return (
+                <div key={month} className="grid grid-cols-4 p-3 sm:p-4 border-b last:border-0 hover:bg-muted/10 transition-colors text-sm sm:text-base min-w-[500px]">
+                  <div>{month}</div>
+                  <div className="text-green-600">
+                    {formatCurrency(inc)}
+                  </div>
+                  <div className="text-red-600">
+                    {formatCurrency(exp)}
+                  </div>
+                  <div className={`font-semibold ${util >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {formatCurrency(util)}
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </div>
       </div>
     </div>
   );
