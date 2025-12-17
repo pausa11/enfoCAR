@@ -7,6 +7,7 @@ import { EditAssetDialog } from "@/components/edit-asset-dialog"
 import { DeleteAssetDialog } from "@/components/delete-asset-dialog"
 import { useState } from "react";
 import Link from "next/link";
+import { Plate, getPlateType } from "colombian-plates";
 
 // Type for asset with Decimal converted to number for client components
 type SerializedAsset = Omit<Asset, 'value'> & {
@@ -117,12 +118,6 @@ export function AssetsTable({ assets }: AssetsTableProps) {
                                                 <span>{customAttrs.año}</span>
                                             </div>
                                         )}
-                                        {customAttrs.placa && (
-                                            <div className="flex justify-between">
-                                                <span className="font-medium text-foreground">Placa:</span>
-                                                <span className="uppercase">{customAttrs.placa}</span>
-                                            </div>
-                                        )}
                                         {customAttrs.color && (
                                             <div className="flex justify-between">
                                                 <span className="font-medium text-foreground">Color:</span>
@@ -139,6 +134,18 @@ export function AssetsTable({ assets }: AssetsTableProps) {
                                             <div className="flex justify-between">
                                                 <span className="font-medium text-foreground">Conductor:</span>
                                                 <span>{customAttrs.conductor}</span>
+                                            </div>
+                                        )}
+                                        {customAttrs.placa && (
+                                            <div className="flex flex-col gap-1 mt-1">
+                                                <div className="w-full flex items-center justify-center">
+                                                    <Plate
+                                                        plate={customAttrs.placa}
+                                                        type={getPlateType(customAttrs.placa) || undefined}
+                                                        width={"60%"}
+                                                        style={{ transform: "scale(0.75)", transformOrigin: "center" }}
+                                                    />
+                                                </div>
                                             </div>
                                         )}
                                     </div>
