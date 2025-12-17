@@ -65,8 +65,7 @@ export function DashboardAnalysis({ stats }: DashboardAnalysisProps) {
         <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-lg font-medium flex items-center gap-2 text-blue-800 dark:text-blue-300">
-                    <Sparkles className="h-5 w-5 text-yellow-500" />
-                    Análisis IA
+                    Tu mecanico de confianza dice:  
                 </CardTitle>
                 <Button
                     variant="ghost"

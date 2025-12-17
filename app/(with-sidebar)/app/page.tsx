@@ -122,7 +122,6 @@ export default async function ProtectedPage() {
         </Link>
       </div>
 
-      {/* AI Analysis */}
       <DashboardAnalysis
         stats={{
           totalIncome,
