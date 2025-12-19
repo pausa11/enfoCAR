@@ -19,6 +19,7 @@
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.2",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@react-three/fiber": "^9.4.2",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "ai": "^5.0.113",
@@ -27,14 +28,17 @@
     "colombian-plates": "^1.0.1",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.511.0",
+    "motion": "^12.23.26",
     "next": "latest",
     "next-pwa": "^5.6.0",
     "next-themes": "^0.4.6",
+    "postprocessing": "^6.38.1",
     "react": "^19.0.0",
     "react-day-picker": "^9.12.0",
     "react-dom": "^19.0.0",
     "recharts": "^3.6.0",
-    "tailwind-merge": "^3.3.0"
+    "tailwind-merge": "^3.3.0",
+    "three": "^0.167.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
