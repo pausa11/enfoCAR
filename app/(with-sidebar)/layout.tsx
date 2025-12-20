@@ -8,9 +8,9 @@ export default function WithSidebarLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div id="root" className="flex min-h-screen">
+        <div id="root" className="min-h-screen">
             <Sidebar />
-            <main id="main" className="flex-1 overflow-auto">
+            <main id="main" className="w-full overflow-auto">
                 {children}
             </main>
             <InstallPrompt />
