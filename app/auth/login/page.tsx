@@ -2,10 +2,11 @@
 
 import { LoginForm } from "@/components/login-form";
 import Hyperspeed from "@/components/Hyperspeed";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function Page() {
   return (
-    <div className="min-h-screen w-full relative overflow-hidden bg-black">
+    <div className="min-h-screen w-full relative overflow-hidden bg-background">
       {/* Hyperspeed Background */}
       <div className="absolute inset-0 z-0" id="lights">
         <Hyperspeed
@@ -54,6 +55,11 @@ export default function Page() {
 
       {/* Main Content */}
       <div className="absolute inset-0 z-10 flex items-center justify-center p-6 pointer-events-none">
+        {/* Theme Switcher - Top Right */}
+        <div className="absolute top-6 right-6 pointer-events-auto">
+          <ThemeSwitcher />
+        </div>
+
         <div className="w-full max-w-md pointer-events-auto">
 
 
@@ -63,13 +69,13 @@ export default function Page() {
             <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-lime-500/20 rounded-3xl blur-xl" />
 
             {/* Card */}
-            <div className="relative bg-black/80 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl p-8">
+            <div className="relative bg-card/80 backdrop-blur-2xl rounded-3xl border border-border shadow-2xl p-8">
               <LoginForm />
             </div>
           </div>
 
           {/* Footer Text */}
-          <p className="mt-6 text-center text-white/40 text-xs">
+          <p className="mt-6 text-center text-muted-foreground text-xs">
             Mantén el control total de tus vehículos en un solo lugar
           </p>
         </div>

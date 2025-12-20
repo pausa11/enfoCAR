@@ -100,7 +100,7 @@ export function LoginForm({
 
         {/* Welcome Message */}
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-semibold">¡Bienvenido de vuelta!</h2>
+          <h2 className="text-2xl font-semibold text-foreground">¡Bienvenido de vuelta!</h2>
           <p className="text-muted-foreground">
             Ingresa tus credenciales para continuar
           </p>
@@ -110,7 +110,7 @@ export function LoginForm({
         <Button
           type="button"
           variant="outline"
-          className="w-full h-12 text-base font-medium border-2 hover:bg-accent transition-all duration-300"
+          className="w-full h-12 text-base font-medium border-2 transition-all duration-300"
           onClick={handleGoogleLogin}
         >
           <GoogleIcon />
@@ -120,10 +120,10 @@ export function LoginForm({
         {/* Divider */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+            <span className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
+            <span className="bg-card px-2 text-muted-foreground">
               O continúa con
             </span>
           </div>
@@ -143,7 +143,7 @@ export function LoginForm({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="pl-10 h-12 bg-background/50 backdrop-blur-sm border-2 focus:border-primary transition-all duration-300"
+              className="pl-10 h-12 backdrop-blur-sm border-2 transition-all duration-300"
             />
           </div>
         </div>
@@ -170,7 +170,7 @@ export function LoginForm({
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="pl-10 h-12 bg-background/50 backdrop-blur-sm border-2 focus:border-primary transition-all duration-300"
+              className="pl-10 h-12 backdrop-blur-sm border-2 transition-all duration-300"
             />
           </div>
         </div>
