@@ -380,7 +380,7 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
             {items && items.length ? (
               items.map((it, idx) => (
                 <li className="sm-panel-itemWrap" key={it.label + idx}>
-                  <Link href={it.link} className="sm-panel-item" aria-label={it.ariaLabel} data-index={idx + 1}>
+                  <Link href={it.link} className="sm-panel-item" aria-label={it.ariaLabel} data-index={idx + 1} onClick={closeMenu}>
                     <span className="sm-panel-itemLabel">{it.label}</span>
                   </Link>
                 </li>
