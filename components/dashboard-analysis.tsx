@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sparkles, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ShinyText from '@/components/ShinyText';
 
 interface DashboardAnalysisProps {
     stats: {
@@ -65,7 +66,11 @@ export function DashboardAnalysis({ stats }: DashboardAnalysisProps) {
         <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-lg font-medium flex items-center gap-2 text-blue-800 dark:text-blue-300">
-                    Tu mecanico de confianza dice:  
+                    <ShinyText
+                        text="Tu mecanico de confianza dice:"
+                        className=""
+                        speed={3}
+                    />
                 </CardTitle>
                 <Button
                     variant="ghost"
@@ -79,15 +84,25 @@ export function DashboardAnalysis({ stats }: DashboardAnalysisProps) {
             </CardHeader>
             <CardContent>
                 {analysis ? (
-                    <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                        {analysis}
-                    </p>
+                    <ShinyText
+                        text={analysis}
+                        className="text-sm sm:text-base leading-relaxed"
+                        speed={4}
+                    />
                 ) : isLoading ? (
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <span className="animate-pulse">Analizando tus finanzas...</span>
+                    <div className="flex items-center gap-2 text-sm">
+                        <ShinyText
+                            text="Analizando tus finanzas..."
+                            className="animate-pulse"
+                            speed={2}
+                        />
                     </div>
                 ) : error ? (
-                    <p className="text-sm text-red-500">No se pudo cargar el análisis. Intenta de nuevo.</p>
+                    <ShinyText
+                        text="No se pudo cargar el análisis. Intenta de nuevo."
+                        className="text-sm text-red-600 dark:text-red-400"
+                        speed={3}
+                    />
                 ) : null}
             </CardContent>
         </Card>

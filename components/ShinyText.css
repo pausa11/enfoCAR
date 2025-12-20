@@ -1,0 +1,54 @@
+.shiny-text {
+  /* Light mode: darker base color */
+  color: inherit;
+  background: linear-gradient(120deg,
+      currentColor 0%,
+      currentColor 40%,
+      rgba(255, 255, 255, 0.9) 50%,
+      currentColor 60%,
+      currentColor 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  animation: shine 5s linear infinite;
+}
+
+/* Default color for light mode when no color class is specified */
+.shiny-text:not([class*="text-"]) {
+  color: #4b5563;
+}
+
+/* Dark mode: lighter base color with white shine */
+.dark .shiny-text {
+  background: linear-gradient(120deg,
+      currentColor 0%,
+      currentColor 40%,
+      rgba(255, 255, 255, 1) 50%,
+      currentColor 60%,
+      currentColor 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Default color for dark mode when no color class is specified */
+.dark .shiny-text:not([class*="text-"]) {
+  color: #d1d5db;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 100%;
+  }
+
+  100% {
+    background-position: -100%;
+  }
+}
+
+.shiny-text.disabled {
+  animation: none;
+}
