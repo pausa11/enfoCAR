@@ -8,6 +8,7 @@ import { DeleteAssetDialog } from "@/components/delete-asset-dialog"
 import { useState } from "react";
 import Link from "next/link";
 import { Plate, getPlateType } from "colombian-plates";
+import { ParticleCard } from "@/components/MagicBento";
 
 // Type for asset with Decimal converted to number for client components
 type SerializedAsset = Omit<Asset, 'value'> & {
@@ -44,9 +45,14 @@ export function AssetsTable({ assets }: AssetsTableProps) {
                 {assets.map((asset) => {
                     const customAttrs = asset.customAttributes as Record<string, string> | null;
                     return (
-                        <div
+                        <ParticleCard
                             key={asset.id}
                             className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-card"
+                            particleCount={0}
+                            glowColor="0, 112, 243"
+                            enableTilt={true}
+                            clickEffect={true}
+                            enableMagnetism={true}
                         >
                             {/* Image Section */}
                             <div className="relative aspect-video bg-muted">
@@ -172,7 +178,7 @@ export function AssetsTable({ assets }: AssetsTableProps) {
                                     })}
                                 </div>
                             </div>
-                        </div>
+                        </ParticleCard>
                     );
                 })}
             </div>

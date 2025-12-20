@@ -1,19 +1,26 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { ParticleCard } from "@/components/MagicBento";
 
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
+  <ParticleCard
     className={cn(
       "rounded-xl border bg-card text-card-foreground shadow",
       className,
     )}
-    {...props}
-  />
+    style={{ position: 'relative', overflow: 'hidden' }}
+    particleCount={0}
+    glowColor="0, 112, 243"
+    enableTilt={true}
+    clickEffect={true}
+    enableMagnetism={true}
+  >
+    <div ref={ref} {...props} />
+  </ParticleCard>
 ));
 Card.displayName = "Card";
 
