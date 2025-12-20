@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Car, Lock, Mail } from "lucide-react";
+import SplitText from "@/components/SplitText";
 
 // Google icon component
 function GoogleIcon() {
@@ -88,10 +89,20 @@ export function LoginForm({
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Car className="w-10 h-10 text-primary" />
-            <h1 className="text-4xl font-bold">
-              <span className="text-primary">enfo</span>
-              <span className="text-[hsl(74,100%,36%)]">CAR</span>
-            </h1>
+            <SplitText
+              text="enfoCAR"
+              tag="h1"
+              className="text-4xl font-bold"
+              delay={50}
+              duration={0.6}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-50px"
+              textAlign="center"
+            />
           </div>
           <p className="text-muted-foreground text-sm">
             Gestiona tus vehículos de forma inteligente
@@ -100,7 +111,20 @@ export function LoginForm({
 
         {/* Welcome Message */}
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-semibold text-foreground">¡Bienvenido de vuelta!</h2>
+          <SplitText
+            text="¡Bienvenido de vuelta!"
+            tag="h2"
+            className="text-2xl font-semibold text-foreground"
+            delay={80}
+            duration={0.6}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-50px"
+            textAlign="center"
+          />
           <p className="text-muted-foreground">
             Ingresa tus credenciales para continuar
           </p>

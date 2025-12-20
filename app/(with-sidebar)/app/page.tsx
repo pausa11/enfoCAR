@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Car } from "lucide-react";
 import { DashboardAnalysis } from "@/components/dashboard-analysis";
 import { FinancialCharts } from "@/components/financial-charts";
+import SplitText from "@/components/SplitText";
 
 export const dynamic = "force-dynamic";
 
@@ -152,7 +153,20 @@ export default async function ProtectedPage() {
     <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex flex-col gap-2">
-          <h1 className="text-2xl sm:text-3xl font-bold">Mi Tablero</h1>
+          <SplitText
+            text="Mi Tablero"
+            tag="h1"
+            className="text-2xl sm:text-3xl font-bold"
+            delay={100}
+            duration={0.6}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="left"
+          />
           <p className="text-sm sm:text-base text-muted-foreground">¡Todo bien, {user.email}! Aquí tienes el resumen de la jugada.</p>
         </div>
         <Link href="/app/activos">
@@ -275,7 +289,20 @@ export default async function ProtectedPage() {
       </div>
 
       {/* Visual Charts */}
-      <h2 className="text-lg sm:text-xl font-semibold mt-2">Echele pues el ojo</h2>
+      <SplitText
+        text="Echele pues el ojo"
+        tag="h2"
+        className="text-lg sm:text-xl font-semibold mt-2"
+        delay={100}
+        duration={0.6}
+        ease="power3.out"
+        splitType="chars"
+        from={{ opacity: 0, y: 40 }}
+        to={{ opacity: 1, y: 0 }}
+        threshold={0.1}
+        rootMargin="-100px"
+        textAlign="left"
+      />
       <FinancialCharts
         monthlyStats={monthlyStatsArray}
         incomeByAssetType={incomeByAssetTypeData}
@@ -283,7 +310,20 @@ export default async function ProtectedPage() {
 
       {/* Monthly Breakdown Table */}
       <div className="flex flex-col gap-4">
-        <h2 className="text-lg sm:text-xl font-semibold mt-4">Detalle Mensual</h2>
+        <SplitText
+          text="Detalle Mensual"
+          tag="h2"
+          className="text-lg sm:text-xl font-semibold mt-4"
+          delay={100}
+          duration={0.6}
+          ease="power3.out"
+          splitType="chars"
+          from={{ opacity: 0, y: 40 }}
+          to={{ opacity: 1, y: 0 }}
+          threshold={0.1}
+          rootMargin="-100px"
+          textAlign="left"
+        />
         <div className="border rounded-md overflow-x-auto">
           <div className="grid grid-cols-4 p-3 sm:p-4 font-medium border-b bg-muted/50 text-sm sm:text-base min-w-[500px]">
             <div>Mes</div>

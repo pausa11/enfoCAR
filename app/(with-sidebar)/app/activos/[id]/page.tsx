@@ -9,6 +9,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Asset } from "@prisma/client";
+import SplitText from "@/components/SplitText";
 
 // Type for asset with Decimal converted to number for client components
 type SerializedAsset = Omit<Asset, 'value'> & {
@@ -105,7 +106,20 @@ export default async function AssetFinancesPage({ params }: { params: Promise<{ 
                     </Button>
                 </Link>
                 <div>
-                    <h1 className="text-3xl sm:text-4xl font-bold">{asset.name}</h1>
+                    <SplitText
+                        text={asset.name}
+                        tag="h1"
+                        className="text-3xl sm:text-4xl font-bold"
+                        delay={100}
+                        duration={0.6}
+                        ease="power3.out"
+                        splitType="chars"
+                        from={{ opacity: 0, y: 40 }}
+                        to={{ opacity: 1, y: 0 }}
+                        threshold={0.1}
+                        rootMargin="-100px"
+                        textAlign="left"
+                    />
                     <p className="text-muted-foreground mt-1">
                         Gestiona la plata que genera y gasta esta nave
                     </p>
@@ -142,7 +156,20 @@ export default async function AssetFinancesPage({ params }: { params: Promise<{ 
 
                 {/* Records List */}
                 <div className="space-y-4">
-                    <h2 className="text-2xl font-bold">Historial de Movimientos</h2>
+                    <SplitText
+                        text="Historial de Movimientos"
+                        tag="h2"
+                        className="text-2xl font-bold"
+                        delay={100}
+                        duration={0.6}
+                        ease="power3.out"
+                        splitType="chars"
+                        from={{ opacity: 0, y: 40 }}
+                        to={{ opacity: 1, y: 0 }}
+                        threshold={0.1}
+                        rootMargin="-100px"
+                        textAlign="left"
+                    />
                     <FinancialRecordsList records={recordsWithNumbers} />
                 </div>
             </div>

@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { FinanceVehicleList } from "@/components/finance-vehicle-list";
+import SplitText from "@/components/SplitText";
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +37,20 @@ export default async function FinancesPage() {
     return (
         <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">
             <div className="flex flex-col gap-2">
-                <h1 className="text-2xl sm:text-3xl font-bold">Mis Finanzas</h1>
+                <SplitText
+                    text="Mis Finanzas"
+                    tag="h1"
+                    className="text-2xl sm:text-3xl font-bold"
+                    delay={100}
+                    duration={0.6}
+                    ease="power3.out"
+                    splitType="chars"
+                    from={{ opacity: 0, y: 40 }}
+                    to={{ opacity: 1, y: 0 }}
+                    threshold={0.1}
+                    rootMargin="-100px"
+                    textAlign="left"
+                />
                 <p className="text-sm sm:text-base text-muted-foreground">
                     Selecciona una nave para ver y gestionar sus movimientos financieros.
                 </p>

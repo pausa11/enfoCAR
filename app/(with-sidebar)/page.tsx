@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Car, FileText, BarChart3, ArrowRight } from "lucide-react";
 import HyperspeedClient from "@/components/HyperspeedClient";
+import SplitText from "@/components/SplitText";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -29,9 +30,20 @@ export default async function Home() {
       <div className="relative z-10 container mx-auto px-4 py-16">
 
         <div id="header" className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-4">
-            ¡Bienvenido a <span className="text-emerald-400">enfo</span><span className="text-lime-400">CAR</span>!
-          </h1>
+          <SplitText
+            text="¡Bienvenido a enfoCAR!"
+            tag="h1"
+            className="text-5xl md:text-7xl font-bold text-foreground mb-4"
+            delay={100}
+            duration={0.6}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="center"
+          />
           <p className="text-xl md:text-2xl text-foreground/80 max-w-2xl mx-auto">
             Tu plataforma parcera para gestionar tus carros de forma bacana
           </p>
