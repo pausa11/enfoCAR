@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { AssetsTable } from "@/components/assets-table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, BarChart3 } from "lucide-react";
 import SplitText from "@/components/SplitText";
 
 export const dynamic = "force-dynamic";
@@ -79,12 +79,20 @@ export default async function PersonalVehiclesPage() {
                         Tus vehículos de uso personal, sin seguimiento financiero.
                     </p>
                 </div>
-                <Link href="/app/activos/new?type=personal">
-                    <Button className="gap-2">
-                        <Plus className="h-4 w-4" />
-                        Agregar Vehículo
-                    </Button>
-                </Link>
+                <div className="flex gap-2">
+                    <Link href="/app/vehiculos-personales/dashboard">
+                        <Button variant="outline" className="gap-2">
+                            <BarChart3 className="h-4 w-4" />
+                            Tablero
+                        </Button>
+                    </Link>
+                    <Link href="/app/activos/new?type=personal">
+                        <Button className="gap-2">
+                            <Plus className="h-4 w-4" />
+                            Agregar Vehículo
+                        </Button>
+                    </Link>
+                </div>
             </div>
 
             <AssetsTable assets={assets} hideFinances={true} />
