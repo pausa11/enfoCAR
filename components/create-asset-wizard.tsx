@@ -15,8 +15,10 @@ import {
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProgressSteps } from "@/components/ui/progress-steps";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { HelpCircle, Upload, CheckCircle2 } from "lucide-react";
+import { HelpCircle, Upload, CheckCircle2, Briefcase, Home } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { Switch } from "@/components/ui/switch";
+import { useSearchParams } from "next/navigation";
 
 const VEHICLE_TYPES = [
     { value: "CARRO", label: "Carro" },
@@ -33,11 +35,17 @@ const WIZARD_STEPS = [
 
 export function CreateAssetWizard() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const vehicleType = searchParams.get('type'); // 'personal' or null
+
     const [currentStep, setCurrentStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+    // Business/Personal toggle
+    const [isBusinessAsset, setIsBusinessAsset] = useState(vehicleType !== 'personal');
 
     // Step 1: Required fields
     const [name, setName] = useState("");
@@ -60,7 +68,10 @@ export function CreateAssetWizard() {
 
     // Validation for Step 1
     const isStep1Valid = () => {
-        return name.trim() !== "" && type !== "" && ownershipPercentage !== "";
+        if (isBusinessAsset) {
+            return name.trim() !== "" && type !== "" && ownershipPercentage !== "";
+        }
+        return name.trim() !== "" && type !== "";
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +95,7 @@ export function CreateAssetWizard() {
             return;
         }
 
-        if (currentStep < 3) {
+        if (currentStep < (isBusinessAsset ? 3 : 2)) {
             setCurrentStep(currentStep + 1);
         }
     };
@@ -152,10 +163,11 @@ export function CreateAssetWizard() {
                     type,
                     imageUrl,
                     customAttributes: Object.keys(customAttributes).length > 0 ? customAttributes : null,
-                    ownershipPercentage,
+                    isBusinessAsset,
+                    ownershipPercentage: isBusinessAsset ? ownershipPercentage : 100,
                     value: assetValue ? parseFloat(assetValue.replace(/\./g, "")) : null,
-                    driverPercentage: parseFloat(driverPercentage),
-                    driverPaymentMode: conductor ? driverPaymentMode : null,
+                    driverPercentage: isBusinessAsset ? parseFloat(driverPercentage) : 0,
+                    driverPaymentMode: isBusinessAsset && conductor ? driverPaymentMode : null,
                 }),
             });
 
@@ -164,9 +176,9 @@ export function CreateAssetWizard() {
                 throw new Error(data.error || "¡Uy! Algo salió mal al crear tu nave");
             }
 
-            // Success - redirect to list
+            // Success - redirect to appropriate list
             router.refresh();
-            router.push("/app/activos");
+            router.push(isBusinessAsset ? "/app/activos" : "/app/vehiculos-personales");
         } catch (err) {
             setError(err instanceof Error ? err.message : "¡Uy! Algo salió mal al crear tu nave");
         } finally {
@@ -189,6 +201,31 @@ export function CreateAssetWizard() {
                     {/* Step 1: Basic Information */}
                     {currentStep === 1 && (
                         <div className="grid gap-6 animate-in fade-in-50 duration-300">
+                            {/* Business/Personal Toggle */}
+                            <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/50">
+                                <div className="flex items-center gap-3">
+                                    {isBusinessAsset ? (
+                                        <Briefcase className="h-5 w-5 text-primary" />
+                                    ) : (
+                                        <Home className="h-5 w-5 text-primary" />
+                                    )}
+                                    <div>
+                                        <Label className="text-base font-semibold">
+                                            {isBusinessAsset ? "Vehículo de Negocio" : "Vehículo Personal"}
+                                        </Label>
+                                        <p className="text-xs text-muted-foreground mt-0.5">
+                                            {isBusinessAsset
+                                                ? "Genera ingresos y tiene gastos asociados"
+                                                : "Para uso personal, sin seguimiento financiero"}
+                                        </p>
+                                    </div>
+                                </div>
+                                <Switch
+                                    checked={isBusinessAsset}
+                                    onCheckedChange={setIsBusinessAsset}
+                                />
+                            </div>
+
                             <div className="grid gap-2">
                                 <Label htmlFor="name" className="flex items-center gap-2">
                                     ¿Cómo le dices a tu nave? <span className="text-red-500">*</span>
@@ -262,33 +299,35 @@ export function CreateAssetWizard() {
                                 </Select>
                             </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="ownershipPercentage" className="flex items-center gap-2">
-                                    ¿Qué porcentaje te pertenece? (%) <span className="text-red-500">*</span>
-                                    <Tooltip>
-                                        <TooltipTrigger asChild>
-                                            <HelpCircle className="w-4 h-4 text-muted-foreground cursor-help" />
-                                        </TooltipTrigger>
-                                        <TooltipContent className="max-w-xs">
-                                            <p>Si eres el único dueño, deja 100%. Si compartes la nave con alguien más, pon solo el porcentaje que es tuyo. Por ejemplo, si la nave es 50/50 con otra persona, pon 50.</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </Label>
-                                <Input
-                                    id="ownershipPercentage"
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    step="0.1"
-                                    placeholder="100"
-                                    value={ownershipPercentage}
-                                    onChange={(e) => setOwnershipPercentage(e.target.value)}
-                                    className={ownershipPercentage ? "border-green-500" : ""}
-                                />
-                                <p className="text-xs text-muted-foreground">
-                                    Si es compartido, pon el porcentaje que es tuyo
-                                </p>
-                            </div>
+                            {isBusinessAsset && (
+                                <div className="grid gap-2">
+                                    <Label htmlFor="ownershipPercentage" className="flex items-center gap-2">
+                                        ¿Qué porcentaje te pertenece? (%) <span className="text-red-500">*</span>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <HelpCircle className="w-4 h-4 text-muted-foreground cursor-help" />
+                                            </TooltipTrigger>
+                                            <TooltipContent className="max-w-xs">
+                                                <p>Si eres el único dueño, deja 100%. Si compartes la nave con alguien más, pon solo el porcentaje que es tuyo. Por ejemplo, si la nave es 50/50 con otra persona, pon 50.</p>
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </Label>
+                                    <Input
+                                        id="ownershipPercentage"
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        step="0.1"
+                                        placeholder="100"
+                                        value={ownershipPercentage}
+                                        onChange={(e) => setOwnershipPercentage(e.target.value)}
+                                        className={ownershipPercentage ? "border-green-500" : ""}
+                                    />
+                                    <p className="text-xs text-muted-foreground">
+                                        Si es compartido, pon el porcentaje que es tuyo
+                                    </p>
+                                </div>
+                            )}
                         </div>
                     )}
 
@@ -527,7 +566,7 @@ export function CreateAssetWizard() {
                     </div>
 
                     <div className="flex gap-2">
-                        {currentStep < 3 && (
+                        {currentStep < (isBusinessAsset ? 3 : 2) && (
                             <Button
                                 type="button"
                                 onClick={handleNext}
@@ -536,7 +575,7 @@ export function CreateAssetWizard() {
                                 Siguiente →
                             </Button>
                         )}
-                        {currentStep === 3 && (
+                        {(currentStep === 3 || (currentStep === 2 && !isBusinessAsset)) && (
                             <Button
                                 type="button"
                                 onClick={handleSubmit}

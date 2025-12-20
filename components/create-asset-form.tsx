@@ -13,7 +13,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Lightbulb } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Lightbulb, Briefcase, Home } from "lucide-react";
 
 const VEHICLE_TYPES = [
     { value: "CARRO", label: "Carro" },
@@ -43,6 +44,7 @@ export function CreateAssetForm() {
     const [kilometraje, setKilometraje] = useState("");
     const [conductor, setConductor] = useState("");
 
+    const [isBusinessAsset, setIsBusinessAsset] = useState(true);
     const [ownershipPercentage, setOwnershipPercentage] = useState("100");
     const [assetValue, setAssetValue] = useState("");
     const [driverPercentage, setDriverPercentage] = useState("0");
@@ -103,10 +105,11 @@ export function CreateAssetForm() {
                     type,
                     imageUrl,
                     customAttributes: Object.keys(customAttributes).length > 0 ? customAttributes : null,
-                    ownershipPercentage,
+                    isBusinessAsset,
+                    ownershipPercentage: isBusinessAsset ? ownershipPercentage : 100,
                     value: assetValue ? parseFloat(assetValue.replace(/\./g, "")) : null,
-                    driverPercentage: parseFloat(driverPercentage),
-                    driverPaymentMode: conductor ? driverPaymentMode : null,
+                    driverPercentage: isBusinessAsset ? parseFloat(driverPercentage) : 0,
+                    driverPaymentMode: isBusinessAsset && conductor ? driverPaymentMode : null,
                 }),
             });
 
@@ -135,6 +138,31 @@ export function CreateAssetForm() {
             </CardHeader>
             <form onSubmit={handleSubmit}>
                 <CardContent className="grid gap-6">
+                    {/* Business/Personal Toggle */}
+                    <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/50">
+                        <div className="flex items-center gap-3">
+                            {isBusinessAsset ? (
+                                <Briefcase className="h-5 w-5 text-primary" />
+                            ) : (
+                                <Home className="h-5 w-5 text-primary" />
+                            )}
+                            <div>
+                                <Label className="text-base font-semibold">
+                                    {isBusinessAsset ? "Vehículo de Negocio" : "Vehículo Personal"}
+                                </Label>
+                                <p className="text-xs text-muted-foreground mt-0.5">
+                                    {isBusinessAsset
+                                        ? "Genera ingresos y tiene gastos asociados"
+                                        : "Para uso personal, sin seguimiento financiero"}
+                                </p>
+                            </div>
+                        </div>
+                        <Switch
+                            checked={isBusinessAsset}
+                            onCheckedChange={setIsBusinessAsset}
+                        />
+                    </div>
+
                     <div className="grid gap-4">
                         {/* Required Fields */}
                         <div className="grid gap-2">
@@ -185,56 +213,60 @@ export function CreateAssetForm() {
                         </div>
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="ownershipPercentage">
-                            ¿Qué porcentaje te pertenece? (%) <span className="text-red-500">*</span>
-                        </Label>
-                        <Input
-                            id="ownershipPercentage"
-                            type="number"
-                            min="0"
-                            max="100"
-                            step="0.1"
-                            placeholder="100"
-                            value={ownershipPercentage}
-                            onChange={(e) => setOwnershipPercentage(e.target.value)}
-                            required
-                        />
-                        <p className="text-xs text-muted-foreground">
-                            Si es compartido, pon el porcentaje que es tuyo.
-                        </p>
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="assetValue">
-                            ¿Cuánto vale la nave? (Opcional)
-                        </Label>
-                        <Input
-                            id="assetValue"
-                            type="text"
-                            inputMode="numeric"
-                            placeholder="Ej: 50.000.000"
-                            value={assetValue}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                const number = value.replace(/\D/g, "");
-                                const formatted = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                                setAssetValue(formatted);
-                            }}
-                        />
-                        {assetValue && ownershipPercentage && (
-                            <div className="p-3 bg-muted rounded-md text-sm">
-                                <span className="text-muted-foreground">Tu participación vale: </span>
-                                <span className="font-semibold text-green-600">
-                                    {new Intl.NumberFormat("es-CO", {
-                                        style: "currency",
-                                        currency: "COP",
-                                        maximumFractionDigits: 0
-                                    }).format((parseFloat(assetValue.replace(/\./g, "")) * parseFloat(ownershipPercentage)) / 100)}
-                                </span>
+                    {isBusinessAsset && (
+                        <>
+                            <div className="grid gap-2">
+                                <Label htmlFor="ownershipPercentage">
+                                    ¿Qué porcentaje te pertenece? (%) <span className="text-red-500">*</span>
+                                </Label>
+                                <Input
+                                    id="ownershipPercentage"
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    step="0.1"
+                                    placeholder="100"
+                                    value={ownershipPercentage}
+                                    onChange={(e) => setOwnershipPercentage(e.target.value)}
+                                    required
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    Si es compartido, pon el porcentaje que es tuyo.
+                                </p>
                             </div>
-                        )}
-                    </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="assetValue">
+                                    ¿Cuánto vale la nave? (Opcional)
+                                </Label>
+                                <Input
+                                    id="assetValue"
+                                    type="text"
+                                    inputMode="numeric"
+                                    placeholder="Ej: 50.000.000"
+                                    value={assetValue}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        const number = value.replace(/\D/g, "");
+                                        const formatted = number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                                        setAssetValue(formatted);
+                                    }}
+                                />
+                                {assetValue && ownershipPercentage && (
+                                    <div className="p-3 bg-muted rounded-md text-sm">
+                                        <span className="text-muted-foreground">Tu participación vale: </span>
+                                        <span className="font-semibold text-green-600">
+                                            {new Intl.NumberFormat("es-CO", {
+                                                style: "currency",
+                                                currency: "COP",
+                                                maximumFractionDigits: 0
+                                            }).format((parseFloat(assetValue.replace(/\./g, "")) * parseFloat(ownershipPercentage)) / 100)}
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
 
                     {/* Custom Attributes */}
                     <div className="border-t pt-4">

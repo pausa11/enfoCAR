@@ -17,6 +17,7 @@ type SerializedAsset = Omit<Asset, 'value'> & {
 
 interface AssetsTableProps {
     assets: SerializedAsset[];
+    hideFinances?: boolean;
 }
 
 const VEHICLE_TYPE_LABELS: Record<string, string> = {
@@ -26,7 +27,7 @@ const VEHICLE_TYPE_LABELS: Record<string, string> = {
     TURBO: "Turbo",
 };
 
-export function AssetsTable({ assets }: AssetsTableProps) {
+export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) {
     const [editingAsset, setEditingAsset] = useState<SerializedAsset | null>(null);
     const [deletingAsset, setDeletingAsset] = useState<SerializedAsset | null>(null);
 
@@ -160,14 +161,16 @@ export function AssetsTable({ assets }: AssetsTableProps) {
                                 )}
 
                                 {/* Financial Quick Summary - Will be populated via client component */}
-                                <div className="pt-2 border-t">
-                                    <Link href={`/app/activos/${asset.id}`}>
-                                        <Button variant="outline" size="sm" className="w-full gap-2">
-                                            <span>Ver Finanzas</span>
-                                            <DollarSign className="h-4 w-4" />
-                                        </Button>
-                                    </Link>
-                                </div>
+                                {!hideFinances && (
+                                    <div className="pt-2 border-t">
+                                        <Link href={`/app/activos/${asset.id}`}>
+                                            <Button variant="outline" size="sm" className="w-full gap-2">
+                                                <span>Ver Finanzas</span>
+                                                <DollarSign className="h-4 w-4" />
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                )}
 
                                 {/* Creation Date */}
                                 <div className="pt-2 border-t text-xs text-muted-foreground">

@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
         // Verify authentication
         const supabase = await createClient();
@@ -17,11 +17,24 @@ export async function GET() {
             );
         }
 
+        // Get filter from query params
+        const { searchParams } = new URL(request.url);
+        const filterType = searchParams.get('type'); // 'business' or 'personal'
+
+        // Build where clause
+        const whereClause: any = {
+            userId: user.id,
+        };
+
+        if (filterType === 'business') {
+            whereClause.isBusinessAsset = true;
+        } else if (filterType === 'personal') {
+            whereClause.isBusinessAsset = false;
+        }
+
         // Fetch all assets for the user
         const assetsRaw = await prisma.asset.findMany({
-            where: {
-                userId: user.id,
-            },
+            where: whereClause,
             orderBy: {
                 createdAt: "desc",
             },
@@ -73,7 +86,7 @@ export async function POST(request: Request) {
 
         // Parse request body
         const body = await request.json();
-        const { name, type, customAttributes, imageUrl, ownershipPercentage, value, driverPercentage, driverPaymentMode } = body;
+        const { name, type, customAttributes, imageUrl, ownershipPercentage, value, driverPercentage, driverPaymentMode, isBusinessAsset } = body;
 
         // Validate required fields
         if (!name || !type) {
@@ -104,6 +117,7 @@ export async function POST(request: Request) {
                 value: value ? parseFloat(value) : null,
                 driverPercentage: driverPercentage ? parseFloat(driverPercentage) : 0.0,
                 driverPaymentMode: driverPaymentMode || null,
+                isBusinessAsset: isBusinessAsset !== undefined ? isBusinessAsset : true,
             },
         });
 

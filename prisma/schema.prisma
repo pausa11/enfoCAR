@@ -31,6 +31,7 @@ model Asset {
   driverPercentage Float             @default(0.0)
   driverPaymentMode DriverPaymentMode?
   driverSalaries   DriverSalary[]
+  isBusinessAsset  Boolean           @default(true)
 }
 
 model DriverSalary {

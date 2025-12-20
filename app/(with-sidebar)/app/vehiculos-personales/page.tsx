@@ -9,7 +9,7 @@ import SplitText from "@/components/SplitText";
 
 export const dynamic = "force-dynamic";
 
-export default async function AssetsPage() {
+export default async function PersonalVehiclesPage() {
     const supabase = await createClient();
 
     const {
@@ -40,11 +40,11 @@ export default async function AssetsPage() {
         }
     }
 
-    // Fetch only business assets for the user
+    // Fetch only personal vehicles for the user
     const assetsRaw = await prisma.asset.findMany({
         where: {
             userId: user.id,
-            isBusinessAsset: true,
+            isBusinessAsset: false,
         },
         orderBy: {
             createdAt: "desc",
@@ -62,7 +62,7 @@ export default async function AssetsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div className="flex flex-col gap-2">
                     <SplitText
-                        text="Mis Naves"
+                        text="Vehículos Personales"
                         tag="h1"
                         className="text-2xl sm:text-3xl font-bold"
                         delay={100}
@@ -76,18 +76,18 @@ export default async function AssetsPage() {
                         textAlign="left"
                     />
                     <p className="text-sm sm:text-base text-muted-foreground">
-                        Tus máquinas organizadas y al día.
+                        Tus vehículos de uso personal, sin seguimiento financiero.
                     </p>
                 </div>
-                <Link href="/app/activos/new">
+                <Link href="/app/activos/new?type=personal">
                     <Button className="gap-2">
                         <Plus className="h-4 w-4" />
-                        Agregar Nave
+                        Agregar Vehículo
                     </Button>
                 </Link>
             </div>
 
-            <AssetsTable assets={assets} />
+            <AssetsTable assets={assets} hideFinances={true} />
         </div>
     );
 }

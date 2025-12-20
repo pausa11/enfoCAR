@@ -20,6 +20,10 @@ const navigationItems = [
         href: "/app/activos",
     },
     {
+        name: "Vehículos Personales",
+        href: "/app/vehiculos-personales",
+    },
+    {
         name: "Mis Finanzas",
         href: "/app/finanzas",
     },

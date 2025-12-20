@@ -45,17 +45,27 @@ export default async function ProtectedPage() {
     }
   }
 
-  // Fetch data
+  // Fetch data - count all assets (business + personal)
   const assetCount = await prisma.asset.count({
     where: {
       userId: user.id,
     },
   });
 
+  // Count only business assets for financial tracking
+  const businessAssetCount = await prisma.asset.count({
+    where: {
+      userId: user.id,
+      isBusinessAsset: true,
+    },
+  });
+
+  // Fetch financial records only for business assets
   const financialRecords = await prisma.financialRecord.findMany({
     where: {
       asset: {
         userId: user.id,
+        isBusinessAsset: true,
       },
     },
     include: {
@@ -181,7 +191,7 @@ export default async function ProtectedPage() {
         stats={{
           totalIncome,
           totalExpenses,
-          assetCount,
+          assetCount: businessAssetCount,
           monthlyStats
         }}
       />
@@ -195,6 +205,9 @@ export default async function ProtectedPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{assetCount}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {businessAssetCount} de negocio
+            </p>
           </CardContent>
         </Card>
 
