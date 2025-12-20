@@ -181,8 +181,8 @@ const ParticleCard = ({
 
       if (enableTilt) {
         gsap.to(element, {
-          rotateX: 5,
-          rotateY: 5,
+          rotateX: 2,
+          rotateY: 2,
           duration: 0.3,
           ease: 'power2.out',
           transformPerspective: 1000
@@ -223,8 +223,8 @@ const ParticleCard = ({
       const centerY = rect.height / 2;
 
       if (enableTilt) {
-        const rotateX = ((y - centerY) / centerY) * -10;
-        const rotateY = ((x - centerX) / centerX) * 10;
+        const rotateX = ((y - centerY) / centerY) * -3;
+        const rotateY = ((x - centerX) / centerX) * 3;
 
         gsap.to(element, {
           rotateX,
@@ -552,8 +552,8 @@ const MagicBento = ({
                   const centerY = rect.height / 2;
 
                   if (enableTilt) {
-                    const rotateX = ((y - centerY) / centerY) * -10;
-                    const rotateY = ((x - centerX) / centerX) * 10;
+                    const rotateX = ((y - centerY) / centerY) * -3;
+                    const rotateY = ((x - centerX) / centerX) * 3;
                     gsap.to(el, {
                       rotateX,
                       rotateY,
