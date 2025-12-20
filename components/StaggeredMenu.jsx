@@ -1,26 +1,10 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import Link from 'next/link';
 import './StaggeredMenu.css';
 
-export const StaggeredMenu = ({
-  position = 'right',
-  colors = ['#B19EEF', '#5227FF'],
-  items = [],
-  socialItems = [],
-  displaySocials = true,
-  displayItemNumbering = true,
-  className,
-  logoUrl = '/src/assets/logos/reactbits-gh-white.svg',
-  menuButtonColor = '#fff',
-  openMenuButtonColor = '#fff',
-  accentColor = '#5227FF',
-  changeMenuColorOnOpen = true,
-  isFixed = false,
-  closeOnClickAway = true,
-  onMenuOpen,
-  onMenuClose,
-  footerContent
-}) => {
+export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227FF'], items = [], socialItems = [], displaySocials = true, displayItemNumbering = true, className, menuButtonColor = '#fff', openMenuButtonColor = '#fff', accentColor = '#5227FF', changeMenuColorOnOpen = true, isFixed = false, closeOnClickAway = true, onMenuOpen, onMenuClose, footerContent }) => {
+
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
   const panelRef = useRef(null);
@@ -107,6 +91,7 @@ export const StaggeredMenu = ({
     layerStates.forEach((ls, i) => {
       tl.fromTo(ls.el, { xPercent: ls.start }, { xPercent: 0, duration: 0.5, ease: 'power4.out' }, i * 0.07);
     });
+
     const lastTime = layerStates.length ? (layerStates.length - 1) * 0.07 : 0;
     const panelInsertTime = lastTime + (layerStates.length ? 0.08 : 0);
     const panelDuration = 0.65;
@@ -348,12 +333,8 @@ export const StaggeredMenu = ({
   }, [closeOnClickAway, open, closeMenu]);
 
   return (
-    <div
-      className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')}
-      style={accentColor ? { ['--sm-accent']: accentColor } : undefined}
-      data-position={position}
-      data-open={open || undefined}
-    >
+    <div className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')} style={accentColor ? { ['--sm-accent']: accentColor } : undefined} data-position={position} data-open={open || undefined} >
+
       <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
         {(() => {
           const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
@@ -365,7 +346,7 @@ export const StaggeredMenu = ({
           return arr.map((c, i) => <div key={i} className="sm-prelayer" style={{ background: c }} />);
         })()}
       </div>
-      
+
       <header className="staggered-menu-header" aria-label="Main navigation header">
         <button
           ref={toggleBtnRef}
@@ -394,13 +375,14 @@ export const StaggeredMenu = ({
 
       <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!open}>
         <div className="sm-panel-inner">
+
           <ul className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
             {items && items.length ? (
               items.map((it, idx) => (
                 <li className="sm-panel-itemWrap" key={it.label + idx}>
-                  <a className="sm-panel-item" href={it.link} aria-label={it.ariaLabel} data-index={idx + 1}>
+                  <Link href={it.link} className="sm-panel-item" aria-label={it.ariaLabel} data-index={idx + 1}>
                     <span className="sm-panel-itemLabel">{it.label}</span>
-                  </a>
+                  </Link>
                 </li>
               ))
             ) : (
@@ -411,6 +393,7 @@ export const StaggeredMenu = ({
               </li>
             )}
           </ul>
+
           {displaySocials && socialItems && socialItems.length > 0 && (
             <div className="sm-socials" aria-label="Social links">
               <h3 className="sm-socials-title">Socials</h3>
@@ -425,13 +408,16 @@ export const StaggeredMenu = ({
               </ul>
             </div>
           )}
+
           {footerContent && (
             <div className="sm-footer" aria-label="Menu footer">
               {footerContent}
             </div>
           )}
+
         </div>
       </aside>
+
     </div>
   );
 };
