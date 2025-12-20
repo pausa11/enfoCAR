@@ -1,7 +1,7 @@
 "use client";
 
 import { Asset } from "@prisma/client";
-import { DollarSign } from "lucide-react";
+import { DollarSign, Briefcase, User } from "lucide-react";
 import Link from "next/link";
 import { Plate, getPlateType } from "colombian-plates";
 import { ParticleCard } from "@/components/MagicBento";
@@ -39,12 +39,11 @@ export function FinanceVehicleList({ assets }: FinanceVehicleListProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {assets.map((asset) => {
                 const customAttrs = asset.customAttributes as Record<string, string> | null;
-                const plate = customAttrs?.placa;
 
                 return (
                     <ParticleCard
                         key={asset.id}
-                        className="group block border rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 bg-card active:scale-[0.98]"
+                        className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-card"
                         particleCount={0}
                         glowColor="0, 112, 243"
                         enableTilt={true}
@@ -53,7 +52,7 @@ export function FinanceVehicleList({ assets }: FinanceVehicleListProps) {
                     >
                         <Link
                             href={`/app/activos/${asset.id}`}
-                            className="block"
+                            className="block group"
                         >
                             {/* Image Section */}
                             <div className="relative aspect-video bg-muted group-hover:opacity-90 transition-opacity">
@@ -71,7 +70,27 @@ export function FinanceVehicleList({ assets }: FinanceVehicleListProps) {
                                     </div>
                                 )}
 
-                                {/* Overlay Badge */}
+                                {/* Business/Personal Badge - Top Left */}
+                                <div className="absolute top-2 left-2">
+                                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium shadow-sm ${asset.isBusinessAsset
+                                        ? 'bg-blue-500 text-white'
+                                        : 'bg-green-500 text-white'
+                                        }`}>
+                                        {asset.isBusinessAsset ? (
+                                            <>
+                                                <Briefcase className="h-3 w-3" />
+                                                <span>Negocio</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <User className="h-3 w-3" />
+                                                <span>Personal</span>
+                                            </>
+                                        )}
+                                    </span>
+                                </div>
+
+                                {/* Finance Icon Badge - Top Right */}
                                 <div className="absolute top-2 right-2">
                                     <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-primary text-primary-foreground shadow-sm">
                                         <DollarSign className="h-4 w-4" />
@@ -80,30 +99,77 @@ export function FinanceVehicleList({ assets }: FinanceVehicleListProps) {
                             </div>
 
                             {/* Card Content */}
-                            <div className="p-4 space-y-3">
+                            <div className="p-4 flex flex-col h-full">
                                 {/* Title and Type Badge */}
-                                <div className="flex justify-between items-start gap-2">
-                                    <div className="space-y-1">
-                                        <h3 className="font-semibold text-lg leading-tight group-hover:text-primary transition-colors">
-                                            {asset.name}
-                                        </h3>
-                                        <p className="text-sm text-muted-foreground">
-                                            {VEHICLE_TYPE_LABELS[asset.type] || asset.type}
-                                        </p>
-                                    </div>
-                                    {plate && (
-                                        <div className="scale-75 origin-top-right">
-                                            <Plate
-                                                plate={plate}
-                                                type={getPlateType(plate) || undefined}
-                                                width={80}
-                                            />
+                                <div className="space-y-2 mb-3">
+                                    <h3 className="font-semibold text-lg leading-tight group-hover:text-primary transition-colors">{asset.name}</h3>
+                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                                        {VEHICLE_TYPE_LABELS[asset.type] || asset.type}
+                                    </span>
+                                </div>
+
+                                {/* Custom Attributes - Fixed height section */}
+                                <div className="min-h-[120px] mb-3">
+                                    {customAttrs && Object.keys(customAttrs).length > 0 ? (
+                                        <div className="text-sm space-y-1.5 text-muted-foreground">
+                                            {customAttrs.marca && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Marca:</span>
+                                                    <span>{customAttrs.marca}</span>
+                                                </div>
+                                            )}
+                                            {customAttrs.modelo && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Modelo:</span>
+                                                    <span>{customAttrs.modelo}</span>
+                                                </div>
+                                            )}
+                                            {customAttrs.año && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Año:</span>
+                                                    <span>{customAttrs.año}</span>
+                                                </div>
+                                            )}
+                                            {customAttrs.color && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Color:</span>
+                                                    <span>{customAttrs.color}</span>
+                                                </div>
+                                            )}
+                                            {customAttrs.kilometraje && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Kilometraje:</span>
+                                                    <span>{customAttrs.kilometraje} km</span>
+                                                </div>
+                                            )}
+                                            {customAttrs.conductor && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Conductor:</span>
+                                                    <span>{customAttrs.conductor}</span>
+                                                </div>
+                                            )}
                                         </div>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground italic">Sin detalles adicionales</p>
                                     )}
                                 </div>
 
-                                {/* Hint Text */}
-                                <div className="pt-2 border-t text-xs text-muted-foreground flex items-center justify-between">
+                                {/* Plate Section - Fixed position */}
+                                {customAttrs?.placa && (
+                                    <div className="mb-3 pb-3 border-b">
+                                        <div className="w-full flex items-center justify-center">
+                                            <Plate
+                                                plate={customAttrs.placa}
+                                                type={getPlateType(customAttrs.placa) || undefined}
+                                                width={"60%"}
+                                                style={{ transform: "scale(0.75)", transformOrigin: "center" }}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Call to Action - Always at bottom */}
+                                <div className="mt-auto pt-2 border-t text-xs text-muted-foreground flex items-center justify-between">
                                     <span>Ver finanzas</span>
                                     <span className="group-hover:translate-x-1 transition-transform">→</span>
                                 </div>

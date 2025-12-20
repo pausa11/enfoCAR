@@ -33,9 +33,13 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    // Determine if the preselected asset is a business asset
+    const preselectedAsset = assets.find(a => a.id === preselectedAssetId);
+    const isBusinessAsset = preselectedAsset?.isBusinessAsset ?? true;
+
     // Form state
     const [assetId, setAssetId] = useState(preselectedAssetId || "");
-    const [type, setType] = useState<"INCOME" | "EXPENSE">("INCOME");
+    const [type, setType] = useState<"INCOME" | "EXPENSE">(isBusinessAsset ? "INCOME" : "EXPENSE");
     const [amount, setAmount] = useState("");
     const [dateMode, setDateMode] = useState<"single" | "range">("single");
     const [startDate, setStartDate] = useState<Date>();
@@ -119,7 +123,9 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
             <CardHeader>
                 <CardTitle className="text-2xl">Registrar Movimiento</CardTitle>
                 <CardDescription>
-                    Anota aquí la plata que generó o gastó tu nave
+                    {isBusinessAsset
+                        ? "Anota aquí la plata que generó o gastó tu nave"
+                        : "Anota aquí los gastos de tu vehículo personal"}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -143,30 +149,40 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
                         </div>
                     )}
 
-                    {/* Type Selection */}
-                    <div className="space-y-2">
-                        <Label>¿Qué pasó?</Label>
-                        <div className="grid grid-cols-2 gap-3">
-                            <Button
-                                type="button"
-                                variant={type === "INCOME" ? "default" : "outline"}
-                                className={type === "INCOME" ? "bg-green-500 hover:bg-green-600" : ""}
-                                onClick={() => setType("INCOME")}
-                            >
-                                <TrendingUp className="mr-2 h-4 w-4" />
-                                Generó plata
-                            </Button>
-                            <Button
-                                type="button"
-                                variant={type === "EXPENSE" ? "default" : "outline"}
-                                className={type === "EXPENSE" ? "bg-red-500 hover:bg-red-600" : ""}
-                                onClick={() => setType("EXPENSE")}
-                            >
-                                <TrendingDown className="mr-2 h-4 w-4" />
-                                Gastó plata
-                            </Button>
+                    {/* Type Selection - Only show for business assets */}
+                    {isBusinessAsset ? (
+                        <div className="space-y-2">
+                            <Label>¿Qué pasó?</Label>
+                            <div className="grid grid-cols-2 gap-3">
+                                <Button
+                                    type="button"
+                                    variant={type === "INCOME" ? "default" : "outline"}
+                                    className={type === "INCOME" ? "bg-green-500 hover:bg-green-600" : ""}
+                                    onClick={() => setType("INCOME")}
+                                >
+                                    <TrendingUp className="mr-2 h-4 w-4" />
+                                    Generó plata
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant={type === "EXPENSE" ? "default" : "outline"}
+                                    className={type === "EXPENSE" ? "bg-red-500 hover:bg-red-600" : ""}
+                                    onClick={() => setType("EXPENSE")}
+                                >
+                                    <TrendingDown className="mr-2 h-4 w-4" />
+                                    Gastó plata
+                                </Button>
+                            </div>
                         </div>
-                    </div>
+                    ) : (
+                        <div className="space-y-2">
+                            <Label>Tipo de movimiento</Label>
+                            <div className="p-3 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 flex items-center gap-2">
+                                <TrendingDown className="h-5 w-5 text-red-600 dark:text-red-400" />
+                                <span className="text-sm font-medium text-red-900 dark:text-red-100">Solo gastos (vehículo personal)</span>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Amount */}
                     <div className="space-y-2">

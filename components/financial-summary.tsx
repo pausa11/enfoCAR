@@ -22,6 +22,7 @@ interface FinancialSummaryProps {
     driverName?: string | null;
     driverPaymentMode?: "PERCENTAGE" | "FIXED_SALARY" | null;
     driverMonthlySalary?: number | null;
+    isBusinessAsset?: boolean;
 }
 
 export function FinancialSummary({
@@ -31,6 +32,7 @@ export function FinancialSummary({
     driverName = null,
     driverPaymentMode = null,
     driverMonthlySalary = null,
+    isBusinessAsset = true,
 }: FinancialSummaryProps) {
     const totalIncome = records
         .filter((r) => r.type === "INCOME")
@@ -73,18 +75,20 @@ export function FinancialSummary({
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/* Total Income */}
-            <Card className="border-l-4 border-l-green-500">
-                <CardHeader className="pb-3">
-                    <CardDescription className="flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4 text-green-600" />
-                        Total Generado
-                    </CardDescription>
-                    <CardTitle className="text-3xl text-green-700 dark:text-green-400">
-                        {formatCurrency(totalIncome)}
-                    </CardTitle>
-                </CardHeader>
-            </Card>
+            {/* Total Income - Only show for business assets */}
+            {isBusinessAsset && (
+                <Card className="border-l-4 border-l-green-500">
+                    <CardHeader className="pb-3">
+                        <CardDescription className="flex items-center gap-2">
+                            <TrendingUp className="h-4 w-4 text-green-600" />
+                            Total Generado
+                        </CardDescription>
+                        <CardTitle className="text-3xl text-green-700 dark:text-green-400">
+                            {formatCurrency(totalIncome)}
+                        </CardTitle>
+                    </CardHeader>
+                </Card>
+            )}
 
             {/* Total Expense */}
             <Card className="border-l-4 border-l-red-500">
@@ -137,36 +141,38 @@ export function FinancialSummary({
                 </Card>
             )}
 
-            {/* Net Profit/Loss (after driver share) */}
-            <Card
-                className={`border-l-4 ${netProfitAfterDriver >= 0
-                    ? "border-l-blue-500"
-                    : "border-l-orange-500"
-                    }`}
-            >
-                <CardHeader className="pb-3">
-                    <CardDescription className="flex items-center gap-2">
-                        <DollarSign className="h-4 w-4" />
-                        {netProfitAfterDriver >= 0 ? "Ganancia Neta" : "Pérdida Neta"}
-                    </CardDescription>
-                    <CardTitle
-                        className={`text-3xl ${netProfitAfterDriver >= 0
-                            ? "text-blue-700 dark:text-blue-400"
-                            : "text-orange-700 dark:text-orange-400"
-                            }`}
-                    >
-                        {formatCurrency(Math.abs(netProfitAfterDriver))}
-                    </CardTitle>
-                    {hasDriver && (
-                        <p className="text-xs text-muted-foreground mt-1">
-                            {driverPaymentMode === 'PERCENTAGE'
-                                ? `Después del ${driverPercentage}% del conductor`
-                                : 'Después del salario del conductor'
-                            }
-                        </p>
-                    )}
-                </CardHeader>
-            </Card>
+            {/* Net Profit/Loss (after driver share) - Only show for business assets */}
+            {isBusinessAsset && (
+                <Card
+                    className={`border-l-4 ${netProfitAfterDriver >= 0
+                        ? "border-l-blue-500"
+                        : "border-l-orange-500"
+                        }`}
+                >
+                    <CardHeader className="pb-3">
+                        <CardDescription className="flex items-center gap-2">
+                            <DollarSign className="h-4 w-4" />
+                            {netProfitAfterDriver >= 0 ? "Ganancia Neta" : "Pérdida Neta"}
+                        </CardDescription>
+                        <CardTitle
+                            className={`text-3xl ${netProfitAfterDriver >= 0
+                                ? "text-blue-700 dark:text-blue-400"
+                                : "text-orange-700 dark:text-orange-400"
+                                }`}
+                        >
+                            {formatCurrency(Math.abs(netProfitAfterDriver))}
+                        </CardTitle>
+                        {hasDriver && (
+                            <p className="text-xs text-muted-foreground mt-1">
+                                {driverPaymentMode === 'PERCENTAGE'
+                                    ? `Después del ${driverPercentage}% del conductor`
+                                    : 'Después del salario del conductor'
+                                }
+                            </p>
+                        )}
+                    </CardHeader>
+                </Card>
+            )}
         </div>
     );
 }

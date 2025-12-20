@@ -95,74 +95,78 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
                             </div>
 
                             {/* Card Content */}
-                            <div className="p-4 space-y-3">
+                            <div className="p-4 flex flex-col h-full">
                                 {/* Title and Type Badge */}
-                                <div className="space-y-2">
+                                <div className="space-y-2 mb-3">
                                     <h3 className="font-semibold text-lg leading-tight">{asset.name}</h3>
                                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
                                         {VEHICLE_TYPE_LABELS[asset.type] || asset.type}
                                     </span>
                                 </div>
 
-                                {/* Custom Attributes */}
-                                {customAttrs && Object.keys(customAttrs).length > 0 ? (
-                                    <div className="text-sm space-y-1.5 text-muted-foreground">
-                                        {customAttrs.marca && (
-                                            <div className="flex justify-between">
-                                                <span className="font-medium text-foreground">Marca:</span>
-                                                <span>{customAttrs.marca}</span>
-                                            </div>
-                                        )}
-                                        {customAttrs.modelo && (
-                                            <div className="flex justify-between">
-                                                <span className="font-medium text-foreground">Modelo:</span>
-                                                <span>{customAttrs.modelo}</span>
-                                            </div>
-                                        )}
-                                        {customAttrs.año && (
-                                            <div className="flex justify-between">
-                                                <span className="font-medium text-foreground">Año:</span>
-                                                <span>{customAttrs.año}</span>
-                                            </div>
-                                        )}
-                                        {customAttrs.color && (
-                                            <div className="flex justify-between">
-                                                <span className="font-medium text-foreground">Color:</span>
-                                                <span>{customAttrs.color}</span>
-                                            </div>
-                                        )}
-                                        {customAttrs.kilometraje && (
-                                            <div className="flex justify-between">
-                                                <span className="font-medium text-foreground">Kilometraje:</span>
-                                                <span>{customAttrs.kilometraje} km</span>
-                                            </div>
-                                        )}
-                                        {customAttrs.conductor && (
-                                            <div className="flex justify-between">
-                                                <span className="font-medium text-foreground">Conductor:</span>
-                                                <span>{customAttrs.conductor}</span>
-                                            </div>
-                                        )}
-                                        {customAttrs.placa && (
-                                            <div className="flex flex-col gap-1 mt-1">
-                                                <div className="w-full flex items-center justify-center">
-                                                    <Plate
-                                                        plate={customAttrs.placa}
-                                                        type={getPlateType(customAttrs.placa) || undefined}
-                                                        width={"60%"}
-                                                        style={{ transform: "scale(0.75)", transformOrigin: "center" }}
-                                                    />
+                                {/* Custom Attributes - Fixed height section */}
+                                <div className="min-h-[120px] mb-3">
+                                    {customAttrs && Object.keys(customAttrs).length > 0 ? (
+                                        <div className="text-sm space-y-1.5 text-muted-foreground">
+                                            {customAttrs.marca && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Marca:</span>
+                                                    <span>{customAttrs.marca}</span>
                                                 </div>
-                                            </div>
-                                        )}
+                                            )}
+                                            {customAttrs.modelo && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Modelo:</span>
+                                                    <span>{customAttrs.modelo}</span>
+                                                </div>
+                                            )}
+                                            {customAttrs.año && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Año:</span>
+                                                    <span>{customAttrs.año}</span>
+                                                </div>
+                                            )}
+                                            {customAttrs.color && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Color:</span>
+                                                    <span>{customAttrs.color}</span>
+                                                </div>
+                                            )}
+                                            {customAttrs.kilometraje && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Kilometraje:</span>
+                                                    <span>{customAttrs.kilometraje} km</span>
+                                                </div>
+                                            )}
+                                            {customAttrs.conductor && (
+                                                <div className="flex justify-between">
+                                                    <span className="font-medium text-foreground">Conductor:</span>
+                                                    <span>{customAttrs.conductor}</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground italic">Sin detalles adicionales</p>
+                                    )}
+                                </div>
+
+                                {/* Plate Section - Fixed position */}
+                                {customAttrs?.placa && (
+                                    <div className="mb-3 pb-3 border-b">
+                                        <div className="w-full flex items-center justify-center">
+                                            <Plate
+                                                plate={customAttrs.placa}
+                                                type={getPlateType(customAttrs.placa) || undefined}
+                                                width={"60%"}
+                                                style={{ transform: "scale(0.75)", transformOrigin: "center" }}
+                                            />
+                                        </div>
                                     </div>
-                                ) : (
-                                    <p className="text-sm text-muted-foreground italic">Sin detalles adicionales</p>
                                 )}
 
                                 {/* Financial Quick Summary - Will be populated via client component */}
                                 {!hideFinances && (
-                                    <div className="pt-2 border-t">
+                                    <div className="mb-3">
                                         <Link href={`/app/activos/${asset.id}`}>
                                             <Button variant="outline" size="sm" className="w-full gap-2">
                                                 <span>Ver Finanzas</span>
@@ -172,8 +176,8 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
                                     </div>
                                 )}
 
-                                {/* Creation Date */}
-                                <div className="pt-2 border-t text-xs text-muted-foreground">
+                                {/* Creation Date - Always at bottom */}
+                                <div className="mt-auto pt-2 border-t text-xs text-muted-foreground">
                                     Creado: {new Date(asset.createdAt).toLocaleDateString("es-CO", {
                                         year: "numeric",
                                         month: "short",
