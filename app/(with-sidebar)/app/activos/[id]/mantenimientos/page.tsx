@@ -6,27 +6,12 @@ import { Button } from "@/components/ui/button";
 import SplitText from "@/components/SplitText";
 import { MaintenanceList } from "@/components/maintenance-list";
 import { useEffect, useState } from "react";
-import { MaintenanceType } from "@prisma/client";
+import { MaintenanceRecord, MaintenanceType } from "@prisma/client";
 
 type Asset = {
     id: string;
     name: string;
     [key: string]: any;
-};
-
-type MaintenanceRecord = {
-    id: string;
-    type: MaintenanceType;
-    description: string | null;
-    cost: number;
-    date: Date;
-    mileage: number | null;
-    nextServiceDate: Date | null;
-    nextServiceMileage: number | null;
-    notes: string | null;
-    assetId: string;
-    createdAt: Date;
-    updatedAt: Date;
 };
 
 export default function AssetMaintenancePage({ params }: { params: Promise<{ id: string }> }) {
