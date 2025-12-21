@@ -175,7 +175,7 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
                                         <div className="w-full flex items-center justify-center">
                                             <Plate
                                                 plate={customAttrs.placa}
-                                                type={getPlateType(customAttrs.placa) || undefined}
+                                                type={asset.serviceType === "PUBLICO" ? "public" as any : (getPlateType(customAttrs.placa) || undefined)}
                                                 width={"60%"}
                                                 style={{ transform: "scale(0.75)", transformOrigin: "center" }}
                                             />

@@ -50,6 +50,7 @@ export function CreateAssetWizard() {
     // Step 1: Required fields
     const [name, setName] = useState("");
     const [type, setType] = useState("");
+    const [serviceType, setServiceType] = useState("PARTICULAR"); // "PARTICULAR" | "PUBLICO"
     const [ownershipPercentage, setOwnershipPercentage] = useState("100");
 
     // Step 2: Vehicle details (optional)
@@ -161,6 +162,7 @@ export function CreateAssetWizard() {
                 body: JSON.stringify({
                     name,
                     type,
+                    serviceType,
                     imageUrl,
                     customAttributes: Object.keys(customAttributes).length > 0 ? customAttributes : null,
                     isBusinessAsset,
@@ -296,6 +298,21 @@ export function CreateAssetWizard() {
                                                 {vehicle.label}
                                             </SelectItem>
                                         ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="serviceType">
+                                    Tipo de Servicio <span className="text-red-500">*</span>
+                                </Label>
+                                <Select value={serviceType} onValueChange={setServiceType}>
+                                    <SelectTrigger id="service-type-select">
+                                        <SelectValue placeholder="Selecciona el tipo de servicio" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="PARTICULAR">Particular</SelectItem>
+                                        <SelectItem value="PUBLICO">Público</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>

@@ -86,7 +86,7 @@ export async function POST(request: Request) {
 
         // Parse request body
         const body = await request.json();
-        const { name, type, customAttributes, imageUrl, ownershipPercentage, value, driverPercentage, driverPaymentMode, isBusinessAsset } = body;
+        const { name, type, serviceType, customAttributes, imageUrl, ownershipPercentage, value, driverPercentage, driverPaymentMode, isBusinessAsset } = body;
 
         // Validate required fields
         if (!name || !type) {
@@ -110,6 +110,7 @@ export async function POST(request: Request) {
             data: {
                 name,
                 type,
+                serviceType: serviceType || "PARTICULAR",
                 imageUrl,
                 customAttributes: customAttributes || null,
                 userId: user.id,

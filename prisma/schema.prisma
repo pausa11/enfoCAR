@@ -34,6 +34,7 @@ model Asset {
   driverPaymentMode DriverPaymentMode?
   driverSalaries   DriverSalary[]
   isBusinessAsset  Boolean           @default(true)
+  serviceType      ServiceType       @default(PARTICULAR)
 }
 
 model DriverSalary {
@@ -77,4 +78,9 @@ enum FinancialRecordType {
 enum DriverPaymentMode {
   PERCENTAGE
   FIXED_SALARY
+}
+
+enum ServiceType {
+  PARTICULAR
+  PUBLICO
 }
