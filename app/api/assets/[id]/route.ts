@@ -2,6 +2,57 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+export async function GET(
+    request: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        // Verify authentication
+        const supabase = await createClient();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+            return NextResponse.json(
+                { error: "No autenticado" },
+                { status: 401 }
+            );
+        }
+
+        const { id } = await params;
+
+        // Find asset and verify ownership
+        const assetRaw = await prisma.asset.findFirst({
+            where: {
+                id,
+                userId: user.id,
+            },
+        });
+
+        if (!assetRaw) {
+            return NextResponse.json(
+                { error: "Activo no encontrado" },
+                { status: 404 }
+            );
+        }
+
+        // Convert Decimal fields to plain numbers for JSON serialization
+        const asset = {
+            ...assetRaw,
+            value: assetRaw.value ? assetRaw.value.toNumber() : null,
+        };
+
+        return NextResponse.json(asset);
+    } catch (error) {
+        console.error("Error fetching asset:", error);
+        return NextResponse.json(
+            { error: "Error al obtener el activo" },
+            { status: 500 }
+        );
+    }
+}
+
 export async function PUT(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
