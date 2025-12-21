@@ -90,7 +90,7 @@ export default async function AssetFinancesPage({ params }: { params: Promise<{ 
 
             <div id="header" className="flex flex-col gap-4">
                 <Link href={asset.isBusinessAsset ? "/app/activos" : "/app/finanzas"}>
-                    <Button variant="ghost" className="gap-2 -ml-2">
+                    <Button variant="ghost" className="gap-2 -ml-2 hover:bg-muted/50 hover:text-foreground">
                         <ArrowLeft className="h-4 w-4" />
                         {asset.isBusinessAsset ? "Volver a Mis Naves" : "Volver a Mis Finanzas"}
                     </Button>

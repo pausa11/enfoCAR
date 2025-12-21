@@ -5,7 +5,6 @@ import { FinancialRecord } from "@prisma/client";
 import { DashboardSwitcher } from "@/components/dashboard-switcher";
 import { BusinessDashboard } from "@/components/business-dashboard";
 import { PersonalDashboard } from "@/components/personal-dashboard";
-import SplitText from "@/components/SplitText";
 
 export const dynamic = "force-dynamic";
 
