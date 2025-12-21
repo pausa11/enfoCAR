@@ -45,12 +45,20 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {assets.map((asset) => {
                     const customAttrs = asset.customAttributes as Record<string, string> | null;
+                    // Determine glow color based on asset type (Business = Green, Personal = Blue)
+                    const glowColor = asset.isBusinessAsset ? "34, 197, 94" : "59, 130, 246"; // emerald-500 : blue-500
+
+                    // Determine background style based on asset type
+                    const cardStyle = asset.isBusinessAsset
+                        ? "bg-gradient-to-br from-emerald-500/5 to-emerald-500/10 border-emerald-500/20"
+                        : "bg-gradient-to-br from-blue-500/5 to-blue-500/10 border-blue-500/20";
+
                     return (
                         <ParticleCard
                             key={asset.id}
-                            className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-card"
+                            className={`border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 ${cardStyle}`}
                             particleCount={0}
-                            glowColor="0, 112, 243"
+                            glowColor={glowColor}
                             enableTilt={false}
                             clickEffect={true}
                             enableMagnetism={true}
@@ -108,7 +116,7 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
                                                 Negocio
                                             </span>
                                         ) : (
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-500 border border-indigo-500/20">
+                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-500 border border-blue-500/20">
                                                 Personal
                                             </span>
                                         )}
@@ -176,7 +184,7 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
                                 )}
 
                                 {/* Financial Quick Summary - Will be populated via client component */}
-                                {!hideFinances && asset.isBusinessAsset && (
+                                {!hideFinances && (
                                     <div className="mb-3">
                                         <Link href={`/app/activos/${asset.id}`}>
                                             <Button variant="outline" size="sm" className="view-finances-button w-full gap-2">

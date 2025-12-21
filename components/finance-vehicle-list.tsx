@@ -40,12 +40,20 @@ export function FinanceVehicleList({ assets }: FinanceVehicleListProps) {
             {assets.map((asset) => {
                 const customAttrs = asset.customAttributes as Record<string, string> | null;
 
+                // Determine glow color based on asset type (Business = Green, Personal = Blue)
+                const glowColor = asset.isBusinessAsset ? "34, 197, 94" : "59, 130, 246"; // emerald-500 : blue-500
+
+                // Determine background style based on asset type
+                const cardStyle = asset.isBusinessAsset
+                    ? "bg-gradient-to-br from-emerald-500/5 to-emerald-500/10 border-emerald-500/20"
+                    : "bg-gradient-to-br from-blue-500/5 to-blue-500/10 border-blue-500/20";
+
                 return (
                     <ParticleCard
                         key={asset.id}
-                        className="finance-vehicle-card border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-card"
+                        className={`finance-vehicle-card border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 ${cardStyle}`}
                         particleCount={0}
-                        glowColor="0, 112, 243"
+                        glowColor={glowColor}
                         enableTilt={false}
                         clickEffect={true}
                         enableMagnetism={true}
@@ -73,8 +81,8 @@ export function FinanceVehicleList({ assets }: FinanceVehicleListProps) {
                                 {/* Business/Personal Badge - Top Left */}
                                 <div className="absolute top-2 left-2">
                                     <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium shadow-sm ${asset.isBusinessAsset
-                                        ? 'bg-blue-500 text-white'
-                                        : 'bg-green-500 text-white'
+                                        ? 'bg-emerald-500 text-white'
+                                        : 'bg-blue-500 text-white'
                                         }`}>
                                         {asset.isBusinessAsset ? (
                                             <>
