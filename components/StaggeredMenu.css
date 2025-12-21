@@ -280,7 +280,7 @@
   font-weight: 600;
   font-size: 3.5rem;
   cursor: pointer;
-  line-height: 1;
+  line-height: 1.1;
   letter-spacing: -2px;
   text-transform: uppercase;
   transition:
@@ -289,6 +289,10 @@
   display: inline-block;
   text-decoration: none;
   padding-right: 1.4em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-width: 100%;
 }
 
 .staggered-menu-panel .sm-socials-list .sm-socials-link {

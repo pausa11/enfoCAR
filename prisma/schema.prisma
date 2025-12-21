@@ -36,6 +36,7 @@ model Asset {
   isBusinessAsset  Boolean           @default(true)
   serviceType      ServiceType       @default(PARTICULAR)
   documents       AssetDocument[]
+  maintenanceRecords MaintenanceRecord[]
 }
 
 model DriverSalary {
@@ -104,5 +105,33 @@ enum DocumentType {
   POLIZA_TODO_RIESGO
   IMPUESTO_VEHICULAR
   TARJETA_PROPIEDAD
+  OTRO
+}
+
+model MaintenanceRecord {
+  id                    String            @id @default(uuid())
+  type                  MaintenanceType
+  description           String?
+  cost                  Decimal           @db.Decimal(10, 2)
+  date                  DateTime
+  mileage               Int?              // Kilometraje al momento del mantenimiento
+  nextServiceDate       DateTime?         // Fecha estimada del próximo servicio
+  nextServiceMileage    Int?              // Kilometraje estimado del próximo servicio
+  notes                 String?
+  assetId               String
+  asset                 Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+}
+
+enum MaintenanceType {
+  CAMBIO_ACEITE_MOTOR
+  CAMBIO_ACEITE_TRANSMISION
+  CAMBIO_LLANTAS
+  CAMBIO_FILTROS
+  REVISION_FRENOS
+  ALINEACION_BALANCEO
+  BATERIA
+  REPUESTOS
   OTRO
 }

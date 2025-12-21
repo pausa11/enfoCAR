@@ -5,7 +5,7 @@ import { FinancialRecordForm } from "@/components/financial-record-form";
 import { FinancialRecordsList } from "@/components/financial-records-list";
 import { FinancialSummary } from "@/components/financial-summary";
 import { DriverSalaryManager } from "@/components/driver-salary-manager";
-import { ArrowLeft, FileText } from "lucide-react";
+import { ArrowLeft, FileText, Wrench } from "lucide-react";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -135,12 +135,21 @@ export default async function AssetFinancesPage({ params }: { params: Promise<{ 
                 />
             )}
 
-            <Link href={`/app/activos/${asset.id}/documentos`}>
-                <Button variant="outline" className="w-full sm:w-auto gap-2">
-                    <FileText className="h-4 w-4" />
-                    Ver Documentos del Vehículo
-                </Button>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-3">
+                <Link href={`/app/activos/${asset.id}/documentos`}>
+                    <Button variant="outline" className="w-full sm:w-auto gap-2">
+                        <FileText className="h-4 w-4" />
+                        Ver Documentos del Vehículo
+                    </Button>
+                </Link>
+
+                <Link href={`/app/activos/${asset.id}/mantenimientos`}>
+                    <Button variant="outline" className="w-full sm:w-auto gap-2">
+                        <Wrench className="h-4 w-4" />
+                        Ver Mantenimientos
+                    </Button>
+                </Link>
+            </div>
 
             <div id="form-list" className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
 
