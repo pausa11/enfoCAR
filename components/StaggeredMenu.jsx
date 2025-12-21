@@ -15,6 +15,7 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
   const iconRef = useRef(null);
   const textInnerRef = useRef(null);
   const textWrapRef = useRef(null);
+  const backdropRef = useRef(null);
   const [textLines, setTextLines] = useState(['Menu', 'Close']);
 
   const openTlRef = useRef(null);
@@ -34,6 +35,7 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
       const plusV = plusVRef.current;
       const icon = iconRef.current;
       const textInner = textInnerRef.current;
+      const backdrop = backdropRef.current;
       if (!panel || !plusH || !plusV || !icon || !textInner) return;
 
       let preLayers = [];
@@ -49,6 +51,7 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
       gsap.set(icon, { rotate: 0, transformOrigin: '50% 50%' });
       gsap.set(textInner, { yPercent: 0 });
       if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor });
+      if (backdrop) gsap.set(backdrop, { opacity: 0, display: 'none' });
     });
     return () => ctx.revert();
   }, [menuButtonColor, position]);
@@ -56,6 +59,7 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
   const buildOpenTimeline = useCallback(() => {
     const panel = panelRef.current;
     const layers = preLayerElsRef.current;
+    const backdrop = backdropRef.current;
     if (!panel) return null;
 
     openTlRef.current?.kill();
@@ -87,6 +91,11 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
     }
 
     const tl = gsap.timeline({ paused: true });
+
+    if (backdrop) {
+      tl.set(backdrop, { display: 'block' }, 0);
+      tl.to(backdrop, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0);
+    }
 
     layerStates.forEach((ls, i) => {
       tl.fromTo(ls.el, { xPercent: ls.start }, { xPercent: 0, duration: 0.5, ease: 'power4.out' }, i * 0.07);
@@ -186,6 +195,7 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
 
     const panel = panelRef.current;
     const layers = preLayerElsRef.current;
+    const backdrop = backdropRef.current;
     if (!panel) return;
 
     const all = [...layers, panel];
@@ -212,6 +222,17 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
         busyRef.current = false;
       }
     });
+
+    if (backdrop) {
+      gsap.to(backdrop, {
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.in',
+        onComplete: () => {
+          gsap.set(backdrop, { display: 'none' });
+        }
+      });
+    }
   }, [position]);
 
   const animateIcon = useCallback(opening => {
@@ -355,6 +376,8 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
           return arr.map((c, i) => <div key={i} className="sm-prelayer" style={{ background: c }} />);
         })()}
       </div>
+
+      <div ref={backdropRef} className="sm-backdrop" onClick={closeMenu} aria-hidden="true" />
 
       <header className="staggered-menu-header" aria-label="Main navigation header">
         <button
