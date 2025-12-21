@@ -14,7 +14,7 @@ model User {
   createdAt DateTime @default(now())
   assets    Asset[]
   hasCompletedOnboarding Boolean @default(false)
-  hasCompletedAssetOnboarding Boolean @default(false)
+
 }
 
 model Asset {
