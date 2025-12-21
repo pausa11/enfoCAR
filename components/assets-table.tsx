@@ -1,7 +1,7 @@
 "use client";
 
 import { Asset } from "@prisma/client";
-import { Edit, Trash2, DollarSign, FileText, LayoutGrid, List } from "lucide-react";
+import { Edit, Trash2, DollarSign, FileText, LayoutGrid, List, Wrench } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { EditAssetDialog } from "@/components/edit-asset-dialog"
@@ -231,6 +231,12 @@ export function AssetsTable({ assets, hideFinances = false, showViewToggle = tru
                                                     <FileText className="h-4 w-4" />
                                                 </Button>
                                             </Link>
+                                            <Link href={`/app/activos/${asset.id}/mantenimientos`}>
+                                                <Button variant="outline" size="sm" className="w-full gap-2">
+                                                    <span>Ver Taller</span>
+                                                    <Wrench className="h-4 w-4" />
+                                                </Button>
+                                            </Link>
                                         </div>
                                     )}
 
@@ -398,6 +404,12 @@ export function AssetsTable({ assets, hideFinances = false, showViewToggle = tru
                                                     <Button variant="outline" size="sm" className="w-full gap-2">
                                                         <FileText className="h-4 w-4" />
                                                         <span className="hidden sm:inline">Docs</span>
+                                                    </Button>
+                                                </Link>
+                                                <Link href={`/app/activos/${asset.id}/mantenimientos`} className="flex-1 sm:flex-none">
+                                                    <Button variant="outline" size="sm" className="w-full gap-2">
+                                                        <Wrench className="h-4 w-4" />
+                                                        <span className="hidden sm:inline">Taller</span>
                                                     </Button>
                                                 </Link>
                                             </>
