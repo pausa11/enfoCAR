@@ -99,9 +99,20 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
                                 {/* Title and Type Badge */}
                                 <div className="space-y-2 mb-3">
                                     <h3 className="font-semibold text-lg leading-tight">{asset.name}</h3>
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                                        {VEHICLE_TYPE_LABELS[asset.type] || asset.type}
-                                    </span>
+                                    <div className="flex flex-wrap gap-2">
+                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                                            {VEHICLE_TYPE_LABELS[asset.type] || asset.type}
+                                        </span>
+                                        {asset.isBusinessAsset ? (
+                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                                                Negocio
+                                            </span>
+                                        ) : (
+                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-500 border border-indigo-500/20">
+                                                Personal
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {/* Custom Attributes - Fixed height section */}
@@ -165,7 +176,7 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
                                 )}
 
                                 {/* Financial Quick Summary - Will be populated via client component */}
-                                {!hideFinances && (
+                                {!hideFinances && asset.isBusinessAsset && (
                                     <div className="mb-3">
                                         <Link href={`/app/activos/${asset.id}`}>
                                             <Button variant="outline" size="sm" className="view-finances-button w-full gap-2">

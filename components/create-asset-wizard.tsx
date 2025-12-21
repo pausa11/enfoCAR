@@ -178,7 +178,7 @@ export function CreateAssetWizard() {
 
             // Success - redirect to appropriate list
             router.refresh();
-            router.push(isBusinessAsset ? "/app/activos" : "/app/vehiculos-personales");
+            router.push("/app/activos");
         } catch (err) {
             setError(err instanceof Error ? err.message : "¡Uy! Algo salió mal al crear tu nave");
         } finally {

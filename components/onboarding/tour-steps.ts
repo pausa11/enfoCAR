@@ -110,7 +110,7 @@ export const tourChapters: TourChapter[] = [
     {
         id: "finances",
         path: "/app/finanzas",
-        nextRoute: "/app/vehiculos-personales",
+        // No nextRoute means end of tour
         steps: [
             {
                 popover: {
@@ -129,25 +129,10 @@ export const tourChapters: TourChapter[] = [
                     align: "center",
                 },
             },
-        ],
-    },
-    {
-        id: "personal-vehicles",
-        path: "/app/vehiculos-personales",
-        // No nextRoute means end of tour
-        steps: [
-            {
-                popover: {
-                    title: "Lo Tuyo ❤️",
-                    description: "Aquí van los juguetes de la casa. Sin estrés de rentabilidad, solo control de gastos.",
-                    side: "center",
-                    align: "center",
-                },
-            },
             {
                 popover: {
                     title: "¡Graduado! 🎓",
-                    description: "Ya sabes lo básico. ¡A rodar se dijo!",
+                    description: "Ya sabes lo básico. Recuerda que tus vehículos personales también están en 'Mis Naves', pero marcados como personal. ¡A rodar se dijo!",
                     side: "center",
                     align: "center",
                 },

@@ -40,11 +40,10 @@ export default async function AssetsPage() {
         }
     }
 
-    // Fetch only business assets for the user
+    // Fetch all vehicles for the user
     const assetsRaw = await prisma.asset.findMany({
         where: {
             userId: user.id,
-            isBusinessAsset: true,
         },
         orderBy: {
             createdAt: "desc",
