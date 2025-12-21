@@ -17,7 +17,7 @@ const Card = React.forwardRef<
     glowColor="0, 112, 243"
     enableTilt={false}
     clickEffect={true}
-    enableMagnetism={true}
+    enableMagnetism={false}
   >
     <div ref={ref} {...props} />
   </ParticleCard>
