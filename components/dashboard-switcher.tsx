@@ -41,11 +41,11 @@ export function DashboardSwitcher({
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
                 <TabsTrigger value="business" className="gap-2 data-[state=active]:bg-background dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground">
                     <Briefcase className="h-4 w-4" />
-                    <span>Vehículos de Negocio</span>
+                    <span><span className="hidden sm:inline">Vehículos de </span>Negocio</span>
                 </TabsTrigger>
                 <TabsTrigger value="personal" className="gap-2 data-[state=active]:bg-background dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground">
                     <User className="h-4 w-4" />
-                    <span>Vehículos Personales</span>
+                    <span><span className="hidden sm:inline">Vehículos </span>Personales</span>
                 </TabsTrigger>
             </TabsList>
 
