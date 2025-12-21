@@ -51,7 +51,7 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
                             className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-card"
                             particleCount={0}
                             glowColor="0, 112, 243"
-                            enableTilt={true}
+                            enableTilt={false}
                             clickEffect={true}
                             enableMagnetism={true}
                         >

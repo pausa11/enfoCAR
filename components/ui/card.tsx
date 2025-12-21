@@ -15,7 +15,7 @@ const Card = React.forwardRef<
     style={{ position: 'relative', overflow: 'hidden' }}
     particleCount={0}
     glowColor="0, 112, 243"
-    enableTilt={true}
+    enableTilt={false}
     clickEffect={true}
     enableMagnetism={true}
   >

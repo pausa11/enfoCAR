@@ -46,7 +46,7 @@ export function FinanceVehicleList({ assets }: FinanceVehicleListProps) {
                         className="finance-vehicle-card border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-card"
                         particleCount={0}
                         glowColor="0, 112, 243"
-                        enableTilt={true}
+                        enableTilt={false}
                         clickEffect={true}
                         enableMagnetism={true}
                     >
