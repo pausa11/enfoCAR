@@ -35,6 +35,7 @@ model Asset {
   driverSalaries   DriverSalary[]
   isBusinessAsset  Boolean           @default(true)
   serviceType      ServiceType       @default(PARTICULAR)
+  documents       AssetDocument[]
 }
 
 model DriverSalary {
@@ -48,6 +49,18 @@ model DriverSalary {
   updatedAt DateTime @updatedAt
   
   @@unique([assetId, year, month])
+}
+
+model AssetDocument {
+  id             String       @id @default(uuid())
+  type           DocumentType
+  identifier     String?      // e.g., policy number
+  expirationDate DateTime?
+  isActive       Boolean      @default(true)
+  assetId        String
+  asset          Asset        @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model FinancialRecord {
@@ -83,4 +96,13 @@ enum DriverPaymentMode {
 enum ServiceType {
   PARTICULAR
   PUBLICO
+}
+
+enum DocumentType {
+  SOAT
+  TECNOMECANICA
+  POLIZA_TODO_RIESGO
+  IMPUESTO_VEHICULAR
+  TARJETA_PROPIEDAD
+  OTRO
 }

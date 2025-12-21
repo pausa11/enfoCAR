@@ -5,10 +5,13 @@ import { FinancialRecordForm } from "@/components/financial-record-form";
 import { FinancialRecordsList } from "@/components/financial-records-list";
 import { FinancialSummary } from "@/components/financial-summary";
 import { DriverSalaryManager } from "@/components/driver-salary-manager";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, FileText } from "lucide-react";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import SplitText from "@/components/SplitText";
+
+
 
 export const dynamic = "force-dynamic";
 
@@ -132,7 +135,16 @@ export default async function AssetFinancesPage({ params }: { params: Promise<{ 
                 />
             )}
 
+            <Link href={`/app/activos/${asset.id}/documentos`}>
+                <Button variant="outline" className="w-full sm:w-auto gap-2">
+                    <FileText className="h-4 w-4" />
+                    Ver Documentos del Vehículo
+                </Button>
+            </Link>
+
             <div id="form-list" className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+
+
                 <div id="form" className="lg:sticky lg:top-8">
                     <FinancialRecordForm
                         assets={[asset]}

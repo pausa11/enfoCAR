@@ -1,7 +1,8 @@
 "use client";
 
 import { Asset } from "@prisma/client";
-import { Edit, Trash2, DollarSign } from "lucide-react";
+import { Edit, Trash2, DollarSign, FileText } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { EditAssetDialog } from "@/components/edit-asset-dialog"
 import { DeleteAssetDialog } from "@/components/delete-asset-dialog"
@@ -185,11 +186,17 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
 
                                 {/* Financial Quick Summary - Will be populated via client component */}
                                 {!hideFinances && (
-                                    <div className="mb-3">
+                                    <div className="mb-3 space-y-2">
                                         <Link href={`/app/activos/${asset.id}`}>
                                             <Button variant="outline" size="sm" className="view-finances-button w-full gap-2">
                                                 <span>Ver Finanzas</span>
                                                 <DollarSign className="h-4 w-4" />
+                                            </Button>
+                                        </Link>
+                                        <Link href={`/app/activos/${asset.id}/documentos`}>
+                                            <Button variant="outline" size="sm" className="w-full gap-2">
+                                                <span>Ver Documentos</span>
+                                                <FileText className="h-4 w-4" />
                                             </Button>
                                         </Link>
                                     </div>
