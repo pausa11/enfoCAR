@@ -83,9 +83,9 @@ export function MaintenanceList({ assetId, maintenanceRecords }: MaintenanceList
 
     return (
         <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <h2 className="text-2xl font-bold">Mantenimientos</h2>
-                <Button onClick={() => setIsFormOpen(true)} size="sm" className="gap-2">
+                <Button onClick={() => setIsFormOpen(true)} size="sm" className="gap-2 w-full sm:w-auto">
                     <Plus className="h-4 w-4" />
                     Agregar Mantenimiento
                 </Button>
