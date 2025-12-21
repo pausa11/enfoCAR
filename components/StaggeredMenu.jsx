@@ -332,6 +332,15 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
     };
   }, [closeOnClickAway, open, closeMenu]);
 
+  // Close menu when onboarding restarts
+  React.useEffect(() => {
+    const handleRestart = () => {
+      closeMenu();
+    };
+    window.addEventListener('restart-onboarding', handleRestart);
+    return () => window.removeEventListener('restart-onboarding', handleRestart);
+  }, [closeMenu]);
+
   return (
     <div className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')} style={accentColor ? { ['--sm-accent']: accentColor } : undefined} data-position={position} data-open={open || undefined} >
 

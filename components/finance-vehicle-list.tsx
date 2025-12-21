@@ -43,7 +43,7 @@ export function FinanceVehicleList({ assets }: FinanceVehicleListProps) {
                 return (
                     <ParticleCard
                         key={asset.id}
-                        className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-card"
+                        className="finance-vehicle-card border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-card"
                         particleCount={0}
                         glowColor="0, 112, 243"
                         enableTilt={true}

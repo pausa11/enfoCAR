@@ -13,6 +13,7 @@ model User {
   email     String   @unique
   createdAt DateTime @default(now())
   assets    Asset[]
+  hasCompletedOnboarding Boolean @default(false)
 }
 
 model Asset {

@@ -1,6 +1,7 @@
 import { Sidebar } from "@/components/sidebar";
 import { InstallPrompt } from "@/components/install-prompt";
 import { UpdatePrompt } from "@/components/update-prompt";
+import { OnboardingTour } from "@/components/onboarding/OnboardingTour";
 
 export default function WithSidebarLayout({
     children,
@@ -15,6 +16,7 @@ export default function WithSidebarLayout({
             </main>
             <InstallPrompt />
             <UpdatePrompt />
+            <OnboardingTour />
         </div>
     );
 }

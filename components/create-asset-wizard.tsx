@@ -221,6 +221,7 @@ export function CreateAssetWizard() {
                                     </div>
                                 </div>
                                 <Switch
+                                    id="asset-type-switch"
                                     checked={isBusinessAsset}
                                     onCheckedChange={setIsBusinessAsset}
                                 />
@@ -231,7 +232,7 @@ export function CreateAssetWizard() {
                                     ¿Cómo le dices a tu nave? <span className="text-red-500">*</span>
                                 </Label>
                                 <Input
-                                    id="name"
+                                    id="asset-name-input"
                                     placeholder="Ej: La Poderosa, El Rayo, Mi Camionetita"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
@@ -286,7 +287,7 @@ export function CreateAssetWizard() {
                                     ¿Qué tipo de carro es? <span className="text-red-500">*</span>
                                 </Label>
                                 <Select value={type} onValueChange={setType}>
-                                    <SelectTrigger id="type" className={type ? "border-green-500" : ""}>
+                                    <SelectTrigger id="asset-type-select" className={type ? "border-green-500" : ""}>
                                         <SelectValue placeholder="Elegí el tipo de nave" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -313,7 +314,7 @@ export function CreateAssetWizard() {
                                         </Tooltip>
                                     </Label>
                                     <Input
-                                        id="ownershipPercentage"
+                                        id="asset-ownership-input"
                                         type="number"
                                         min="0"
                                         max="100"

@@ -75,7 +75,7 @@ export function BusinessDashboard({
                     </p>
                 </div>
                 <Link href="/app/activos">
-                    <Button className="gap-2">
+                    <Button id="view-assets-button" className="gap-2">
                         <Car className="h-4 w-4" />
                         Ver mis Naves
                     </Button>
@@ -98,7 +98,7 @@ export function BusinessDashboard({
                         <CardTitle className="text-sm font-medium">Total de Naves</CardTitle>
                         <Car className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
-                    <CardContent>
+                    <CardContent id="stats-total-assets">
                         <div className="text-2xl font-bold">{assetCount}</div>
                         <p className="text-xs text-muted-foreground mt-1">
                             {businessAssetCount} de negocio
@@ -181,7 +181,7 @@ export function BusinessDashboard({
 
             {/* Net Income Highlight */}
             <div className="grid gap-4 grid-cols-1">
-                <Card className={`${netIncome >= 0 ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-800" : "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800"}`}>
+                <Card id="net-income-card" className={`${netIncome >= 0 ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-800" : "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800"}`}>
                     <CardHeader className="pb-2">
                         <CardTitle className="text-lg">Utilidad Neta (Lo que te queda libre)</CardTitle>
                     </CardHeader>

@@ -168,7 +168,7 @@ export function AssetsTable({ assets, hideFinances = false }: AssetsTableProps) 
                                 {!hideFinances && (
                                     <div className="mb-3">
                                         <Link href={`/app/activos/${asset.id}`}>
-                                            <Button variant="outline" size="sm" className="w-full gap-2">
+                                            <Button variant="outline" size="sm" className="view-finances-button w-full gap-2">
                                                 <span>Ver Finanzas</span>
                                                 <DollarSign className="h-4 w-4" />
                                             </Button>
