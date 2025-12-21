@@ -20,7 +20,10 @@ const navigationItems = [
         name: "Mis Naves",
         href: "/app/activos",
     },
-
+    {
+        name: "Mis Papeles",
+        href: "/app/documentos",
+    },
     {
         name: "Mis Finanzas",
         href: "/app/finanzas",

@@ -82,6 +82,19 @@ const updateCardGlowProperties = (card, mouseX, mouseY, glow, radius) => {
   card.style.setProperty('--glow-radius', `${radius}px`);
 };
 
+/**
+ * @param {Object} props
+ * @param {any} props.children
+ * @param {string} [props.className]
+ * @param {boolean} [props.disableAnimations]
+ * @param {Object} [props.style]
+ * @param {number} [props.particleCount]
+ * @param {string} [props.glowColor]
+ * @param {boolean} [props.enableTilt]
+ * @param {boolean} [props.clickEffect]
+ * @param {boolean} [props.enableMagnetism]
+ * @param {((e: MouseEvent) => void) | undefined} [props.onClick]
+ */
 const ParticleCard = ({
   children,
   className = '',
@@ -91,7 +104,8 @@ const ParticleCard = ({
   glowColor = DEFAULT_GLOW_COLOR,
   enableTilt = false,
   clickEffect = false,
-  enableMagnetism = false
+  enableMagnetism = false,
+  onClick = undefined
 }) => {
   const cardRef = useRef(null);
   const particlesRef = useRef([]);
@@ -249,6 +263,12 @@ const ParticleCard = ({
     };
 
     const handleClick = e => {
+      // Call custom onClick handler if provided
+      if (onClick) {
+        onClick(e);
+      }
+
+      // Only create ripple effect if clickEffect is enabled
       if (!clickEffect) return;
 
       const rect = element.getBoundingClientRect();
@@ -306,7 +326,7 @@ const ParticleCard = ({
       element.removeEventListener('click', handleClick);
       clearAllParticles();
     };
-  }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor]);
+  }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor, onClick]);
 
   return (
     <div
