@@ -7,7 +7,8 @@ import { ParticleCard } from "@/components/MagicBento";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
-interface MaintenanceWithAsset extends MaintenanceRecord {
+interface MaintenanceWithAsset extends Omit<MaintenanceRecord, 'cost'> {
+    cost: number; // Converted from Decimal in the server component
     asset: {
         id: string;
         name: string;
