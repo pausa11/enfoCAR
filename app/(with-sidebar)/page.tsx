@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Car, FileText, BarChart3, ArrowRight } from "lucide-react";
 import HyperspeedClient from "@/components/HyperspeedClient";
 import SplitText from "@/components/SplitText";
+import { RestartTourButton } from "@/components/RestartTourButton";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -102,6 +103,9 @@ export default async function Home() {
           <p className="text-foreground/60 text-sm">
             Conectado como <span className="font-semibold text-foreground">{user.email}</span>
           </p>
+          <div className="mt-4 flex justify-center">
+            <RestartTourButton />
+          </div>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@
 import StaggeredMenu from './StaggeredMenu';
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { AuthButton } from "@/components/auth-button";
-import { restartOnboarding } from "@/components/onboarding/OnboardingTour";
+
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -58,24 +58,9 @@ export function Sidebar() {
                 <ThemeSwitcher />
                 <span style={{ color: 'white', fontSize: '0.875rem' }}>Tema</span>
             </div>
-            <button
-                onClick={restartOnboarding}
-                style={{
-                    background: 'transparent',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    color: 'white',
-                    padding: '0.5rem',
-                    borderRadius: '0.375rem',
-                    cursor: 'pointer',
-                    fontSize: '0.875rem',
-                    width: '100%',
-                    textAlign: 'center'
-                }}
-            >
-                Reiniciar Tour
-            </button>
+
             <AuthButton isExpanded={true} />
-        </div>
+        </div >
     );
 
     // Determine button color based on theme
