@@ -1,9 +1,8 @@
 'use client';
 
-import { useCompletion } from '@ai-sdk/react';
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Sparkles, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ShinyText from '@/components/ShinyText';
 
@@ -16,14 +15,91 @@ interface DashboardAnalysisProps {
     };
 }
 
+// Cache configuration
+const CACHE_KEY = 'dashboard_analysis_cache';
+const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+interface AnalysisCache {
+    analysis: string;
+    timestamp: number;
+    dataHash: string;
+}
+
+// Simple hash function for stats comparison
+function generateStatsHash(stats: DashboardAnalysisProps['stats']): string {
+    return JSON.stringify({
+        totalIncome: stats.totalIncome,
+        totalExpenses: stats.totalExpenses,
+        assetCount: stats.assetCount,
+        monthlyStatsKeys: Object.keys(stats.monthlyStats).sort(),
+    });
+}
+
+// Get cached analysis if valid
+function getCachedAnalysis(currentStatsHash: string): string | null {
+    try {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (!cached) return null;
+
+        const parsedCache: AnalysisCache = JSON.parse(cached);
+        const now = Date.now();
+
+        // Check if cache is expired (older than 24 hours)
+        if (now - parsedCache.timestamp > CACHE_DURATION_MS) {
+            localStorage.removeItem(CACHE_KEY);
+            return null;
+        }
+
+        // Check if data has changed
+        if (parsedCache.dataHash !== currentStatsHash) {
+            localStorage.removeItem(CACHE_KEY);
+            return null;
+        }
+
+        return parsedCache.analysis;
+    } catch (error) {
+        console.error('Error reading cache:', error);
+        return null;
+    }
+}
+
+// Save analysis to cache
+function saveToCache(analysis: string, dataHash: string): void {
+    try {
+        const cacheData: AnalysisCache = {
+            analysis,
+            timestamp: Date.now(),
+            dataHash,
+        };
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+    } catch (error) {
+        console.error('Error saving to cache:', error);
+    }
+}
+
 export function DashboardAnalysis({ stats }: DashboardAnalysisProps) {
     const [analysis, setAnalysis] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
+    const [usingCache, setUsingCache] = useState(false);
 
-    const fetchAnalysis = async () => {
+    const fetchAnalysis = async (forceRefresh = false) => {
+        const currentHash = generateStatsHash(stats);
+
+        // Try to use cache if not forcing refresh
+        if (!forceRefresh) {
+            const cachedAnalysis = getCachedAnalysis(currentHash);
+            if (cachedAnalysis) {
+                setAnalysis(cachedAnalysis);
+                setUsingCache(true);
+                return;
+            }
+        }
+
+        setUsingCache(false);
         setIsLoading(true);
         setError(false);
+
         try {
             const prompt = `
             Actúa como un experto financiero financiero amigable y "parcero" (usando jerga colombiana moderada).
@@ -45,7 +121,9 @@ export function DashboardAnalysis({ stats }: DashboardAnalysisProps) {
 
             if (!res.ok) throw new Error("Failed");
             const text = await res.text();
+
             setAnalysis(text);
+            saveToCache(text, currentHash);
         } catch (e) {
             setError(true);
             console.error(e);
@@ -59,7 +137,7 @@ export function DashboardAnalysis({ stats }: DashboardAnalysisProps) {
     }, []);
 
     const handleRefresh = () => {
-        fetchAnalysis();
+        fetchAnalysis(true); // Force refresh
     };
 
     return (
@@ -78,17 +156,25 @@ export function DashboardAnalysis({ stats }: DashboardAnalysisProps) {
                     onClick={handleRefresh}
                     disabled={isLoading}
                     className="h-8 w-8 hover:bg-blue-100 dark:hover:bg-blue-900"
+                    title={usingCache ? "Actualizar análisis (usando cache)" : "Actualizar análisis"}
                 >
                     <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
                 </Button>
             </CardHeader>
             <CardContent>
                 {analysis ? (
-                    <ShinyText
-                        text={analysis}
-                        className="text-sm sm:text-base leading-relaxed"
-                        speed={4}
-                    />
+                    <>
+                        <ShinyText
+                            text={analysis}
+                            className="text-sm sm:text-base leading-relaxed"
+                            speed={4}
+                        />
+                        {usingCache && (
+                            <p className="text-xs text-muted-foreground mt-2 opacity-60">
+                                💾 Análisis en cache
+                            </p>
+                        )}
+                    </>
                 ) : isLoading ? (
                     <div className="flex items-center gap-2 text-sm">
                         <ShinyText

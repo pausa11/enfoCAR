@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, TrendingDown, TrendingUp, AlertCircle, CheckCircle } from "lucide-react";
+import { Sparkles, AlertCircle, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Asset, FinancialRecord } from "@prisma/client";
 
@@ -22,7 +22,6 @@ export function PersonalVehicleDashboardAnalysis({
     avgMonthlyExpense,
 }: PersonalVehicleDashboardAnalysisProps) {
 
-    // Helper to format currency
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat("es-CO", {
             style: "currency",
@@ -32,7 +31,6 @@ export function PersonalVehicleDashboardAnalysis({
         }).format(amount);
     };
 
-    // Analyze spending patterns
     const analyzeSpending = () => {
         const insights: Array<{
             type: 'positive' | 'neutral' | 'warning';
@@ -40,7 +38,6 @@ export function PersonalVehicleDashboardAnalysis({
             description: string;
         }> = [];
 
-        // Calculate expenses per vehicle
         const expensesPerVehicle = vehicles.map(vehicle => {
             const expenses = vehicle.financialRecords
                 .filter(r => r.type === "EXPENSE")
@@ -57,7 +54,7 @@ export function PersonalVehicleDashboardAnalysis({
             };
         });
 
-        // Check if there are vehicles
+            // Check if there are vehicles
         if (vehicles.length === 0) {
             insights.push({
                 type: 'neutral',
@@ -94,7 +91,6 @@ export function PersonalVehicleDashboardAnalysis({
             });
         }
 
-        // Analyze vehicle age and expenses
         expensesPerVehicle.forEach(vehicle => {
             if (vehicle.year) {
                 const currentYear = new Date().getFullYear();
@@ -116,7 +112,6 @@ export function PersonalVehicleDashboardAnalysis({
             }
         });
 
-        // Analyze mileage
         expensesPerVehicle.forEach(vehicle => {
             if (vehicle.mileage) {
                 const km = parseInt(vehicle.mileage.replace(/\D/g, ''));
@@ -130,7 +125,6 @@ export function PersonalVehicleDashboardAnalysis({
             }
         });
 
-        // If no specific insights, add a general positive message
         if (insights.length === 0 || (insights.length === 1 && insights[0].type === 'neutral')) {
             insights.push({
                 type: 'positive',

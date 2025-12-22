@@ -5,7 +5,6 @@ import { FinancialRecord } from "@prisma/client";
 import { DashboardSwitcher } from "@/components/dashboard-switcher";
 import { BusinessDashboard } from "@/components/business-dashboard";
 import { PersonalDashboard } from "@/components/personal-dashboard";
-
 export const dynamic = "force-dynamic";
 
 export default async function ProtectedPage() {
@@ -19,7 +18,6 @@ export default async function ProtectedPage() {
     return redirect("/auth/login");
   }
 
-  // Ensure user exists in Prisma database
   const existingUser = await prisma.user.findUnique({
     where: { id: user.id }
   });
@@ -37,7 +35,6 @@ export default async function ProtectedPage() {
     }
   }
 
-  // ===== BUSINESS VEHICLES DATA =====
   const businessAssetCount = await prisma.asset.count({
     where: {
       userId: user.id,
@@ -98,9 +95,7 @@ export default async function ProtectedPage() {
     expense: monthlyStats[month].expense,
   }));
 
-  const incomeByType = financialRecords
-    .filter((r) => r.type === "INCOME")
-    .reduce((acc: Record<string, number>, curr) => {
+  const incomeByType = financialRecords.filter((r) => r.type === "INCOME").reduce((acc: Record<string, number>, curr) => {
       const type = curr.asset.type;
       const amount = getUserAmount(curr);
       if (!acc[type]) {
@@ -121,7 +116,6 @@ export default async function ProtectedPage() {
     },
   });
 
-  // ===== PERSONAL VEHICLES DATA =====
   const personalVehicles = await prisma.asset.findMany({
     where: {
       userId: user.id,

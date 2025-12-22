@@ -69,15 +69,13 @@ export function PersonalDashboard({
                 </Link>
             </div>
 
-            {/* AI Analysis Component */}
             <PersonalVehicleDashboardAnalysis
                 vehicles={vehicles}
                 totalExpenses={totalExpenses}
                 avgMonthlyExpense={avgMonthlyExpense}
             />
 
-            {/* Summary Cards */}
-            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <div id="summary" className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Vehículos Personales</CardTitle>
@@ -144,9 +142,8 @@ export function PersonalDashboard({
                 </Card>
             </div>
 
-            {/* Monthly Breakdown */}
             {sortedMonths.length > 0 && (
-                <div className="flex flex-col gap-4">
+                <div id="monthly-breakdown" className="flex flex-col gap-4">
                     <SplitText
                         text="Gastos Mensuales"
                         tag="h2"
@@ -178,7 +175,6 @@ export function PersonalDashboard({
                 </div>
             )}
 
-            {/* Empty State */}
             {vehicles.length === 0 && (
                 <Card className="border-dashed">
                     <CardContent className="flex flex-col items-center justify-center p-8 text-center">
