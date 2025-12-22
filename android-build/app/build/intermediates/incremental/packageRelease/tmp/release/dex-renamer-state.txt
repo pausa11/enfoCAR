@@ -1,0 +1,4 @@
+#Sun Dec 21 22:42:10 COT 2025
+base.0=/Users/danieltorosoto/enfoCAR/android-build/app/build/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

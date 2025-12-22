@@ -1,0 +1,60 @@
+{
+  "packageId": "app.vercel.enfo_car.twa",
+  "host": "enfo-car.vercel.app",
+  "name": "enfoCAR - Gestión de Activos",
+  "launcherName": "enfoCAR",
+  "display": "standalone",
+  "themeColor": "#4A90E2",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#4A90E2",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://enfo-car.vercel.app/icons/icon-512.png",
+  "maskableIconUrl": "https://enfo-car.vercel.app/icons/icon-maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "/Users/danieltorosoto/enfoCAR/android-build/android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "2",
+  "appVersionCode": 2,
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "shortName": "Dashboard",
+      "url": "https://enfo-car.vercel.app/dashboard",
+      "chosenIconUrl": "https://enfo-car.vercel.app/icons/icon-192.png"
+    },
+    {
+      "name": "Activos",
+      "shortName": "Activos",
+      "url": "https://enfo-car.vercel.app/dashboard/activos",
+      "chosenIconUrl": "https://enfo-car.vercel.app/icons/icon-192.png"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://enfo-car.vercel.app/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://enfo-car.vercel.app/",
+  "minSdkVersion": 21,
+  "orientation": "portrait-primary",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "",
+  "displayOverride": [],
+  "appVersion": "2"
+}
