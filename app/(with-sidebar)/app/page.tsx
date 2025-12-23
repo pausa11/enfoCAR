@@ -96,14 +96,14 @@ export default async function ProtectedPage() {
   }));
 
   const incomeByType = financialRecords.filter((r) => r.type === "INCOME").reduce((acc: Record<string, number>, curr) => {
-      const type = curr.asset.type;
-      const amount = getUserAmount(curr);
-      if (!acc[type]) {
-        acc[type] = 0;
-      }
-      acc[type] += amount;
-      return acc;
-    }, {});
+    const type = curr.asset.type;
+    const amount = getUserAmount(curr);
+    if (!acc[type]) {
+      acc[type] = 0;
+    }
+    acc[type] += amount;
+    return acc;
+  }, {});
 
   const incomeByAssetTypeData = Object.entries(incomeByType).map(([name, value]) => ({
     name,
@@ -130,6 +130,7 @@ export default async function ProtectedPage() {
     },
   });
 
+  /* Existing code for vehiclesWithNumbers map... */
   const vehiclesWithNumbers = personalVehicles.map(vehicle => ({
     ...vehicle,
     value: vehicle.value ? vehicle.value.toNumber() : null,
@@ -138,6 +139,100 @@ export default async function ProtectedPage() {
       amount: Number(record.amount),
     })),
   }));
+
+  // Fetch recent maintenance records for business assets
+  const recentMaintenances = await prisma.maintenanceRecord.findMany({
+    where: {
+      asset: {
+        userId: user.id,
+        isBusinessAsset: true,
+      },
+    },
+    include: {
+      asset: {
+        select: {
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      date: 'desc',
+    },
+    take: 5,
+  });
+
+  const formattedMaintenances = recentMaintenances.map(m => ({
+    ...m,
+    cost: Number(m.cost),
+  }));
+
+  // Fetch active documents for business assets
+  const activeDocuments = await prisma.assetDocument.findMany({
+    where: {
+      asset: {
+        userId: user.id,
+        isBusinessAsset: true,
+      },
+      isActive: true,
+    },
+    include: {
+      asset: {
+        select: {
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      expirationDate: 'asc',
+    },
+  });
+
+  // Fetch recent maintenance records for personal assets
+  const recentPersonalMaintenances = await prisma.maintenanceRecord.findMany({
+    where: {
+      asset: {
+        userId: user.id,
+        isBusinessAsset: false,
+      },
+    },
+    include: {
+      asset: {
+        select: {
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      date: 'desc',
+    },
+    take: 5,
+  });
+
+  const formattedPersonalMaintenances = recentPersonalMaintenances.map(m => ({
+    ...m,
+    cost: Number(m.cost),
+  }));
+
+  // Fetch active documents for personal assets
+  const activePersonalDocuments = await prisma.assetDocument.findMany({
+    where: {
+      asset: {
+        userId: user.id,
+        isBusinessAsset: false,
+      },
+      isActive: true,
+    },
+    include: {
+      asset: {
+        select: {
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      expirationDate: 'asc',
+    },
+  });
 
   const personalTotalExpenses = vehiclesWithNumbers.reduce((acc, vehicle) => {
     const vehicleExpenses = vehicle.financialRecords
@@ -182,6 +277,8 @@ export default async function ProtectedPage() {
             monthlyStats={monthlyStats}
             monthlyStatsArray={monthlyStatsArray}
             incomeByAssetTypeData={incomeByAssetTypeData}
+            maintenances={formattedMaintenances}
+            documents={activeDocuments}
           />
         }
         personalDashboard={
@@ -191,6 +288,8 @@ export default async function ProtectedPage() {
             totalExpenses={personalTotalExpenses}
             avgMonthlyExpense={personalAvgMonthlyExpense}
             monthlyExpenses={personalMonthlyExpenses}
+            maintenances={formattedPersonalMaintenances}
+            documents={activePersonalDocuments}
           />
         }
       />

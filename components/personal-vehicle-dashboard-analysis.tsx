@@ -14,6 +14,8 @@ interface PersonalVehicleDashboardAnalysisProps {
     vehicles: SerializedAsset[];
     totalExpenses: number;
     avgMonthlyExpense: number;
+    maintenances: any[];
+    documents: any[];
 }
 
 // Cache configuration
@@ -27,13 +29,16 @@ interface AnalysisCache {
 }
 
 // Simple hash function for stats comparison
-function generateStatsHash(vehicles: SerializedAsset[], totalExpenses: number): string {
+function generateStatsHash(vehicles: SerializedAsset[], totalExpenses: number, maintenances: any[], documents: any[]): string {
     return JSON.stringify({
         vehicleIds: vehicles.map(v => v.id).sort(),
         totalExpenses,
-        lastUpdated: new Date().toISOString().split('T')[0] // Granularity of 1 day to avoid too many refreshes
+        maintenanceCount: maintenances?.length || 0,
+        documentsCount: documents?.length || 0,
+        lastUpdated: new Date().toISOString().split('T')[0] // Granularity of 1 day
     });
 }
+// check getCachedAnalysis is not changing signature but we need to update usage later
 
 // Get cached analysis if valid
 function getCachedAnalysis(currentStatsHash: string): string | null {
@@ -81,6 +86,8 @@ export function PersonalVehicleDashboardAnalysis({
     vehicles,
     totalExpenses,
     avgMonthlyExpense,
+    maintenances,
+    documents,
 }: PersonalVehicleDashboardAnalysisProps) {
     const [analysis, setAnalysis] = useState<string>("");
     const [isLoading, setIsLoading] = useState(false);
@@ -97,7 +104,7 @@ export function PersonalVehicleDashboardAnalysis({
     };
 
     const fetchAnalysis = async (forceRefresh = false) => {
-        const currentHash = generateStatsHash(vehicles, totalExpenses);
+        const currentHash = generateStatsHash(vehicles, totalExpenses, maintenances, documents);
 
         // Try to use cache if not forcing refresh
         if (!forceRefresh) {
@@ -129,9 +136,23 @@ export function PersonalVehicleDashboardAnalysis({
 
             Total Gastos: ${formatCurrency(totalExpenses)}
             Promedio Mensual: ${formatCurrency(avgMonthlyExpense)}
+            
+            Mantenimientos Recientes: ${JSON.stringify(maintenances?.map(m => ({
+                fecha: m.date,
+                costo: m.cost,
+                tipo: m.type,
+                vehiculo: m.asset?.name
+            })) || [])}
+            
+            Estado Documentos: ${JSON.stringify(documents?.map(d => ({
+                tipo: d.type,
+                vence: d.expirationDate,
+                vehiculo: d.asset?.name
+            })) || [])}
 
             1. Dame un análisis ultra-corto de cómo va el mantenimiento financiero de mis naves.
-            2. Para cada modelo de vehículo mencionado, tira un "Dato Curioso" o un "Tip Pro" específico de ese modelo (mecánica, historia, o cuidado). Que sea interesante.
+            2. Si hay mantenimientos recientes costosos o documentos por vencer, menciónalo como advertencia amistosa.
+            3. Para cada modelo de vehículo mencionado, tira un "Dato Curioso" o un "Tip Pro" específico de ese modelo (mecánica, historia, o cuidado). Que sea interesante.
             
             Mantén el tono relajado pero útil.
             `;

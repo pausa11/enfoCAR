@@ -20,6 +20,8 @@ interface PersonalDashboardProps {
     totalExpenses: number;
     avgMonthlyExpense: number;
     monthlyExpenses: Record<string, number>;
+    maintenances: any[];
+    documents: any[];
 }
 
 export function PersonalDashboard({
@@ -28,6 +30,8 @@ export function PersonalDashboard({
     totalExpenses,
     avgMonthlyExpense,
     monthlyExpenses,
+    maintenances,
+    documents,
 }: PersonalDashboardProps) {
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat("es-CO", {
@@ -74,6 +78,8 @@ export function PersonalDashboard({
                 vehicles={vehicles}
                 totalExpenses={totalExpenses}
                 avgMonthlyExpense={avgMonthlyExpense}
+                maintenances={maintenances}
+                documents={documents}
             />
 
             <div id="summary" className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -137,6 +143,107 @@ export function PersonalDashboard({
                     </div>
                 </div>
             )}
+
+            {/* Maintenance and Documents Summary */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
+                {/* Maintenance Summary */}
+                <div className="flex flex-col gap-4">
+                    <SplitText
+                        text="Mantenimientos Recientes"
+                        tag="h2"
+                        className="text-lg sm:text-xl font-semibold"
+                        delay={100}
+                        duration={0.6}
+                        ease="power3.out"
+                        splitType="chars"
+                        from={{ opacity: 0, y: 40 }}
+                        to={{ opacity: 1, y: 0 }}
+                        threshold={0.1}
+                        rootMargin="-100px"
+                        textAlign="left"
+                    />
+                    <div className="border rounded-md bg-muted/20">
+                        {maintenances.length === 0 ? (
+                            <div className="p-4 text-center text-muted-foreground text-sm">
+                                Todo al pelo, sin mantenimientos recientes.
+                            </div>
+                        ) : (
+                            <div className="divide-y">
+                                {maintenances.map((m, i) => (
+                                    <div key={i} className="p-3 text-sm flex justify-between items-center">
+                                        <div>
+                                            <p className="font-medium">{m.asset?.name || 'Vehículo'}</p>
+                                            <p className="text-muted-foreground text-xs">{new Date(m.date).toLocaleDateString()}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="font-semibold">{formatCurrency(m.cost)}</p>
+                                            <p className="text-xs text-muted-foreground">{m.type.replace(/_/g, ' ')}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Documents Summary */}
+                <div className="flex flex-col gap-4">
+                    <SplitText
+                        text="Papeles al día"
+                        tag="h2"
+                        className="text-lg sm:text-xl font-semibold"
+                        delay={100}
+                        duration={0.6}
+                        ease="power3.out"
+                        splitType="chars"
+                        from={{ opacity: 0, y: 40 }}
+                        to={{ opacity: 1, y: 0 }}
+                        threshold={0.1}
+                        rootMargin="-100px"
+                        textAlign="left"
+                    />
+                    <div className="border rounded-md bg-muted/20">
+                        {documents.length === 0 ? (
+                            <div className="p-4 text-center text-muted-foreground text-sm">
+                                No hay documentos registrados.
+                            </div>
+                        ) : (
+                            <div className="divide-y">
+                                {documents.slice(0, 5).map((d, i) => {
+                                    const daysUntilExpiration = d.expirationDate
+                                        ? Math.ceil((new Date(d.expirationDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+                                        : null;
+
+                                    const isUrgent = daysUntilExpiration !== null && daysUntilExpiration < 30;
+
+                                    return (
+                                        <div key={i} className="p-3 text-sm flex justify-between items-center">
+                                            <div>
+                                                <p className="font-medium">{d.asset?.name || 'Vehículo'}</p>
+                                                <p className="text-xs text-muted-foreground">{d.type.replace(/_/g, ' ')}</p>
+                                            </div>
+                                            <div className="text-right">
+                                                {d.expirationDate ? (
+                                                    <p className={`font-semibold ${isUrgent ? 'text-red-500' : 'text-green-600'}`}>
+                                                        {daysUntilExpiration && daysUntilExpiration < 0
+                                                            ? 'Vencido'
+                                                            : `${daysUntilExpiration} días`}
+                                                    </p>
+                                                ) : (
+                                                    <p className="text-muted-foreground">Sin fecha</p>
+                                                )}
+                                                <p className="text-xs text-muted-foreground">
+                                                    Vence: {d.expirationDate ? new Date(d.expirationDate).toLocaleDateString() : 'N/A'}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
 
             {vehicles.length === 0 && (
                 <Card className="border-dashed">

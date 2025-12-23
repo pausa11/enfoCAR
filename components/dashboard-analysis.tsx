@@ -10,6 +10,8 @@ interface DashboardAnalysisProps {
         totalExpenses: number;
         assetCount: number;
         monthlyStats: Record<string, { income: number; expense: number }>;
+        maintenances: any[];
+        documents: any[];
     };
 }
 
@@ -30,6 +32,8 @@ function generateStatsHash(stats: DashboardAnalysisProps['stats']): string {
         totalExpenses: stats.totalExpenses,
         assetCount: stats.assetCount,
         monthlyStatsKeys: Object.keys(stats.monthlyStats).sort(),
+        maintenanceCount: stats.maintenances?.length || 0,
+        documentsCount: stats.documents?.length || 0,
     });
 }
 
@@ -81,6 +85,15 @@ export function DashboardAnalysis({ stats }: DashboardAnalysisProps) {
     const [error, setError] = useState(false);
     const [usingCache, setUsingCache] = useState(false);
 
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat("es-CO", {
+            style: "currency",
+            currency: "COP",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        }).format(amount);
+    };
+
     const fetchAnalysis = async (forceRefresh = false) => {
         const currentHash = generateStatsHash(stats);
 
@@ -103,11 +116,23 @@ export function DashboardAnalysis({ stats }: DashboardAnalysisProps) {
             Actúa como un experto financiero financiero amigable y "parcero" (usando jerga colombiana moderada).
             Analiza estos datos de mi flota de vehículos:
             - Total Veículos: ${stats.assetCount}
-            - Ingresos Totales: $${stats.totalIncome}
-            - Gastos Totales: $${stats.totalExpenses}
+            - Ingresos Totales: ${formatCurrency(stats.totalIncome)}
+            - Gastos Totales: ${formatCurrency(stats.totalExpenses)}
             - Desglose Mensual: ${JSON.stringify(stats.monthlyStats)}
+            - Mantenimientos Recientes: ${JSON.stringify(stats.maintenances?.map(m => ({
+                fecha: m.date,
+                costo: m.cost,
+                tipo: m.type,
+                vehiculo: m.asset?.name
+            })) || [])}
+            - Estado Documentos: ${JSON.stringify(stats.documents?.map(d => ({
+                tipo: d.type,
+                vence: d.expirationDate,
+                vehiculo: d.asset?.name
+            })) || [])}
             
             Dame un resumen corto de 2-3 frases sobre cómo va el negocio. 
+            Menciona si hay mantenimientos recientes costosos o documentos por vencer.
             Si hay pérdidas, dame un consejo rápido. 
             Si hay ganancias, felicítame.
             `;
