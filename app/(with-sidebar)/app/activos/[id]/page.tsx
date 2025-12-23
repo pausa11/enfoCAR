@@ -9,6 +9,7 @@ import { ArrowLeft, FileText, Wrench } from "lucide-react";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/back-button";
 import SplitText from "@/components/SplitText";
 
 
@@ -89,12 +90,7 @@ export default async function AssetFinancesPage({ params }: { params: Promise<{ 
         <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">
 
             <div id="header" className="flex flex-col gap-4">
-                <Link href={asset.isBusinessAsset ? "/app/activos" : "/app/finanzas"}>
-                    <Button variant="ghost" className="gap-2 -ml-2 hover:bg-muted/50 hover:text-foreground">
-                        <ArrowLeft className="h-4 w-4" />
-                        {asset.isBusinessAsset ? "Volver a Mis Naves" : "Volver a Mis Finanzas"}
-                    </Button>
-                </Link>
+                <BackButton />
                 <div>
                     <SplitText
                         text={asset.name}

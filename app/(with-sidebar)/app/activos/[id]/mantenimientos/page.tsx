@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BackButton } from "@/components/back-button";
 import SplitText from "@/components/SplitText";
 import { MaintenanceList } from "@/components/maintenance-list";
 import { useEffect, useState } from "react";
@@ -61,10 +62,7 @@ export default function AssetMaintenancePage({ params }: { params: Promise<{ id:
     return (
         <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">
             <div id="header" className="flex flex-col gap-4">
-                <Button variant="ghost" className="gap-2 -ml-2 w-fit hover:bg-muted/50 hover:text-foreground" onClick={() => router.back()}>
-                    <ArrowLeft className="h-4 w-4" />
-                    Volver
-                </Button>
+                <BackButton />
                 <div>
                     <SplitText
                         text={`Mantenimientos de ${asset.name}`}
