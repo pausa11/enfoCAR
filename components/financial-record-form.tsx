@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Asset, MaintenanceType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -46,13 +46,9 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Determine if the preselected asset is a business asset
-    const preselectedAsset = assets.find(a => a.id === preselectedAssetId);
-    const isBusinessAsset = preselectedAsset?.isBusinessAsset ?? true;
-
     // Form state
     const [assetId, setAssetId] = useState(preselectedAssetId || "");
-    const [type, setType] = useState<"INCOME" | "EXPENSE">(isBusinessAsset ? "INCOME" : "EXPENSE");
+    const [type, setType] = useState<"INCOME" | "EXPENSE">("EXPENSE");
     const [amount, setAmount] = useState("");
     const [dateMode, setDateMode] = useState<"single" | "range">("single");
     const [startDate, setStartDate] = useState<Date>();
@@ -62,6 +58,17 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
     // Maintenance creation state
     const [createMaintenance, setCreateMaintenance] = useState(false);
     const [maintenanceType, setMaintenanceType] = useState<MaintenanceType>("CAMBIO_ACEITE_MOTOR");
+
+    // Determine if the selected asset is a business asset
+    const selectedAsset = assets.find(a => a.id === assetId);
+    const isBusinessAsset = selectedAsset?.isBusinessAsset ?? true;
+
+    // Update type when asset changes - personal vehicles can only have expenses
+    useEffect(() => {
+        if (assetId && !isBusinessAsset && type === "INCOME") {
+            setType("EXPENSE");
+        }
+    }, [assetId, isBusinessAsset, type]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
