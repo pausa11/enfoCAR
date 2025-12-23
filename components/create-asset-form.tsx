@@ -123,7 +123,6 @@ export function CreateAssetForm() {
             router.push("/app/activos");
         } catch (err) {
             setError(err instanceof Error ? err.message : "¡Uy! Algo salió mal al crear tu nave");
-        } finally {
             setLoading(false);
         }
     };
