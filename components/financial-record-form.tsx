@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Asset } from "@prisma/client";
+import { Asset, MaintenanceType } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Select,
     SelectContent,
@@ -14,7 +15,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/date-picker";
-import { TrendingUp, TrendingDown, Calendar } from "lucide-react";
+import { TrendingUp, TrendingDown, Calendar, Wrench } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Type for asset with Decimal converted to number for client components
@@ -27,6 +28,18 @@ interface FinancialRecordFormProps {
     preselectedAssetId?: string;
     onSuccess?: () => void;
 }
+
+const MAINTENANCE_TYPE_OPTIONS: { value: MaintenanceType; label: string }[] = [
+    { value: "CAMBIO_ACEITE_MOTOR", label: "Cambio de Aceite de Motor" },
+    { value: "CAMBIO_ACEITE_TRANSMISION", label: "Cambio de Aceite de Transmisión" },
+    { value: "CAMBIO_LLANTAS", label: "Cambio de Llantas" },
+    { value: "CAMBIO_FILTROS", label: "Cambio de Filtros" },
+    { value: "REVISION_FRENOS", label: "Revisión de Frenos" },
+    { value: "ALINEACION_BALANCEO", label: "Alineación y Balanceo" },
+    { value: "BATERIA", label: "Batería" },
+    { value: "REPUESTOS", label: "Repuestos" },
+    { value: "OTRO", label: "Otro" },
+];
 
 export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: FinancialRecordFormProps) {
     const router = useRouter();
@@ -45,6 +58,10 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
     const [startDate, setStartDate] = useState<Date>();
     const [endDate, setEndDate] = useState<Date>();
     const [description, setDescription] = useState("");
+
+    // Maintenance creation state
+    const [createMaintenance, setCreateMaintenance] = useState(false);
+    const [maintenanceType, setMaintenanceType] = useState<MaintenanceType>("CAMBIO_ACEITE_MOTOR");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -79,6 +96,14 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
                 return;
             }
 
+            // If creating maintenance for an expense, validate single date mode
+            if (createMaintenance && type === "EXPENSE" && dateMode === "range") {
+                setError("Para crear un mantenimiento, usa un solo día (no rango de fechas)");
+                setIsLoading(false);
+                return;
+            }
+
+            // First, create the financial record
             const response = await fetch("/api/financial-records", {
                 method: "POST",
                 headers: {
@@ -99,11 +124,47 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
                 throw new Error(data.error || "Error al crear el registro");
             }
 
+            const financialRecord = await response.json();
+
+            // If creating maintenance for an expense, create it and link it
+            if (createMaintenance && type === "EXPENSE") {
+                const maintenanceResponse = await fetch(`/api/assets/${assetId}/maintenance`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        type: maintenanceType,
+                        description: description || undefined,
+                        cost: cleanAmount,
+                        date: startDate.toISOString(),
+                        createExpense: false, // Don't create another expense
+                    }),
+                });
+
+                if (maintenanceResponse.ok) {
+                    const maintenanceData = await maintenanceResponse.json();
+                    // Link the financial record to the maintenance
+                    if (maintenanceData.maintenanceRecord) {
+                        await fetch(`/api/financial-records/${financialRecord.id}`, {
+                            method: "PATCH",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                maintenanceRecordId: maintenanceData.maintenanceRecord.id,
+                            }),
+                        });
+                    }
+                }
+            }
+
             // Reset form
             setAmount("");
             setStartDate(undefined);
             setEndDate(undefined);
             setDescription("");
+            setCreateMaintenance(false);
 
             // Refresh the page data
             router.refresh();
@@ -274,6 +335,49 @@ export function FinancialRecordForm({ assets, preselectedAssetId, onSuccess }: F
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </div>
+
+                    {/* Create Maintenance Option - Only for expenses */}
+                    {type === "EXPENSE" && dateMode === "single" && (
+                        <div className="space-y-3 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-900">
+                            <div className="flex items-center space-x-2">
+                                <Checkbox
+                                    id="createMaintenance"
+                                    checked={createMaintenance}
+                                    onCheckedChange={(checked) => setCreateMaintenance(checked as boolean)}
+                                />
+                                <div className="flex-1">
+                                    <Label htmlFor="createMaintenance" className="cursor-pointer font-medium flex items-center gap-2">
+                                        <Wrench className="h-4 w-4" />
+                                        Registrar como mantenimiento
+                                    </Label>
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        Se creará un registro de mantenimiento vinculado con este gasto
+                                    </p>
+                                </div>
+                            </div>
+
+                            {createMaintenance && (
+                                <div className="space-y-2 pt-2 border-t border-blue-200 dark:border-blue-900">
+                                    <Label htmlFor="maintenanceType">Tipo de Mantenimiento</Label>
+                                    <Select
+                                        value={maintenanceType}
+                                        onValueChange={(value) => setMaintenanceType(value as MaintenanceType)}
+                                    >
+                                        <SelectTrigger id="maintenanceType">
+                                            <SelectValue placeholder="Selecciona un tipo" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {MAINTENANCE_TYPE_OPTIONS.map((option) => (
+                                                <SelectItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     {/* Error Message */}
                     {error && (

@@ -94,6 +94,66 @@ export async function PUT(
     }
 }
 
+export async function PATCH(
+    request: Request,
+    props: { params: Promise<{ id: string }> }
+) {
+    const params = await props.params;
+    try {
+        // Verify authentication
+        const supabase = await createClient();
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) {
+            return NextResponse.json(
+                { error: "No autenticado" },
+                { status: 401 }
+            );
+        }
+
+        const { id } = params;
+
+        // Verify record exists and belongs to user
+        const existingRecord = await prisma.financialRecord.findFirst({
+            where: {
+                id,
+                asset: {
+                    userId: user.id,
+                },
+            },
+        });
+
+        if (!existingRecord) {
+            return NextResponse.json(
+                { error: "Registro no encontrado o no autorizado" },
+                { status: 404 }
+            );
+        }
+
+        // Parse request body
+        const body = await request.json();
+        const { maintenanceRecordId } = body;
+
+        // Update only the maintenanceRecordId
+        const updatedRecord = await prisma.financialRecord.update({
+            where: { id },
+            data: {
+                maintenanceRecordId: maintenanceRecordId || null,
+            },
+        });
+
+        return NextResponse.json(updatedRecord);
+    } catch (error) {
+        console.error("Error updating financial record:", error);
+        return NextResponse.json(
+            { error: "Error al actualizar el registro financiero" },
+            { status: 500 }
+        );
+    }
+}
+
 export async function DELETE(
     request: Request,
     props: { params: Promise<{ id: string }> }

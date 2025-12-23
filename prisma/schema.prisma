@@ -65,16 +65,18 @@ model AssetDocument {
 }
 
 model FinancialRecord {
-  id          String              @id @default(uuid())
-  amount      Decimal             @db.Decimal(10, 2)
-  type        FinancialRecordType
-  date        DateTime            @default(now())
-  endDate     DateTime?
-  description String?
-  assetId     String
-  asset       Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
+  id                  String              @id @default(uuid())
+  amount              Decimal             @db.Decimal(10, 2)
+  type                FinancialRecordType
+  date                DateTime            @default(now())
+  endDate             DateTime?
+  description         String?
+  assetId             String
+  asset               Asset               @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  maintenanceRecordId String?
+  maintenanceRecord   MaintenanceRecord?  @relation(fields: [maintenanceRecordId], references: [id], onDelete: SetNull)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
 }
 
 enum AssetType {
@@ -120,6 +122,7 @@ model MaintenanceRecord {
   notes                 String?
   assetId               String
   asset                 Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  financialRecords      FinancialRecord[]
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
 }

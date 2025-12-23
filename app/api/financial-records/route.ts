@@ -43,6 +43,14 @@ export async function GET(request: Request) {
                         type: true,
                     },
                 },
+                maintenanceRecord: {
+                    select: {
+                        id: true,
+                        type: true,
+                        description: true,
+                        date: true,
+                    },
+                },
             },
             orderBy: {
                 date: "desc",
@@ -76,7 +84,7 @@ export async function POST(request: Request) {
 
         // Parse request body
         const body = await request.json();
-        const { assetId, amount, type, date, endDate, description } = body;
+        const { assetId, amount, type, date, endDate, description, maintenanceRecordId } = body;
 
         // Validate required fields
         if (!assetId || !amount || !type || !date) {
@@ -117,6 +125,23 @@ export async function POST(request: Request) {
             );
         }
 
+        // If maintenanceRecordId is provided, verify it exists and belongs to the same asset
+        if (maintenanceRecordId) {
+            const maintenance = await prisma.maintenanceRecord.findFirst({
+                where: {
+                    id: maintenanceRecordId,
+                    assetId: assetId,
+                },
+            });
+
+            if (!maintenance) {
+                return NextResponse.json(
+                    { error: "Mantenimiento no encontrado o no pertenece al mismo vehículo" },
+                    { status: 404 }
+                );
+            }
+        }
+
         // Create financial record
         const record = await prisma.financialRecord.create({
             data: {
@@ -126,6 +151,7 @@ export async function POST(request: Request) {
                 date: new Date(date),
                 endDate: endDate ? new Date(endDate) : null,
                 description,
+                maintenanceRecordId: maintenanceRecordId || null,
             },
             include: {
                 asset: {
@@ -135,6 +161,13 @@ export async function POST(request: Request) {
                         type: true,
                     },
                 },
+                maintenanceRecord: maintenanceRecordId ? {
+                    select: {
+                        id: true,
+                        type: true,
+                        description: true,
+                    },
+                } : false,
             },
         });
 

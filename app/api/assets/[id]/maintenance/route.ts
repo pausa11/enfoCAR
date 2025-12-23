@@ -32,6 +32,14 @@ export async function GET(
         where: {
             assetId: id,
         },
+        include: {
+            financialRecords: {
+                select: {
+                    id: true,
+                    amount: true,
+                },
+            },
+        },
         orderBy: {
             date: "desc",
         },
@@ -66,9 +74,9 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { type, description, cost, date, mileage, nextServiceDate, nextServiceMileage, notes } = body;
+    const { type, description, cost, date, mileage, nextServiceDate, nextServiceMileage, notes, createExpense = true } = body;
 
-    // Create maintenance record
+    // Create maintenance record and optionally create linked expense
     const maintenanceRecord = await prisma.maintenanceRecord.create({
         data: {
             type,
@@ -83,5 +91,24 @@ export async function POST(
         },
     });
 
-    return NextResponse.json(maintenanceRecord);
+    // Automatically create a linked financial record (expense) if requested
+    let financialRecord = null;
+    if (createExpense) {
+        financialRecord = await prisma.financialRecord.create({
+            data: {
+                amount: cost,
+                type: "EXPENSE",
+                date: new Date(date),
+                description: description || `Mantenimiento: ${type}`,
+                assetId: id,
+                maintenanceRecordId: maintenanceRecord.id,
+            },
+        });
+    }
+
+    return NextResponse.json({
+        maintenanceRecord,
+        financialRecord,
+        message: createExpense ? "Mantenimiento y gasto registrados exitosamente" : "Mantenimiento registrado exitosamente"
+    });
 }

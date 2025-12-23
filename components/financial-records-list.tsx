@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { Edit, Trash2, TrendingUp, TrendingDown, Calendar } from "lucide-react";
+import { Edit, Trash2, TrendingUp, TrendingDown, Calendar, Wrench } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -26,6 +27,11 @@ interface FinancialRecord {
         name: string;
         type: string;
     };
+    maintenanceRecord?: {
+        id: string;
+        type: string;
+        description?: string | null;
+    } | null;
 }
 
 interface FinancialRecordsListProps {
@@ -99,8 +105,8 @@ export function FinancialRecordsList({ records, showAssetName = false }: Financi
                     <Card
                         key={record.id}
                         className={`border-l-4 ${isIncome
-                                ? "border-l-green-500 bg-green-50/50 dark:bg-green-950/20"
-                                : "border-l-red-500 bg-red-50/50 dark:bg-red-950/20"
+                            ? "border-l-green-500 bg-green-50/50 dark:bg-green-950/20"
+                            : "border-l-red-500 bg-red-50/50 dark:bg-red-950/20"
                             }`}
                     >
                         <CardContent className="p-4">
@@ -115,8 +121,8 @@ export function FinancialRecordsList({ records, showAssetName = false }: Financi
                                         )}
                                         <span
                                             className={`text-xl font-bold ${isIncome
-                                                    ? "text-green-700 dark:text-green-400"
-                                                    : "text-red-700 dark:text-red-400"
+                                                ? "text-green-700 dark:text-green-400"
+                                                : "text-red-700 dark:text-red-400"
                                                 }`}
                                         >
                                             {isIncome ? "+" : "-"} {formatCurrency(Number(record.amount))}
@@ -147,6 +153,14 @@ export function FinancialRecordsList({ records, showAssetName = false }: Financi
                                         <p className="text-sm text-muted-foreground">
                                             {record.description}
                                         </p>
+                                    )}
+
+                                    {/* Maintenance Link Badge */}
+                                    {record.maintenanceRecord && (
+                                        <Badge variant="outline" className="gap-1 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-900 text-blue-700 dark:text-blue-400">
+                                            <Wrench className="h-3 w-3" />
+                                            Vinculado a mantenimiento
+                                        </Badge>
                                     )}
                                 </div>
 

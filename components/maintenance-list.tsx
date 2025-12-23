@@ -3,13 +3,18 @@
 import { MaintenanceRecord, MaintenanceType } from "@prisma/client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Wrench, AlertCircle, CheckCircle, Clock, Droplet, Disc, Filter, CircleDot, AlignVerticalJustifyCenter, Battery, Package, FileText } from "lucide-react";
+import { Plus, Wrench, AlertCircle, CheckCircle, Clock, Droplet, Disc, Filter, CircleDot, AlignVerticalJustifyCenter, Battery, Package, FileText, DollarSign } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { MaintenanceForm } from "@/components/maintenance-form";
 import { ParticleCard } from "@/components/MagicBento";
 
+interface MaintenanceWithFinancials extends MaintenanceRecord {
+    financialRecords?: { id: string; amount: number }[];
+}
+
 interface MaintenanceListProps {
     assetId: string;
-    maintenanceRecords: MaintenanceRecord[];
+    maintenanceRecords: MaintenanceWithFinancials[];
 }
 
 const MAINTENANCE_TYPE_LABELS: Record<MaintenanceType, string> = {
@@ -197,6 +202,16 @@ export function MaintenanceList({ assetId, maintenanceRecords }: MaintenanceList
                                             </div>
                                         )}
                                     </div>
+
+                                    {/* Expense Link Badge */}
+                                    {maintenance.financialRecords && maintenance.financialRecords.length > 0 && (
+                                        <div className="border-t pt-2 mt-2">
+                                            <Badge variant="outline" className="gap-1 bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-900 text-green-700 dark:text-green-400">
+                                                <DollarSign className="h-3 w-3" />
+                                                Gasto registrado
+                                            </Badge>
+                                        </div>
+                                    )}
 
                                     <div className="mt-4 pt-4 border-t">
                                         <Button

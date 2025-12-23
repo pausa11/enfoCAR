@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Dialog,
     DialogContent,
@@ -57,6 +58,7 @@ export function MaintenanceForm({ assetId, maintenance, open, onOpenChange }: Ma
         nextServiceDate: "",
         nextServiceMileage: "",
         notes: "",
+        createExpense: true, // Default to creating expense
     });
 
     useEffect(() => {
@@ -72,6 +74,7 @@ export function MaintenanceForm({ assetId, maintenance, open, onOpenChange }: Ma
                     : "",
                 nextServiceMileage: maintenance.nextServiceMileage?.toString() || "",
                 notes: maintenance.notes || "",
+                createExpense: false, // Don't create expense when editing
             });
         } else {
             setFormData({
@@ -83,6 +86,7 @@ export function MaintenanceForm({ assetId, maintenance, open, onOpenChange }: Ma
                 nextServiceDate: "",
                 nextServiceMileage: "",
                 notes: "",
+                createExpense: true, // Create expense by default for new records
             });
         }
     }, [maintenance]);
@@ -101,6 +105,7 @@ export function MaintenanceForm({ assetId, maintenance, open, onOpenChange }: Ma
                 nextServiceDate: formData.nextServiceDate || undefined,
                 nextServiceMileage: formData.nextServiceMileage ? parseInt(formData.nextServiceMileage) : undefined,
                 notes: formData.notes || undefined,
+                createExpense: formData.createExpense,
             };
 
             if (maintenance) {
@@ -273,6 +278,24 @@ export function MaintenanceForm({ assetId, maintenance, open, onOpenChange }: Ma
                                 rows={3}
                             />
                         </div>
+
+                        {!maintenance && (
+                            <div className="flex items-center space-x-2 p-4 bg-green-50 dark:bg-green-950/20 rounded-lg border border-green-200 dark:border-green-900">
+                                <Checkbox
+                                    id="createExpense"
+                                    checked={formData.createExpense}
+                                    onCheckedChange={(checked) => setFormData({ ...formData, createExpense: checked as boolean })}
+                                />
+                                <div className="flex-1">
+                                    <Label htmlFor="createExpense" className="cursor-pointer font-medium">
+                                        Registrar como gasto automáticamente
+                                    </Label>
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        Se creará un registro de gasto vinculado con este mantenimiento
+                                    </p>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     <DialogFooter className="gap-2">
