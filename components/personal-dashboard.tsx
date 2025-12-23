@@ -1,9 +1,10 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { StatCard } from "@/components/ui/stat-card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Car } from "lucide-react";
+import { Car, TrendingUp, TrendingDown } from "lucide-react";
 import { PersonalVehicleDashboardAnalysis } from "@/components/personal-vehicle-dashboard-analysis";
 import SplitText from "@/components/SplitText";
 import { Asset, FinancialRecord } from "@prisma/client";
@@ -76,70 +77,32 @@ export function PersonalDashboard({
             />
 
             <div id="summary" className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Vehículos Personales</CardTitle>
-                        <Car className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{vehicles.length}</div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                            Total registrados
-                        </p>
-                    </CardContent>
-                </Card>
+                <StatCard
+                    title="Vehículos Personales"
+                    value={vehicles.length.toString()}
+                    subtitle="Total registrados"
+                    icon={Car}
+                    colorClass="text-blue-600 dark:text-blue-400"
+                    bgClass="from-blue-500/10 via-blue-500/5 to-transparent"
+                />
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Gasto Total</CardTitle>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            className="h-4 w-4 text-muted-foreground"
-                        >
-                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                        </svg>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                            {formatCurrency(totalExpenses)}
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                            Inversión en tus vehículos
-                        </p>
-                    </CardContent>
-                </Card>
+                <StatCard
+                    title="Gasto Total"
+                    value={formatCurrency(totalExpenses)}
+                    subtitle="Inversión en tus vehículos"
+                    icon={TrendingDown}
+                    colorClass="text-blue-600 dark:text-blue-400"
+                    bgClass="from-blue-500/10 via-blue-500/5 to-transparent"
+                />
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Promedio Mensual</CardTitle>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            className="h-4 w-4 text-muted-foreground"
-                        >
-                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                        </svg>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                            {formatCurrency(avgMonthlyExpense)}
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                            Gasto promedio por mes
-                        </p>
-                    </CardContent>
-                </Card>
+                <StatCard
+                    title="Promedio Mensual"
+                    value={formatCurrency(avgMonthlyExpense)}
+                    subtitle="Gasto promedio por mes"
+                    icon={TrendingUp} // Using TrendingUp for average
+                    colorClass="text-purple-600 dark:text-purple-400"
+                    bgClass="from-purple-500/10 via-purple-500/5 to-transparent"
+                />
             </div>
 
             {sortedMonths.length > 0 && (

@@ -1,14 +1,8 @@
 "use client";
 
 import { Asset, FinancialRecord } from "@prisma/client";
+import { StatCard } from "@/components/ui/stat-card";
 import { TrendingUp, TrendingDown, DollarSign, Car, User, Wallet } from "lucide-react";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
 import { useEffect, useState } from "react";
 
 // Type for asset with financial records
@@ -124,128 +118,68 @@ export function GlobalFinancialKPIs({ assets }: GlobalFinancialKPIsProps) {
         return (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                    <Card key={i} className="animate-pulse">
-                        <CardHeader className="pb-3">
-                            <div className="h-4 bg-muted rounded w-1/2 mb-2"></div>
-                            <div className="h-8 bg-muted rounded w-3/4"></div>
-                        </CardHeader>
-                    </Card>
+                    <div key={i} className="h-32 rounded-xl bg-muted/20 animate-pulse" />
                 ))}
             </div>
         );
     }
 
-    const hasDriverPayments = stats.totalDriverEarnings > 0;
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {/* Total Income (Gross) */}
-            <Card className="border-l-4 border-l-green-500 hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                    <CardDescription className="flex items-center gap-2 text-green-600 dark:text-green-500">
-                        <TrendingUp className="h-4 w-4" />
-                        Total Generado
-                    </CardDescription>
-                    <CardTitle className="text-3xl font-bold text-green-700 dark:text-green-400">
-                        {formatCurrency(stats.totalIncome)}
-                    </CardTitle>
-                    <p className="text-xs text-muted-foreground mt-1">Ingresos brutos totales</p>
-                </CardHeader>
-            </Card>
+            <StatCard
+                title="Total Generado"
+                value={formatCurrency(stats.totalIncome)}
+                subtitle="Ingresos brutos totales"
+                icon={TrendingUp}
+                colorClass="text-emerald-600 dark:text-emerald-400"
+                bgClass="from-emerald-500/10 via-emerald-500/5 to-transparent"
+            />
 
-            {/* User Income (with ownership %) */}
-            <Card className="border-l-4 border-l-emerald-500 hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                    <CardDescription className="flex items-center gap-2 text-emerald-600 dark:text-emerald-500">
-                        <TrendingUp className="h-4 w-4" />
-                        Tu Ingreso
-                    </CardDescription>
-                    <CardTitle className="text-3xl font-bold text-emerald-700 dark:text-emerald-400">
-                        {formatCurrency(stats.userNetIncome)}
-                    </CardTitle>
-                    <p className="text-xs text-muted-foreground mt-1">Según tu % de propiedad</p>
-                </CardHeader>
-            </Card>
+            <StatCard
+                title="Tu Ingreso"
+                value={formatCurrency(stats.userNetIncome)}
+                subtitle="Según tu % de propiedad"
+                icon={User}
+                colorClass="text-teal-600 dark:text-teal-400"
+                bgClass="from-teal-500/10 via-teal-500/5 to-transparent"
+            />
 
-            {/* Total Expense (Gross) */}
-            <Card className="border-l-4 border-l-red-500 hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                    <CardDescription className="flex items-center gap-2 text-red-600 dark:text-red-500">
-                        <TrendingDown className="h-4 w-4" />
-                        Total Gastado
-                    </CardDescription>
-                    <CardTitle className="text-3xl font-bold text-red-700 dark:text-red-400">
-                        {formatCurrency(stats.totalExpense)}
-                    </CardTitle>
-                    <p className="text-xs text-muted-foreground mt-1">Gastos brutos totales</p>
-                </CardHeader>
-            </Card>
+            <StatCard
+                title="Total Gastado"
+                value={formatCurrency(stats.totalExpense)}
+                subtitle="Gastos brutos totales"
+                icon={TrendingDown}
+                colorClass="text-rose-600 dark:text-rose-400"
+                bgClass="from-rose-500/10 via-rose-500/5 to-transparent"
+            />
 
-            {/* User Expense (with ownership %) */}
-            <Card className="border-l-4 border-l-orange-500 hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                    <CardDescription className="flex items-center gap-2 text-orange-600 dark:text-orange-500">
-                        <TrendingDown className="h-4 w-4" />
-                        Tu Gasto
-                    </CardDescription>
-                    <CardTitle className="text-3xl font-bold text-orange-700 dark:text-orange-400">
-                        {formatCurrency(stats.userNetExpense)}
-                    </CardTitle>
-                    <p className="text-xs text-muted-foreground mt-1">Según tu % de propiedad</p>
-                </CardHeader>
-            </Card>
+            <StatCard
+                title="Tu Gasto"
+                value={formatCurrency(stats.userNetExpense)}
+                subtitle="Según tu % de propiedad"
+                icon={User}
+                colorClass="text-orange-600 dark:text-orange-400"
+                bgClass="from-orange-500/10 via-orange-500/5 to-transparent"
+            />
 
-            {/* Net Profit (Gross) */}
-            <Card
-                className={`border-l-4 hover:shadow-lg transition-shadow ${stats.balance >= 0
-                        ? "border-l-blue-500"
-                        : "border-l-rose-500"
-                    }`}
-            >
-                <CardHeader className="pb-3">
-                    <CardDescription
-                        className={`flex items-center gap-2 ${stats.balance >= 0
-                                ? "text-blue-600 dark:text-blue-500"
-                                : "text-rose-600 dark:text-rose-500"
-                            }`}
-                    >
-                        <DollarSign className="h-4 w-4" />
-                        Utilidad Neta
-                    </CardDescription>
-                    <CardTitle
-                        className={`text-3xl font-bold ${stats.balance >= 0
-                                ? "text-blue-700 dark:text-blue-400"
-                                : "text-rose-700 dark:text-rose-400"
-                            }`}
-                    >
-                        {formatCurrency(Math.abs(stats.balance))}
-                    </CardTitle>
-                    <p className="text-xs text-muted-foreground mt-1">
-                        Ingresos - Gastos
-                    </p>
-                </CardHeader>
-            </Card>
+            <StatCard
+                title="Utilidad Neta"
+                value={formatCurrency(Math.abs(stats.balance))}
+                subtitle="Ingresos - Gastos"
+                icon={DollarSign}
+                colorClass={stats.balance >= 0 ? "text-blue-600 dark:text-blue-400" : "text-red-600 dark:text-red-400"}
+                bgClass={stats.balance >= 0 ? "from-blue-500/10 via-blue-500/5 to-transparent" : "from-red-500/10 via-red-500/5 to-transparent"}
+            />
 
-            {/* User Net Profit (with ownership percentage) */}
-            <Card className="border-l-4 border-l-purple-500 hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-3">
-                    <CardDescription className="flex items-center gap-2 text-purple-600 dark:text-purple-500">
-                        <Wallet className="h-4 w-4" />
-                        Tu Parte
-                    </CardDescription>
-                    <CardTitle
-                        className={`text-3xl font-bold ${stats.userNetProfit >= 0
-                                ? "text-purple-700 dark:text-purple-400"
-                                : "text-rose-700 dark:text-rose-400"
-                            }`}
-                    >
-                        {formatCurrency(Math.abs(stats.userNetProfit))}
-                    </CardTitle>
-                    <p className="text-xs text-muted-foreground mt-1">
-                        Tu ingreso - Tu gasto
-                    </p>
-                </CardHeader>
-            </Card>
+            <StatCard
+                title="Tu Parte (Utilidad)"
+                value={formatCurrency(Math.abs(stats.userNetProfit))}
+                subtitle="Tu ingreso - Tu gasto"
+                icon={Wallet}
+                colorClass={stats.userNetProfit >= 0 ? "text-violet-600 dark:text-violet-400" : "text-red-600 dark:text-red-400"}
+                bgClass={stats.userNetProfit >= 0 ? "from-violet-500/10 via-violet-500/5 to-transparent" : "from-red-500/10 via-red-500/5 to-transparent"}
+            />
         </div>
     );
 }

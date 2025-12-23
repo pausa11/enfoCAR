@@ -1,13 +1,7 @@
 "use client";
 
 import { TrendingUp, TrendingDown, DollarSign, User } from "lucide-react";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
+import { StatCard } from "@/components/ui/stat-card";
 
 interface FinancialRecord {
     id: string;
@@ -77,101 +71,73 @@ export function FinancialSummary({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* Total Income - Only show for business assets */}
             {isBusinessAsset && (
-                <Card className="border-l-4 border-l-green-500">
-                    <CardHeader className="pb-3">
-                        <CardDescription className="flex items-center gap-2">
-                            <TrendingUp className="h-4 w-4 text-green-600" />
-                            Total Generado
-                        </CardDescription>
-                        <CardTitle className="text-3xl text-green-700 dark:text-green-400">
-                            {formatCurrency(totalIncome)}
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
+                <StatCard
+                    title="Total Generado"
+                    value={formatCurrency(totalIncome)}
+                    subtitle="Ingresos brutos"
+                    icon={TrendingUp}
+                    colorClass="text-green-600 dark:text-green-400"
+                    bgClass="from-green-500/10 via-green-500/5 to-transparent"
+                />
             )}
 
             {/* Total Expense */}
-            <Card className="border-l-4 border-l-red-500">
-                <CardHeader className="pb-3">
-                    <CardDescription className="flex items-center gap-2">
-                        <TrendingDown className="h-4 w-4 text-red-600" />
-                        Total Gastado
-                    </CardDescription>
-                    <CardTitle className="text-3xl text-red-700 dark:text-red-400">
-                        {formatCurrency(totalExpense)}
-                    </CardTitle>
-                </CardHeader>
-            </Card>
+            <StatCard
+                title="Total Gastado"
+                value={formatCurrency(totalExpense)}
+                subtitle="Gastos brutos"
+                icon={TrendingDown}
+                colorClass="text-red-600 dark:text-red-400"
+                bgClass="from-red-500/10 via-red-500/5 to-transparent"
+            />
 
             {/* Driver Earnings (if driver exists) */}
             {hasDriver && (
-                <Card className="border-l-4 border-l-amber-500">
-                    <CardHeader className="pb-3">
-                        <CardDescription className="flex items-center gap-2">
-                            <User className="h-4 w-4 text-amber-600" />
-                            {driverPaymentMode === 'PERCENTAGE'
-                                ? `Ganancia del Conductor (${driverPercentage}%)`
-                                : 'Salario del Conductor'
-                            }
-                        </CardDescription>
-                        <CardTitle className="text-3xl text-amber-700 dark:text-amber-400">
-                            {formatCurrency(driverEarnings)}
-                        </CardTitle>
-                        {driverName && (
-                            <p className="text-xs text-muted-foreground mt-1">
-                                {driverName}
-                            </p>
-                        )}
-                    </CardHeader>
-                </Card>
+                <StatCard
+                    title={driverPaymentMode === 'PERCENTAGE'
+                        ? `Ganancia del Conductor (${driverPercentage}%)`
+                        : 'Salario del Conductor'
+                    }
+                    value={formatCurrency(driverEarnings)}
+                    subtitle={driverName ? driverName : undefined}
+                    icon={User}
+                    colorClass="text-amber-600 dark:text-amber-400"
+                    bgClass="from-amber-500/10 via-amber-500/5 to-transparent"
+                />
             )}
 
             {/* User Share (if not 100% ownership OR driver exists) */}
             {(ownershipPercentage < 100 || hasDriver) && (
-                <Card className="border-l-4 border-l-purple-500">
-                    <CardHeader className="pb-3">
-                        <CardDescription className="flex items-center gap-2">
-                            <DollarSign className="h-4 w-4 text-purple-600" />
-                            Tu Ganancia ({ownershipPercentage}%)
-                        </CardDescription>
-                        <CardTitle className="text-3xl text-purple-700 dark:text-purple-400">
-                            {formatCurrency(userEarnings)}
-                        </CardTitle>
-                    </CardHeader>
-                </Card>
+                <StatCard
+                    title={`Tu Ganancia (${ownershipPercentage}%)`}
+                    value={formatCurrency(userEarnings)}
+                    icon={DollarSign}
+                    colorClass="text-purple-600 dark:text-purple-400"
+                    bgClass="from-purple-500/10 via-purple-500/5 to-transparent"
+                />
             )}
 
             {/* Net Profit/Loss (after driver share) - Only show for business assets */}
             {isBusinessAsset && (
-                <Card
-                    className={`border-l-4 ${netProfitAfterDriver >= 0
-                        ? "border-l-blue-500"
-                        : "border-l-orange-500"
-                        }`}
-                >
-                    <CardHeader className="pb-3">
-                        <CardDescription className="flex items-center gap-2">
-                            <DollarSign className="h-4 w-4" />
-                            {netProfitAfterDriver >= 0 ? "Ganancia Neta" : "Pérdida Neta"}
-                        </CardDescription>
-                        <CardTitle
-                            className={`text-3xl ${netProfitAfterDriver >= 0
-                                ? "text-blue-700 dark:text-blue-400"
-                                : "text-orange-700 dark:text-orange-400"
-                                }`}
-                        >
-                            {formatCurrency(Math.abs(netProfitAfterDriver))}
-                        </CardTitle>
-                        {hasDriver && (
-                            <p className="text-xs text-muted-foreground mt-1">
-                                {driverPaymentMode === 'PERCENTAGE'
-                                    ? `Después del ${driverPercentage}% del conductor`
-                                    : 'Después del salario del conductor'
-                                }
-                            </p>
-                        )}
-                    </CardHeader>
-                </Card>
+                <StatCard
+                    title={netProfitAfterDriver >= 0 ? "Ganancia Neta" : "Pérdida Neta"}
+                    value={formatCurrency(Math.abs(netProfitAfterDriver))}
+                    subtitle={hasDriver
+                        ? (driverPaymentMode === 'PERCENTAGE'
+                            ? `Después del ${driverPercentage}% del conductor`
+                            : 'Después del salario del conductor')
+                        : undefined
+                    }
+                    icon={DollarSign}
+                    colorClass={netProfitAfterDriver >= 0
+                        ? "text-blue-600 dark:text-blue-400"
+                        : "text-orange-600 dark:text-orange-400"
+                    }
+                    bgClass={netProfitAfterDriver >= 0
+                        ? "from-blue-500/10 via-blue-500/5 to-transparent"
+                        : "from-orange-500/10 via-orange-500/5 to-transparent"
+                    }
+                />
             )}
         </div>
     );

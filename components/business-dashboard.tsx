@@ -1,9 +1,9 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { StatCard } from "@/components/ui/stat-card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Car } from "lucide-react";
+import { Car, TrendingUp, TrendingDown } from "lucide-react";
 import { DashboardAnalysis } from "@/components/dashboard-analysis";
 import { FinancialCharts } from "@/components/financial-charts";
 import SplitText from "@/components/SplitText";
@@ -93,107 +93,51 @@ export function BusinessDashboard({
 
             {/* Summary Cards */}
             <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total de Naves</CardTitle>
-                        <Car className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent id="stats-total-assets">
-                        <div className="text-2xl font-bold">{assetCount}</div>
-                        <p className="text-xs text-muted-foreground mt-1">
-                            {businessAssetCount} de negocio
-                        </p>
-                    </CardContent>
-                </Card>
+                <StatCard
+                    title="Total de Naves"
+                    value={assetCount.toString()}
+                    subtitle={`${businessAssetCount} de negocio`}
+                    icon={Car}
+                    colorClass="text-blue-600 dark:text-blue-400"
+                    bgClass="from-blue-500/10 via-blue-500/5 to-transparent"
+                />
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Margen de Ganancia</CardTitle>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            className="h-4 w-4 text-muted-foreground"
-                        >
-                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                        </svg>
-                    </CardHeader>
-                    <CardContent>
-                        <div className={`text-2xl font-bold ${profitMargin >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                            {formatPercentage(profitMargin)}
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                            Eficiencia de tu operación
-                        </p>
-                    </CardContent>
-                </Card>
+                <StatCard
+                    title="Margen de Ganancia"
+                    value={formatPercentage(profitMargin)}
+                    subtitle="Eficiencia de tu operación"
+                    icon={TrendingUp} // Using TrendingUp as generic icon for margin
+                    colorClass={profitMargin >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}
+                    bgClass={profitMargin >= 0 ? "from-green-500/10 via-green-500/5 to-transparent" : "from-red-500/10 via-red-500/5 to-transparent"}
+                />
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Lo que entra (Ingresos)</CardTitle>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            className="h-4 w-4 text-muted-foreground"
-                        >
-                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                        </svg>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-green-600">
-                            {formatCurrency(totalIncome)}
-                        </div>
-                    </CardContent>
-                </Card>
+                <StatCard
+                    title="Lo que entra (Ingresos)"
+                    value={formatCurrency(totalIncome)}
+                    icon={TrendingUp}
+                    colorClass="text-green-600 dark:text-green-400"
+                    bgClass="from-green-500/10 via-green-500/5 to-transparent"
+                />
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Lo que sale (Gastos)</CardTitle>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            className="h-4 w-4 text-muted-foreground"
-                        >
-                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                        </svg>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-red-600">
-                            {formatCurrency(totalExpenses)}
-                        </div>
-                    </CardContent>
-                </Card>
+                <StatCard
+                    title="Lo que sale (Gastos)"
+                    value={formatCurrency(totalExpenses)}
+                    icon={TrendingDown}
+                    colorClass="text-red-600 dark:text-red-400"
+                    bgClass="from-red-500/10 via-red-500/5 to-transparent"
+                />
             </div>
 
             {/* Net Income Highlight */}
             <div className="grid gap-4 grid-cols-1">
-                <Card id="net-income-card" className={`${netIncome >= 0 ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-800" : "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-800"}`}>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-lg">Utilidad Neta (Lo que te queda libre)</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className={`text-4xl font-bold ${netIncome >= 0 ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"}`}>
-                            {formatCurrency(netIncome)}
-                        </div>
-                        <p className="text-muted-foreground mt-1">
-                            Ingresos - Gastos
-                        </p>
-                    </CardContent>
-                </Card>
+                <StatCard
+                    title="Utilidad Neta (Lo que te queda libre)"
+                    value={formatCurrency(netIncome)}
+                    subtitle="Ingresos - Gastos"
+                    icon={TrendingUp} // Using TrendingUp generic
+                    colorClass={netIncome >= 0 ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"}
+                    bgClass={netIncome >= 0 ? "from-green-500/10 via-green-500/5 to-transparent" : "from-red-500/10 via-red-500/5 to-transparent"}
+                />
             </div>
 
             {/* Visual Charts */}
