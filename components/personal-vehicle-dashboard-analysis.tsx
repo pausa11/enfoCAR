@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RefreshCw, Brain } from "lucide-react";
-import { Button } from '@/components/ui/button';
+import { AnalysisCard } from '@/components/analysis-card';
 import ShinyText from '@/components/ShinyText';
 import { Asset, FinancialRecord } from "@prisma/client";
 
@@ -169,104 +167,18 @@ export function PersonalVehicleDashboardAnalysis({
     return (
         <div className="flex flex-col gap-6">
             {vehicles.length > 0 && (
-                <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-purple-200 dark:border-purple-800">
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-lg font-medium flex items-center gap-2 text-purple-800 dark:text-purple-300">
-                            <ShinyText
-                                text="Tu experto en motores dice:"
-                                className=""
-                                speed={3}
-                            />
-                        </CardTitle>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={handleRefresh}
-                            disabled={isLoading}
-                            className="h-8 w-8 hover:bg-purple-100 dark:hover:bg-purple-900"
-                            title={usingCache ? "Actualizar análisis (usando cache)" : "Actualizar análisis"}
-                        >
-                            <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-                        </Button>
-                    </CardHeader>
-                    <CardContent>
-                        {analysis ? (
-                            <div className="text-sm sm:text-base leading-relaxed space-y-4">
-                                {analysis.split('\n').map((line, i) => {
-                                    // Handle bold text with **
-                                    const parts = line.split('**');
-                                    const formattedLine = parts.map((part, index) =>
-                                        index % 2 === 1 ? <strong key={index} className="font-bold">{part}</strong> : part
-                                    );
-
-                                    // Handle bullet points
-                                    if (line.trim().startsWith('*') || line.trim().startsWith('-')) {
-                                        return (
-                                            <div key={i} className="flex gap-2 ml-4">
-                                                <span className="text-primary">•</span>
-
-                                                <div className='flex-1'>{
-                                                    parts.map((part, index) => {
-                                                        // Clean the first part if it has the bullet
-                                                        if (index === 0) return part.replace(/^[\*\-]\s*/, '');
-                                                        return index % 2 === 1 ? <strong key={index} className="font-bold text-foreground">{part}</strong> : part
-                                                    })
-                                                }</div>
-                                            </div>
-                                        );
-                                    }
-
-                                    // Handle numbered lists
-                                    if (/^\d+\./.test(line.trim())) {
-                                        return (
-                                            <div key={i} className="flex gap-2 ml-4">
-                                                <span className="font-bold text-primary">{line.trim().split('.')[0]}.</span>
-                                                <div className='flex-1'>{
-                                                    parts.map((part, index) => {
-                                                        if (index === 0) return part.replace(/^\d+\.\s*/, '');
-                                                        return index % 2 === 1 ? <strong key={index} className="font-bold text-foreground">{part}</strong> : part
-                                                    })
-                                                }</div>
-                                            </div>
-                                        );
-                                    }
-
-                                    // Empty lines
-                                    if (!line.trim()) return <br key={i} />;
-
-                                    // Regular paragraphs
-                                    return <p key={i}>{formattedLine}</p>;
-                                })}
-
-                                {usingCache && (
-                                    <div className="mt-2 flex justify-end" title="Análisis en memoria">
-                                        <Brain className="h-3 w-3 text-muted-foreground/50" />
-                                    </div>
-                                )}
-                            </div>
-                        ) : isLoading ? (
-                            <div className="flex items-center gap-2 text-sm">
-                                <ShinyText
-                                    text="Revisando el motor..."
-                                    className="animate-pulse"
-                                    speed={2}
-                                />
-                            </div>
-                        ) : error ? (
-                            <ShinyText
-                                text="No se pudo cargar el análisis. Intenta de nuevo."
-                                className="text-sm text-red-600 dark:text-red-400"
-                                speed={3}
-                            />
-                        ) : (
-                            <ShinyText
-                                text="Esperando datos para analizar..."
-                                className="text-sm text-muted-foreground"
-                                speed={2}
-                            />
-                        )}
-                    </CardContent>
-                </Card>
+                <AnalysisCard
+                    title="Tu experto en motores dice:"
+                    analysis={analysis}
+                    isLoading={isLoading}
+                    error={error}
+                    usingCache={usingCache}
+                    onRefresh={handleRefresh}
+                    loadingText="Revisando el motor..."
+                    cardClassName="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-purple-200 dark:border-purple-800"
+                    titleClassName="text-purple-800 dark:text-purple-300"
+                    refreshButtonClassName="hover:bg-purple-100 dark:hover:bg-purple-900"
+                />
             )}
         </div>
     );
