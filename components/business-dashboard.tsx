@@ -63,7 +63,7 @@ export function BusinessDashboard({
                     <SplitText
                         text="Mi Tablero de Negocio"
                         tag="h2"
-                        className="text-2xl sm:text-3xl font-bold"
+                        className="text-4xl sm:text-5xl font-bold"
                         delay={100}
                         duration={0.6}
                         ease="power3.out"
@@ -74,7 +74,7 @@ export function BusinessDashboard({
                         rootMargin="-100px"
                         textAlign="left"
                     />
-                    <p className="text-sm sm:text-base text-muted-foreground">
+                    <p className="text-base sm:text-lg text-muted-foreground">
                         ¡Todo bien, {userEmail}! Aquí tienes el resumen de la jugada.
                     </p>
                 </div>

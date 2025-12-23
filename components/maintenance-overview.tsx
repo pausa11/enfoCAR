@@ -194,8 +194,8 @@ export function MaintenanceOverview({ maintenanceRecords, assets }: MaintenanceO
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold mb-2">Mantenimientos</h1>
-                    <p className="text-muted-foreground">
+                    <h1 className="text-4xl sm:text-5xl font-bold mb-2">Mantenimientos</h1>
+                    <p className="text-lg text-muted-foreground">
                         Vista general de todos los mantenimientos de tus vehículos
                     </p>
                 </div>

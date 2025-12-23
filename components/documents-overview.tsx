@@ -177,8 +177,8 @@ export function DocumentsOverview({ documents, assets }: DocumentsOverviewProps)
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold mb-2">Mis Documentos</h1>
-                    <p className="text-muted-foreground">
+                    <h1 className="text-4xl sm:text-5xl font-bold mb-2">Mis Documentos</h1>
+                    <p className="text-lg text-muted-foreground">
                         Vista general de todos los documentos de tus vehículos
                     </p>
                 </div>

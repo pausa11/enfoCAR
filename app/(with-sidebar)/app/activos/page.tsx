@@ -63,7 +63,7 @@ export default async function AssetsPage() {
                     <SplitText
                         text="Mis Naves"
                         tag="h1"
-                        className="text-2xl sm:text-3xl font-bold"
+                        className="text-4xl font-bold"
                         delay={100}
                         duration={0.6}
                         ease="power3.out"
@@ -74,7 +74,7 @@ export default async function AssetsPage() {
                         rootMargin="-100px"
                         textAlign="left"
                     />
-                    <p className="text-sm sm:text-base text-muted-foreground">
+                    <p className="text-base sm:text-lg text-muted-foreground">
                         Tus máquinas organizadas y al día.
                     </p>
                 </div>
