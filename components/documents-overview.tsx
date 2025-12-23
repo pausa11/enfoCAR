@@ -2,10 +2,26 @@
 
 import { AssetDocument, DocumentType, AssetType } from "@prisma/client";
 import { useState, useMemo } from "react";
-import { FileText, AlertCircle, CheckCircle, Clock, Shield, Wrench, Building2, CreditCard, FileCheck } from "lucide-react";
+import { FileText, AlertCircle, CheckCircle, Clock, Shield, Wrench, Building2, CreditCard, FileCheck, Plus, X } from "lucide-react";
 import { ParticleCard } from "@/components/MagicBento";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { DocumentForm } from "@/components/document-form";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 interface DocumentWithAsset extends AssetDocument {
     asset: {
@@ -18,6 +34,12 @@ interface DocumentWithAsset extends AssetDocument {
 
 interface DocumentsOverviewProps {
     documents: DocumentWithAsset[];
+    assets: {
+        id: string;
+        name: string;
+        type: AssetType;
+        customAttributes: any;
+    }[];
 }
 
 const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
@@ -92,9 +114,32 @@ function getExpirationStatus(expirationDate: Date | null): ExpirationStatus {
 
 type FilterType = "all" | "expired" | "expiring" | "valid";
 
-export function DocumentsOverview({ documents }: DocumentsOverviewProps) {
+export function DocumentsOverview({ documents, assets }: DocumentsOverviewProps) {
     const [filter, setFilter] = useState<FilterType>("all");
+    const [isAssetSelectionOpen, setIsAssetSelectionOpen] = useState(false);
+    const [isDocumentFormOpen, setIsDocumentFormOpen] = useState(false);
+    const [selectedAssetId, setSelectedAssetId] = useState<string>("");
     const router = useRouter();
+
+    const handleCreateDocument = () => {
+        if (assets.length === 0) {
+            alert("Necesitas tener al menos un vehículo para agregar documentos.");
+            return;
+        }
+
+        if (assets.length === 1) {
+            setSelectedAssetId(assets[0].id);
+            setIsDocumentFormOpen(true);
+        } else {
+            setIsAssetSelectionOpen(true);
+        }
+    };
+
+    const handleAssetSelect = (assetId: string) => {
+        setSelectedAssetId(assetId);
+        setIsAssetSelectionOpen(false);
+        setIsDocumentFormOpen(true);
+    };
 
     const filteredDocuments = useMemo(() => {
         if (filter === "all") return documents;
@@ -130,11 +175,17 @@ export function DocumentsOverview({ documents }: DocumentsOverviewProps) {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div>
-                <h1 className="text-3xl font-bold mb-2">Mis Documentos</h1>
-                <p className="text-muted-foreground">
-                    Vista general de todos los documentos de tus vehículos
-                </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold mb-2">Mis Documentos</h1>
+                    <p className="text-muted-foreground">
+                        Vista general de todos los documentos de tus vehículos
+                    </p>
+                </div>
+                <Button onClick={handleCreateDocument} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Agregar Documento
+                </Button>
             </div>
 
             {/* Filters */}
@@ -282,6 +333,53 @@ export function DocumentsOverview({ documents }: DocumentsOverviewProps) {
                     })}
                 </div>
             )}
-        </div>
+
+
+            <Dialog open={isAssetSelectionOpen} onOpenChange={setIsAssetSelectionOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Seleccionar Vehículo</DialogTitle>
+                        <DialogDescription>
+                            Elige el vehículo al cual deseas agregar el documento.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                            <Label>Vehículo</Label>
+                            {assets.map((asset) => (
+                                <Button
+                                    key={asset.id}
+                                    variant="outline"
+                                    className="w-full justify-start h-auto py-3 px-4"
+                                    onClick={() => handleAssetSelect(asset.id)}
+                                >
+                                    <div className="flex flex-col items-start gap-1">
+                                        <span className="font-medium">{asset.name}</span>
+                                        {asset.customAttributes?.placa && (
+                                            <span className="text-xs text-muted-foreground">
+                                                Placa: {asset.customAttributes.placa}
+                                            </span>
+                                        )}
+                                    </div>
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            {
+                selectedAssetId && (
+                    <DocumentForm
+                        assetId={selectedAssetId}
+                        open={isDocumentFormOpen}
+                        onOpenChange={(open) => {
+                            setIsDocumentFormOpen(open);
+                            if (!open) setSelectedAssetId("");
+                        }}
+                    />
+                )
+            }
+        </div >
     );
 }

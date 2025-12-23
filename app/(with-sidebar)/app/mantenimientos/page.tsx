@@ -74,7 +74,7 @@ async function getMaintenanceRecords(userId: string) {
         return new Date(a.nextServiceDate!).getTime() - new Date(b.nextServiceDate!).getTime();
     });
 
-    return sortedRecords;
+    return { maintenanceRecords: sortedRecords, assets };
 }
 
 export default async function MantenimientosPage() {
@@ -87,11 +87,11 @@ export default async function MantenimientosPage() {
         return redirect("/auth/login");
     }
 
-    const maintenanceRecords = await getMaintenanceRecords(user.id);
+    const { maintenanceRecords, assets } = await getMaintenanceRecords(user.id);
 
     return (
         <div className="container mx-auto p-6 max-w-7xl">
-            <MaintenanceOverview maintenanceRecords={maintenanceRecords} />
+            <MaintenanceOverview maintenanceRecords={maintenanceRecords} assets={assets} />
         </div>
     );
 }

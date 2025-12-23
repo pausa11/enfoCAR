@@ -2,10 +2,26 @@
 
 import { MaintenanceRecord, MaintenanceType, AssetType } from "@prisma/client";
 import { useState, useMemo } from "react";
-import { Wrench, AlertCircle, CheckCircle, Clock, Droplet, Disc, Filter, CircleDot, AlignVerticalJustifyCenter, Battery, Package } from "lucide-react";
+import { Wrench, AlertCircle, CheckCircle, Clock, Droplet, Disc, Filter, CircleDot, AlignVerticalJustifyCenter, Battery, Package, Plus, X } from "lucide-react";
 import { ParticleCard } from "@/components/MagicBento";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { MaintenanceForm } from "@/components/maintenance-form";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 interface MaintenanceWithAsset extends Omit<MaintenanceRecord, 'cost'> {
     cost: number; // Converted from Decimal in the server component
@@ -19,6 +35,12 @@ interface MaintenanceWithAsset extends Omit<MaintenanceRecord, 'cost'> {
 
 interface MaintenanceOverviewProps {
     maintenanceRecords: MaintenanceWithAsset[];
+    assets: {
+        id: string;
+        name: string;
+        type: AssetType;
+        customAttributes: any;
+    }[];
 }
 
 const MAINTENANCE_TYPE_LABELS: Record<MaintenanceType, string> = {
@@ -104,9 +126,32 @@ function getServiceStatus(nextServiceDate: Date | null, nextServiceMileage: numb
 
 type FilterType = "all" | "overdue" | "upcoming" | "recent";
 
-export function MaintenanceOverview({ maintenanceRecords }: MaintenanceOverviewProps) {
+export function MaintenanceOverview({ maintenanceRecords, assets }: MaintenanceOverviewProps) {
     const [filter, setFilter] = useState<FilterType>("all");
+    const [isAssetSelectionOpen, setIsAssetSelectionOpen] = useState(false);
+    const [isMaintenanceFormOpen, setIsMaintenanceFormOpen] = useState(false);
+    const [selectedAssetId, setSelectedAssetId] = useState<string>("");
     const router = useRouter();
+
+    const handleCreateMaintenance = () => {
+        if (assets.length === 0) {
+            alert("Necesitas tener al menos un vehículo para agregar mantenimientos.");
+            return;
+        }
+
+        if (assets.length === 1) {
+            setSelectedAssetId(assets[0].id);
+            setIsMaintenanceFormOpen(true);
+        } else {
+            setIsAssetSelectionOpen(true);
+        }
+    };
+
+    const handleAssetSelect = (assetId: string) => {
+        setSelectedAssetId(assetId);
+        setIsAssetSelectionOpen(false);
+        setIsMaintenanceFormOpen(true);
+    };
 
     const filteredRecords = useMemo(() => {
         if (filter === "all") return maintenanceRecords;
@@ -147,11 +192,17 @@ export function MaintenanceOverview({ maintenanceRecords }: MaintenanceOverviewP
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div>
-                <h1 className="text-3xl font-bold mb-2">Mantenimientos</h1>
-                <p className="text-muted-foreground">
-                    Vista general de todos los mantenimientos de tus vehículos
-                </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold mb-2">Mantenimientos</h1>
+                    <p className="text-muted-foreground">
+                        Vista general de todos los mantenimientos de tus vehículos
+                    </p>
+                </div>
+                <Button onClick={handleCreateMaintenance} className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Agregar Mantenimiento
+                </Button>
             </div>
 
             {/* Filters */}
@@ -316,6 +367,52 @@ export function MaintenanceOverview({ maintenanceRecords }: MaintenanceOverviewP
                     })}
                 </div>
             )}
-        </div>
+
+            <Dialog open={isAssetSelectionOpen} onOpenChange={setIsAssetSelectionOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Seleccionar Vehículo</DialogTitle>
+                        <DialogDescription>
+                            Elige el vehículo al cual deseas agregar el registro de mantenimiento.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                        <div className="space-y-2">
+                            <Label>Vehículo</Label>
+                            {assets.map((asset) => (
+                                <Button
+                                    key={asset.id}
+                                    variant="outline"
+                                    className="w-full justify-start h-auto py-3 px-4"
+                                    onClick={() => handleAssetSelect(asset.id)}
+                                >
+                                    <div className="flex flex-col items-start gap-1">
+                                        <span className="font-medium">{asset.name}</span>
+                                        {asset.customAttributes?.placa && (
+                                            <span className="text-xs text-muted-foreground">
+                                                Placa: {asset.customAttributes.placa}
+                                            </span>
+                                        )}
+                                    </div>
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            {
+                selectedAssetId && (
+                    <MaintenanceForm
+                        assetId={selectedAssetId}
+                        open={isMaintenanceFormOpen}
+                        onOpenChange={(open) => {
+                            setIsMaintenanceFormOpen(open);
+                            if (!open) setSelectedAssetId("");
+                        }}
+                    />
+                )
+            }
+        </div >
     );
 }

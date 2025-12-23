@@ -62,7 +62,7 @@ async function getDocuments(userId: string) {
         return new Date(a.expirationDate).getTime() - new Date(b.expirationDate).getTime();
     });
 
-    return sortedDocuments;
+    return { documents: sortedDocuments, assets };
 }
 
 export default async function DocumentosPage() {
@@ -75,11 +75,11 @@ export default async function DocumentosPage() {
         return redirect("/auth/login");
     }
 
-    const documents = await getDocuments(user.id);
+    const { documents, assets } = await getDocuments(user.id);
 
     return (
         <div className="container mx-auto p-6 max-w-7xl">
-            <DocumentsOverview documents={documents} />
+            <DocumentsOverview documents={documents} assets={assets} />
         </div>
     );
 }
