@@ -131,7 +131,7 @@ export function EditAssetDialog({ asset, open, onOpenChange }: EditAssetDialogPr
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+            <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto" data-lenis-prevent>
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle>Editar Activo</DialogTitle>

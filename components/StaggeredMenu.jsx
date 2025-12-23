@@ -362,6 +362,18 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
     return () => window.removeEventListener('restart-onboarding', handleRestart);
   }, [closeMenu]);
 
+  // Lock body scroll when menu is open
+  React.useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
   return (
     <div className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')} style={accentColor ? { ['--sm-accent']: accentColor } : undefined} data-position={position} data-open={open || undefined} >
 
@@ -405,7 +417,7 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
         </button>
       </header>
 
-      <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!open}>
+      <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!open} data-lenis-prevent>
         <div className="sm-panel-inner">
 
           <ul className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>

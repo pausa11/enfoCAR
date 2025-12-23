@@ -127,7 +127,7 @@ export function DocumentForm({ assetId, document, open, onOpenChange }: Document
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[500px]" data-lenis-prevent>
                 <DialogHeader>
                     <DialogTitle>{document ? "Editar Documento" : "Agregar Documento"}</DialogTitle>
                     <DialogDescription>
