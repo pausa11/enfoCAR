@@ -86,7 +86,7 @@ export async function PUT(
         }
 
         // Validate type is one of the allowed values
-        const validTypes = ["CARRO", "JEEP", "BUSETA", "TURBO"];
+        const validTypes = ["CARRO", "MOTO", "JEEP", "BUSETA", "TURBO"];
         if (!validTypes.includes(type)) {
             return NextResponse.json(
                 { error: "Tipo de vehículo inválido" },

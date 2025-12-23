@@ -22,6 +22,7 @@ import { useSearchParams } from "next/navigation";
 
 const VEHICLE_TYPES = [
     { value: "CARRO", label: "Carro" },
+    { value: "MOTO", label: "Moto" },
     { value: "JEEP", label: "Jeep" },
     { value: "BUSETA", label: "Buseta" },
     { value: "TURBO", label: "Turbo" },

@@ -81,6 +81,7 @@ model FinancialRecord {
 
 enum AssetType {
   CARRO
+  MOTO
   JEEP
   BUSETA
   TURBO
