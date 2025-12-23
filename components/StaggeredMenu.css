@@ -70,6 +70,8 @@
   font-weight: 500;
   line-height: 1;
   overflow: visible;
+  padding: 20px;
+  margin: -10px;
 }
 
 .sm-toggle:focus-visible {
