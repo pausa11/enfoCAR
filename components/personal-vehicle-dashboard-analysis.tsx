@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Brain } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import ShinyText from '@/components/ShinyText';
 import { Asset, FinancialRecord } from "@prisma/client";
@@ -191,18 +191,59 @@ export function PersonalVehicleDashboardAnalysis({
                     </CardHeader>
                     <CardContent>
                         {analysis ? (
-                            <>
-                                <ShinyText
-                                    text={analysis}
-                                    className="text-sm sm:text-base leading-relaxed whitespace-pre-wrap"
-                                    speed={4}
-                                />
+                            <div className="text-sm sm:text-base leading-relaxed space-y-4">
+                                {analysis.split('\n').map((line, i) => {
+                                    // Handle bold text with **
+                                    const parts = line.split('**');
+                                    const formattedLine = parts.map((part, index) =>
+                                        index % 2 === 1 ? <strong key={index} className="font-bold">{part}</strong> : part
+                                    );
+
+                                    // Handle bullet points
+                                    if (line.trim().startsWith('*') || line.trim().startsWith('-')) {
+                                        return (
+                                            <div key={i} className="flex gap-2 ml-4">
+                                                <span className="text-primary">•</span>
+
+                                                <div className='flex-1'>{
+                                                    parts.map((part, index) => {
+                                                        // Clean the first part if it has the bullet
+                                                        if (index === 0) return part.replace(/^[\*\-]\s*/, '');
+                                                        return index % 2 === 1 ? <strong key={index} className="font-bold text-foreground">{part}</strong> : part
+                                                    })
+                                                }</div>
+                                            </div>
+                                        );
+                                    }
+
+                                    // Handle numbered lists
+                                    if (/^\d+\./.test(line.trim())) {
+                                        return (
+                                            <div key={i} className="flex gap-2 ml-4">
+                                                <span className="font-bold text-primary">{line.trim().split('.')[0]}.</span>
+                                                <div className='flex-1'>{
+                                                    parts.map((part, index) => {
+                                                        if (index === 0) return part.replace(/^\d+\.\s*/, '');
+                                                        return index % 2 === 1 ? <strong key={index} className="font-bold text-foreground">{part}</strong> : part
+                                                    })
+                                                }</div>
+                                            </div>
+                                        );
+                                    }
+
+                                    // Empty lines
+                                    if (!line.trim()) return <br key={i} />;
+
+                                    // Regular paragraphs
+                                    return <p key={i}>{formattedLine}</p>;
+                                })}
+
                                 {usingCache && (
-                                    <p className="text-xs text-muted-foreground mt-2 opacity-60">
-                                        💾 Análisis en cache
-                                    </p>
+                                    <div className="mt-2 flex justify-end" title="Análisis en memoria">
+                                        <Brain className="h-3 w-3 text-muted-foreground/50" />
+                                    </div>
                                 )}
-                            </>
+                            </div>
                         ) : isLoading ? (
                             <div className="flex items-center gap-2 text-sm">
                                 <ShinyText
