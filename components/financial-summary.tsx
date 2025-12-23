@@ -48,7 +48,7 @@ export function FinancialSummary({
     // Calculate driver earnings based on payment mode
     let driverEarnings = 0;
     if (driverPaymentMode === 'PERCENTAGE') {
-        driverEarnings = grossProfit * (driverPercentage / 100);
+        driverEarnings = totalIncome * (driverPercentage / 100);
     } else if (driverPaymentMode === 'FIXED_SALARY' && driverMonthlySalary) {
         driverEarnings = driverMonthlySalary;
     }
