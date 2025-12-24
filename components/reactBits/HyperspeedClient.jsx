@@ -1,18 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Hyperspeed from "./Hyperspeed";
 
 export default function HyperspeedClient() {
-    const getOptions = (isMobile) => ({
+    const effectOptions = {
         onSpeedUp: () => { },
         onSlowDown: () => { },
         distortion: 'turbulentDistortion',
         length: 400,
-        roadWidth: isMobile ? 5 : 10,
-        islandWidth: isMobile ? 1 : 2,
-        lanesPerRoad: isMobile ? 2 : 3,
-        fov: isMobile ? 60 : 90,
+        roadWidth: 10,
+        islandWidth: 2,
+        lanesPerRoad: 3,
+        fov: 90,
         fovSpeedUp: 150,
         speedUp: 2,
         carLightsFade: 0.4,
@@ -40,22 +39,7 @@ export default function HyperspeedClient() {
             rightCars: [0x0ea5e9, 0x3b82f6, 0x06b6d4],
             sticks: 0x14b8a6
         }
-    });
+    };
 
-    const [options, setOptions] = useState(getOptions(false));
-
-    useEffect(() => {
-        const handleResize = () => {
-            const isMobile = window.innerWidth < 768;
-            setOptions(getOptions(isMobile));
-        };
-
-        // Initial check
-        handleResize();
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    return <Hyperspeed effectOptions={options} />;
+    return <Hyperspeed effectOptions={effectOptions} />;
 }
