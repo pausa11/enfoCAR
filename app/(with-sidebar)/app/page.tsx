@@ -2,9 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { FinancialRecord } from "@prisma/client";
-import { DashboardSwitcher } from "@/components/dashboard-switcher";
-import { BusinessDashboard } from "@/components/business-dashboard";
-import { PersonalDashboard } from "@/components/personal-dashboard";
+import { DashboardSwitcher } from "@/components/dashboard/dashboard-switcher";
+import { BusinessDashboard } from "@/components/dashboard/business-dashboard";
+import { PersonalDashboard } from "@/components/dashboard/personal-dashboard";
 export const dynamic = "force-dynamic";
 
 export default async function ProtectedPage() {

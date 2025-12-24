@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { RefreshCw, Brain } from 'lucide-react';
-import ShinyText from '@/components/ShinyText';
+import ShinyText from '@/components/reactBits/ShinyText';
 import { Button } from '@/components/ui/button';
 
 interface AnalysisCardProps {

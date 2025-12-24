@@ -4,7 +4,7 @@ import { Asset } from "@prisma/client";
 import { DollarSign, Briefcase, User, LayoutGrid, List } from "lucide-react";
 import Link from "next/link";
 import { Plate, getPlateType } from "colombian-plates";
-import { ParticleCard } from "@/components/MagicBento";
+import { ParticleCard } from "@/components/reactBits/MagicBento";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 

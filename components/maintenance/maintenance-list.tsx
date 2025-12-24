@@ -5,8 +5,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Wrench, AlertCircle, CheckCircle, Clock, Droplet, Disc, Filter, CircleDot, AlignVerticalJustifyCenter, Battery, Package, FileText, DollarSign } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { MaintenanceForm } from "@/components/maintenance-form";
-import { ParticleCard } from "@/components/MagicBento";
+import { MaintenanceForm } from "@/components/maintenance/maintenance-form";
+import { ParticleCard } from "@/components/reactBits/MagicBento";
 
 interface MaintenanceWithFinancials extends MaintenanceRecord {
     financialRecords?: { id: string; amount: number }[];

@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { DocumentsOverview } from "@/components/documents-overview";
+import { DocumentsOverview } from "@/components/documents/documents-overview";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";

@@ -2,9 +2,9 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Car, FileText, ArrowRight, Wrench, DollarSign } from "lucide-react";
-import HyperspeedClient from "@/components/HyperspeedClient";
-import SplitText from "@/components/SplitText";
-import { RestartTourButton } from "@/components/RestartTourButton";
+import HyperspeedClient from "@/components/reactBits/HyperspeedClient";
+import SplitText from "@/components/reactBits/SplitText";
+import { RestartTourButton } from "@/components/common/RestartTourButton";
 
 export default async function Home() {
   const supabase = await createClient();

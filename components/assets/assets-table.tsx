@@ -4,12 +4,12 @@ import { Asset } from "@prisma/client";
 import { Edit, Trash2, DollarSign, FileText, LayoutGrid, List, Wrench } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { EditAssetDialog } from "@/components/edit-asset-dialog"
-import { DeleteAssetDialog } from "@/components/delete-asset-dialog"
+import { EditAssetDialog } from "@/components/assets/edit-asset-dialog"
+import { DeleteAssetDialog } from "@/components/assets/delete-asset-dialog"
 import { useState } from "react";
 import Link from "next/link";
 import { Plate, getPlateType } from "colombian-plates";
-import { ParticleCard } from "@/components/MagicBento";
+import { ParticleCard } from "@/components/reactBits/MagicBento";
 
 // Type for asset with Decimal converted to number for client components
 type SerializedAsset = Omit<Asset, 'value'> & {

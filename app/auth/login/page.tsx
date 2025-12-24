@@ -1,8 +1,8 @@
 "use client";
 
-import { LoginForm } from "@/components/login-form";
-import Hyperspeed from "@/components/Hyperspeed";
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import { LoginForm } from "@/components/auth/login-form";
+import Hyperspeed from "@/components/reactBits/Hyperspeed";
+import { ThemeSwitcher } from "@/components/layout/theme-switcher";
 
 export default function Page() {
   return (

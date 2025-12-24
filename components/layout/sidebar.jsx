@@ -1,8 +1,8 @@
 "use client";
 
-import StaggeredMenu from './StaggeredMenu';
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { AuthButton } from "@/components/auth-button";
+import StaggeredMenu from '../reactBits/StaggeredMenu';
+import { ThemeSwitcher } from "@/components/layout/theme-switcher";
+import { AuthButton } from "@/components/auth/auth-button";
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { AnalysisCard } from '@/components/analysis-card';
-import ShinyText from '@/components/ShinyText';
+import { AnalysisCard } from '@/components/dashboard/analysis-card';
+import ShinyText from '@/components/reactBits/ShinyText';
 import { Asset, FinancialRecord } from "@prisma/client";
 
 type SerializedAsset = Omit<Asset, 'value'> & {

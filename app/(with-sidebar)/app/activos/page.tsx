@@ -1,11 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { AssetsTable } from "@/components/assets-table";
+import { AssetsTable } from "@/components/assets/assets-table";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import SplitText from "@/components/SplitText";
+import SplitText from "@/components/reactBits/SplitText";
 
 export const dynamic = "force-dynamic";
 

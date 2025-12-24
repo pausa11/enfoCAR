@@ -1,4 +1,4 @@
-import { CreateAssetWizard } from "@/components/create-asset-wizard";
+import { CreateAssetWizard } from "@/components/assets/create-asset-wizard";
 
 export const dynamic = "force-dynamic";
 

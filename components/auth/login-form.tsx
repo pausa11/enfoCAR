@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Car, Lock, Mail } from "lucide-react";
-import SplitText from "@/components/SplitText";
+import SplitText from "@/components/reactBits/SplitText";
 
 // Google icon component
 function GoogleIcon() {

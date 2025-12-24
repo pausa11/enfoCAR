@@ -5,8 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Car, TrendingUp, TrendingDown } from "lucide-react";
-import { PersonalVehicleDashboardAnalysis } from "@/components/personal-vehicle-dashboard-analysis";
-import SplitText from "@/components/SplitText";
+import { PersonalVehicleDashboardAnalysis } from "@/components/dashboard/personal-vehicle-dashboard-analysis";
+import SplitText from "@/components/reactBits/SplitText";
 import { Asset, FinancialRecord } from "@prisma/client";
 
 type SerializedAsset = Omit<Asset, 'value'> & {
@@ -66,7 +66,7 @@ export function PersonalDashboard({
                         Mantén el control de los gastos de tus vehículos personales
                     </p>
                 </div>
-                <Link href="/app/vehiculos-personales">
+                <Link href="/app/activos">
                     <Button className="gap-2">
                         <Car className="h-4 w-4" />
                         Ver Vehículos Personales

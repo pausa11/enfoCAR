@@ -12,7 +12,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { FinancialRecordForm } from "@/components/financial-record-form";
+import { FinancialRecordForm } from "@/components/financials/financial-record-form";
 
 // Type for serialized asset
 type SerializedAsset = Omit<Asset, 'value'> & {

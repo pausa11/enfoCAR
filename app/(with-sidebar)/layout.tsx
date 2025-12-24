@@ -1,6 +1,6 @@
-import { Sidebar } from "@/components/sidebar";
-import { InstallPrompt } from "@/components/install-prompt";
-import { UpdatePrompt } from "@/components/update-prompt";
+import { Sidebar } from "@/components/layout/sidebar";
+import { InstallPrompt } from "@/components/common/install-prompt";
+import { UpdatePrompt } from "@/components/common/update-prompt";
 import { OnboardingTour } from "@/components/onboarding/OnboardingTour";
 
 export default function WithSidebarLayout({

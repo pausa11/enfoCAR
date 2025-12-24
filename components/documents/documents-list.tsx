@@ -4,8 +4,8 @@ import { AssetDocument, DocumentType } from "@prisma/client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, FileText, AlertCircle, CheckCircle, Clock, Shield, Wrench, Building2, CreditCard, FileCheck } from "lucide-react";
-import { DocumentForm } from "@/components/document-form"
-import { ParticleCard } from "@/components/MagicBento";
+import { DocumentForm } from "@/components/documents/document-form"
+import { ParticleCard } from "@/components/reactBits/MagicBento";
 
 
 interface DocumentsListProps {

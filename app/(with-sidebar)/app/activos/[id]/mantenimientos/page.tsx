@@ -1,13 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { BackButton } from "@/components/back-button";
-import SplitText from "@/components/SplitText";
-import { MaintenanceList } from "@/components/maintenance-list";
+import { BackButton } from "@/components/layout/back-button";
+import SplitText from "@/components/reactBits/SplitText";
+import { MaintenanceList } from "@/components/maintenance/maintenance-list";
 import { useEffect, useState } from "react";
-import { MaintenanceRecord, MaintenanceType } from "@prisma/client";
+import { MaintenanceRecord} from "@prisma/client";
 
 type Asset = {
     id: string;

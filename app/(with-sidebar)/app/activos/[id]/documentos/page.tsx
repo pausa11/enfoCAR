@@ -1,11 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { BackButton } from "@/components/back-button";
-import SplitText from "@/components/SplitText";
-import { DocumentsList } from "@/components/documents-list";
+import { BackButton } from "@/components/layout/back-button";
+import SplitText from "@/components/reactBits/SplitText";
+import { DocumentsList } from "@/components/documents/documents-list";
 import { useEffect, useState } from "react";
 import { DocumentType } from "@prisma/client";
 

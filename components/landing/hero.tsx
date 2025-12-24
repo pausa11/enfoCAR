@@ -1,4 +1,4 @@
-import SplitText from "./SplitText";
+import SplitText from "../reactBits/SplitText";
 
 export function Hero() {
   return (

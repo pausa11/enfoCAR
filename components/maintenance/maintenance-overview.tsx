@@ -3,10 +3,10 @@
 import { MaintenanceRecord, MaintenanceType, AssetType } from "@prisma/client";
 import { useState, useMemo } from "react";
 import { Wrench, AlertCircle, CheckCircle, Clock, Droplet, Disc, Filter, CircleDot, AlignVerticalJustifyCenter, Battery, Package, Plus, X } from "lucide-react";
-import { ParticleCard } from "@/components/MagicBento";
+import { ParticleCard } from "@/components/reactBits/MagicBento";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { MaintenanceForm } from "@/components/maintenance-form";
+import { MaintenanceForm } from "@/components/maintenance/maintenance-form";
 import {
     Dialog,
     DialogContent,

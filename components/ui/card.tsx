@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { ParticleCard } from "@/components/MagicBento";
+import { ParticleCard } from "@/components/reactBits/MagicBento";
 
 const Card = React.forwardRef<
   HTMLDivElement,

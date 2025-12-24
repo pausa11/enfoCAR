@@ -1,11 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import SplitText from "@/components/SplitText";
-import { GlobalFinancialKPIs } from "@/components/global-financial-kpis";
-import { FinancialChartsOverview } from "@/components/financial-charts-overview";
-import { RecentTransactionsTable } from "@/components/recent-transactions-table";
-import { QuickAddTransaction } from "@/components/quick-add-transaction";
+import SplitText from "@/components/reactBits/SplitText";
+import { GlobalFinancialKPIs } from "@/components/financials/global-financial-kpis";
+import { FinancialChartsOverview } from "@/components/financials/financial-charts-overview";
+import { RecentTransactionsTable } from "@/components/financials/recent-transactions-table";
+import { QuickAddTransaction } from "@/components/financials/quick-add-transaction";
 
 export const dynamic = "force-dynamic";
 

@@ -1,16 +1,16 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { FinancialRecordForm } from "@/components/financial-record-form";
-import { FinancialRecordsList } from "@/components/financial-records-list";
-import { FinancialSummary } from "@/components/financial-summary";
-import { DriverSalaryManager } from "@/components/driver-salary-manager";
+import { FinancialRecordForm } from "@/components/financials/financial-record-form";
+import { FinancialRecordsList } from "@/components/financials/financial-records-list";
+import { FinancialSummary } from "@/components/financials/financial-summary";
+import { DriverSalaryManager } from "@/components/financials/driver-salary-manager";
 import { ArrowLeft, FileText, Wrench } from "lucide-react";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { BackButton } from "@/components/back-button";
-import SplitText from "@/components/SplitText";
+import { BackButton } from "@/components/layout/back-button";
+import SplitText from "@/components/reactBits/SplitText";
 
 
 

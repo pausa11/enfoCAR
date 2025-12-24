@@ -3,10 +3,10 @@
 import { AssetDocument, DocumentType, AssetType } from "@prisma/client";
 import { useState, useMemo } from "react";
 import { FileText, AlertCircle, CheckCircle, Clock, Shield, Wrench, Building2, CreditCard, FileCheck, Plus, X } from "lucide-react";
-import { ParticleCard } from "@/components/MagicBento";
+import { ParticleCard } from "@/components/reactBits/MagicBento";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { DocumentForm } from "@/components/document-form";
+import { DocumentForm } from "@/components/documents/document-form";
 import {
     Dialog,
     DialogContent,

@@ -4,9 +4,9 @@ import { StatCard } from "@/components/ui/stat-card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Car, TrendingUp, TrendingDown } from "lucide-react";
-import { DashboardAnalysis } from "@/components/dashboard-analysis";
-import { FinancialCharts } from "@/components/financial-charts";
-import SplitText from "@/components/SplitText";
+import { DashboardAnalysis } from "@/components/dashboard/dashboard-analysis";
+import { FinancialCharts } from "@/components/financials/financial-charts";
+import SplitText from "@/components/reactBits/SplitText";
 
 interface BusinessDashboardProps {
     userEmail: string;
