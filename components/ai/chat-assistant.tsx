@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 type Message = {
     id: string;
@@ -237,13 +239,31 @@ export function ChatAssistant() {
                                         )}
                                         <div
                                             className={cn(
-                                                "max-w-[75%] rounded-2xl px-4 py-3 text-sm shadow-lg whitespace-pre-wrap",
+                                                "max-w-[75%] rounded-2xl px-4 py-3 text-sm shadow-lg",
                                                 m.role === 'user'
                                                     ? "bg-blue-600 text-white rounded-br-md font-medium"
                                                     : "bg-white border border-blue-100 rounded-bl-md text-gray-800"
                                             )}
                                         >
-                                            {m.content}
+                                            {m.role === 'assistant' ? (
+                                                <div className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0.5 prose-strong:font-bold prose-strong:text-gray-900">
+                                                    <ReactMarkdown
+                                                        remarkPlugins={[remarkGfm]}
+                                                        components={{
+                                                            p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                                                            ul: ({ children }) => <ul className="list-disc ml-4 mb-2 last:mb-0">{children}</ul>,
+                                                            ol: ({ children }) => <ol className="list-decimal ml-4 mb-2 last:mb-0">{children}</ol>,
+                                                            li: ({ children }) => <li className="mb-1">{children}</li>,
+                                                            strong: ({ children }) => <strong className="font-bold text-gray-900">{children}</strong>,
+                                                            em: ({ children }) => <em className="italic">{children}</em>,
+                                                        }}
+                                                    >
+                                                        {m.content}
+                                                    </ReactMarkdown>
+                                                </div>
+                                            ) : (
+                                                <span className="whitespace-pre-wrap">{m.content}</span>
+                                            )}
                                         </div>
                                     </motion.div>
                                 ))}
