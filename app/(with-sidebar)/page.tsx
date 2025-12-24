@@ -50,13 +50,13 @@ export default async function Home() {
           </p>
         </div>
 
-        <div id="quick-stats" className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
+        <div id="quick-stats" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 max-w-5xl mx-auto">
           <div className="bg-card/60 backdrop-blur-xl rounded-2xl p-6 border border-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/20 transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
             <div className="flex items-center gap-4 mb-3">
               <div className="p-3 bg-emerald-500/20 rounded-xl">
                 <Car className="w-8 h-8 text-emerald-400" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground">Mis Naves</h3>
+              <h3 className="text-xl lg:text-2xl font-bold text-foreground">Mis Naves</h3>
             </div>
             <p className="text-foreground/80">Gestiona todos tus vehículos en un solo lugar</p>
           </div>
@@ -66,7 +66,7 @@ export default async function Home() {
               <div className="p-3 bg-cyan-500/20 rounded-xl">
                 <FileText className="w-8 h-8 text-cyan-400" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground">Mis Papeles</h3>
+              <h3 className="text-xl lg:text-2xl font-bold text-foreground">Mis Papeles</h3>
             </div>
             <p className="text-foreground/80">Mantén todo organizado y al día</p>
           </div>
@@ -76,9 +76,9 @@ export default async function Home() {
               <div className="p-3 bg-blue-500/20 rounded-xl">
                 <BarChart3 className="w-8 h-8 text-blue-400" />
               </div>
-              <h3 className="text-2xl font-bold text-foreground">Estadísticas</h3>
+              <h3 className="text-xl lg:text-2xl font-bold text-foreground">Estadísticas</h3>
             </div>
-            <p className="text-white/80">Visualiza el estado de tu flota</p>
+            <p className="text-foreground/80">Visualiza el estado de tu flota</p>
           </div>
         </div>
 
