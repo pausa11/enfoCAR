@@ -2,6 +2,7 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { InstallPrompt } from "@/components/common/install-prompt";
 import { UpdatePrompt } from "@/components/common/update-prompt";
 import { OnboardingTour } from "@/components/onboarding/OnboardingTour";
+import { ChatAssistant } from "@/components/ai/chat-assistant";
 
 export default function WithSidebarLayout({
     children,
@@ -17,6 +18,7 @@ export default function WithSidebarLayout({
             <InstallPrompt />
             <UpdatePrompt />
             <OnboardingTour />
+            <ChatAssistant />
         </div>
     );
 }
