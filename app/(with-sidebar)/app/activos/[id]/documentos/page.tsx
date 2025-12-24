@@ -1,73 +1,41 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { BackButton } from "@/components/layout/back-button";
 import SplitText from "@/components/reactBits/SplitText";
 import { DocumentsList } from "@/components/documents/documents-list";
-import { useEffect, useState } from "react";
-import { DocumentType } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
 
+export default async function AssetDocumentsPage({ params }: { params: Promise<{ id: string }> }) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
 
-type Asset = {
-    id: string;
-    name: string;
-    [key: string]: any;
-};
-
-type Document = {
-    id: string;
-    type: DocumentType;
-    identifier: string | null;
-    expirationDate: Date | null;
-    isActive: boolean;
-    assetId: string;
-    createdAt: Date;
-    updatedAt: Date;
-};
-
-export default function AssetDocumentsPage({ params }: { params: Promise<{ id: string }> }) {
-    const router = useRouter();
-    const [asset, setAsset] = useState<Asset | null>(null);
-    const [documents, setDocuments] = useState<Document[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function loadData() {
-            const { id } = await params;
-
-            // Fetch asset
-            const assetRes = await fetch(`/api/assets/${id}`);
-            if (!assetRes.ok) {
-                router.push("/app/activos");
-                return;
-            }
-            const assetData = await assetRes.json();
-            setAsset(assetData);
-
-            // Fetch documents
-            const docsRes = await fetch(`/api/assets/${id}/documents`);
-            if (docsRes.ok) {
-                const docsData = await docsRes.json();
-                setDocuments(docsData);
-            }
-
-            setLoading(false);
-        }
-
-        loadData();
-    }, [params, router]);
-
-    if (loading) {
-        return (
-            <div className="flex-1 w-full flex items-center justify-center p-8">
-                <p className="text-muted-foreground">Cargando...</p>
-            </div>
-        );
+    if (!user) {
+        redirect("/auth/login");
     }
+
+    const { id } = await params;
+
+    // Fetch asset
+    const asset = await prisma.asset.findFirst({
+        where: {
+            id: id,
+            userId: user.id,
+        },
+    });
 
     if (!asset) {
-        return null;
+        redirect("/app/activos");
     }
+
+    // Fetch documents
+    const documents = await prisma.assetDocument.findMany({
+        where: {
+            assetId: id,
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
 
     return (
         <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">

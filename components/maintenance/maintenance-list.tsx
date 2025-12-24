@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { MaintenanceForm } from "@/components/maintenance/maintenance-form";
 import { ParticleCard } from "@/components/reactBits/MagicBento";
 
-interface MaintenanceWithFinancials extends MaintenanceRecord {
+interface MaintenanceWithFinancials extends Omit<MaintenanceRecord, "cost"> {
+    cost: number;
     financialRecords?: { id: string; amount: number }[];
 }
 
@@ -74,9 +75,9 @@ function getNextServiceStatus(nextServiceDate: Date | null, nextServiceMileage: 
 
 export function MaintenanceList({ assetId, maintenanceRecords }: MaintenanceListProps) {
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [editingMaintenance, setEditingMaintenance] = useState<MaintenanceRecord | null>(null);
+    const [editingMaintenance, setEditingMaintenance] = useState<MaintenanceWithFinancials | null>(null);
 
-    const handleEdit = (maintenance: MaintenanceRecord) => {
+    const handleEdit = (maintenance: MaintenanceWithFinancials) => {
         setEditingMaintenance(maintenance);
         setIsFormOpen(true);
     };

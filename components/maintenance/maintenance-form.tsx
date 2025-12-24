@@ -27,7 +27,7 @@ import { Loader2, Trash2 } from "lucide-react";
 
 interface MaintenanceFormProps {
     assetId: string;
-    maintenance?: MaintenanceRecord | null;
+    maintenance?: (Omit<MaintenanceRecord, "cost"> & { cost: number | MaintenanceRecord["cost"] }) | null;
     open: boolean;
     onOpenChange: (open: boolean) => void;
 }

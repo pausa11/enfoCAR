@@ -1,61 +1,66 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { BackButton } from "@/components/layout/back-button";
 import SplitText from "@/components/reactBits/SplitText";
 import { MaintenanceList } from "@/components/maintenance/maintenance-list";
-import { useEffect, useState } from "react";
-import { MaintenanceRecord} from "@prisma/client";
+import { prisma } from "@/lib/prisma";
+import { createClient } from "@/lib/supabase/server";
 
-type Asset = {
-    id: string;
-    name: string;
-    [key: string]: any;
-};
+export default async function AssetMaintenancePage({ params }: { params: Promise<{ id: string }> }) {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
 
-export default function AssetMaintenancePage({ params }: { params: Promise<{ id: string }> }) {
-    const router = useRouter();
-    const [asset, setAsset] = useState<Asset | null>(null);
-    const [maintenanceRecords, setMaintenanceRecords] = useState<MaintenanceRecord[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function loadData() {
-            const { id } = await params;
-
-            // Fetch asset
-            const assetRes = await fetch(`/api/assets/${id}`);
-            if (!assetRes.ok) {
-                router.push("/app/activos");
-                return;
-            }
-            const assetData = await assetRes.json();
-            setAsset(assetData);
-
-            // Fetch maintenance records
-            const maintenanceRes = await fetch(`/api/assets/${id}/maintenance`);
-            if (maintenanceRes.ok) {
-                const maintenanceData = await maintenanceRes.json();
-                setMaintenanceRecords(maintenanceData);
-            }
-
-            setLoading(false);
-        }
-
-        loadData();
-    }, [params, router]);
-
-    if (loading) {
-        return (
-            <div className="flex-1 w-full flex items-center justify-center p-8">
-                <p className="text-muted-foreground">Cargando...</p>
-            </div>
-        );
+    if (!user) {
+        redirect("/auth/login");
     }
+
+    const { id } = await params;
+
+    // Fetch asset
+    const asset = await prisma.asset.findFirst({
+        where: {
+            id: id,
+            userId: user.id,
+        },
+    });
 
     if (!asset) {
-        return null;
+        redirect("/app/activos");
     }
+
+    // Fetch maintenance records
+    const maintenanceRecords = await prisma.maintenanceRecord.findMany({
+        where: {
+            assetId: id,
+        },
+        include: {
+            financialRecords: {
+                select: {
+                    id: true,
+                    amount: true,
+                },
+            },
+        },
+        orderBy: {
+            date: "desc",
+        },
+    });
+
+    // Cast financialRecords amounts to number if they are Decimal (Prisma usually returns Decimal for Decimals)
+    // However, MaintenanceList expects amounts as numbers (based on inferred types in previous context, but let's check).
+    // In AssetFinancesPage we saw:
+    // const recordsWithNumbers = records.map(record => ({ ...record, amount: Number(record.amount) }));
+    // The MaintenanceList interface: `financialRecords?: { id: string; amount: number }[];`
+    // Prisma `financialRecord.amount` is likely Decimal.
+    // We should map it to be safe.
+
+    const formattedMaintenanceRecords = maintenanceRecords.map(record => ({
+        ...record,
+        cost: Number(record.cost), // cost is likely Decimal too
+        financialRecords: record.financialRecords.map(fr => ({
+            ...fr,
+            amount: Number(fr.amount)
+        }))
+    }));
 
     return (
         <div className="flex-1 w-full flex flex-col gap-6 sm:gap-8 p-8 sm:p-12 md:p-16">
@@ -82,7 +87,7 @@ export default function AssetMaintenancePage({ params }: { params: Promise<{ id:
                 </div>
             </div>
 
-            <MaintenanceList assetId={asset.id} maintenanceRecords={maintenanceRecords} />
+            <MaintenanceList assetId={asset.id} maintenanceRecords={formattedMaintenanceRecords} />
         </div>
     );
 }
