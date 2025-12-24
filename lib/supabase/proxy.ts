@@ -31,6 +31,12 @@ export async function updateSession(request: NextRequest) {
           );
         },
       },
+      global: {
+        // Increase the default timeout to 30 seconds
+        fetch: (url, options) => {
+          return fetch(url, { ...options, signal: AbortSignal.timeout(30000) });
+        },
+      },
     },
   );
 
