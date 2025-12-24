@@ -69,7 +69,7 @@ export function AnalysisCard({
                                         <div className='flex-1'>{
                                             parts.map((part, index) => {
                                                 // Clean the first part if it has the bullet
-                                                if (index === 0) return part.replace(/^[\*\-]\s*/, '');
+                                                if (index === 0) return part.replace(/^\s*[\*\-]\s*/, '');
                                                 return index % 2 === 1 ? <strong key={index} className="font-bold text-foreground">{part}</strong> : part
                                             })
                                         }</div>
