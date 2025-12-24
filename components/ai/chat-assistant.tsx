@@ -41,10 +41,18 @@ export function ChatAssistant() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    messages: [...messages, userMessage].map(m => ({
-                        role: m.role,
-                        content: m.content,
-                    })),
+                    messages: [...messages, userMessage]
+                        .filter(m => {
+                            // Filter out empty assistant messages
+                            if (m.role === 'assistant' && (!m.content || m.content.trim() === '')) {
+                                return false;
+                            }
+                            return true;
+                        })
+                        .map(m => ({
+                            role: m.role,
+                            content: m.content,
+                        })),
                 }),
             });
 
@@ -87,6 +95,7 @@ export function ChatAssistant() {
                     ];
                 });
             }
+
 
             // Finalize with permanent ID
             setMessages(prev => {
