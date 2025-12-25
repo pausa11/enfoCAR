@@ -53,11 +53,11 @@ export default async function Home() {
         <div id="quick-stats" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 max-w-6xl mx-auto">
           <Link
             href="/app/activos"
-            className="bg-card/60 backdrop-blur-xl rounded-2xl p-6 border border-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/20 transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100 cursor-pointer"
+            className="bg-emerald-100/80 dark:bg-emerald-900/60 backdrop-blur-xl rounded-2xl p-6 border border-emerald-400 dark:border-emerald-600 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100 cursor-pointer"
           >
             <div className="flex items-center gap-4 mb-3">
-              <div className="p-3 bg-emerald-500/20 rounded-xl">
-                <Car className="w-8 h-8 text-emerald-400" />
+              <div className="p-3 bg-emerald-200 dark:bg-emerald-800 rounded-xl">
+                <Car className="w-8 h-8 text-emerald-700 dark:text-emerald-200" />
               </div>
               <h3 className="text-xl lg:text-2xl font-bold text-foreground">Mis Naves</h3>
             </div>
@@ -66,11 +66,11 @@ export default async function Home() {
 
           <Link
             href="/app/documentos"
-            className="bg-card/60 backdrop-blur-xl rounded-2xl p-6 border border-cyan-500/30 hover:shadow-xl hover:shadow-cyan-500/20 transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 cursor-pointer"
+            className="bg-cyan-100/80 dark:bg-cyan-900/60 backdrop-blur-xl rounded-2xl p-6 border border-cyan-400 dark:border-cyan-600 hover:shadow-xl hover:shadow-cyan-500/30 transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 cursor-pointer"
           >
             <div className="flex items-center gap-4 mb-3">
-              <div className="p-3 bg-cyan-500/20 rounded-xl">
-                <FileText className="w-8 h-8 text-cyan-400" />
+              <div className="p-3 bg-cyan-200 dark:bg-cyan-800 rounded-xl">
+                <FileText className="w-8 h-8 text-cyan-700 dark:text-cyan-200" />
               </div>
               <h3 className="text-xl lg:text-2xl font-bold text-foreground">Mis Papeles</h3>
             </div>
@@ -79,11 +79,11 @@ export default async function Home() {
 
           <Link
             href="/app/finanzas"
-            className="bg-card/60 backdrop-blur-xl rounded-2xl p-6 border border-violet-500/30 hover:shadow-xl hover:shadow-violet-500/20 transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300 cursor-pointer"
+            className="bg-violet-100/80 dark:bg-violet-900/60 backdrop-blur-xl rounded-2xl p-6 border border-violet-400 dark:border-violet-600 hover:shadow-xl hover:shadow-violet-500/30 transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300 cursor-pointer"
           >
             <div className="flex items-center gap-4 mb-3">
-              <div className="p-3 bg-violet-500/20 rounded-xl">
-                <DollarSign className="w-8 h-8 text-violet-400" />
+              <div className="p-3 bg-violet-200 dark:bg-violet-800 rounded-xl">
+                <DollarSign className="w-8 h-8 text-violet-700 dark:text-violet-200" />
               </div>
               <h3 className="text-xl lg:text-2xl font-bold text-foreground">Finanzas</h3>
             </div>
@@ -92,11 +92,11 @@ export default async function Home() {
 
           <Link
             href="/app"
-            className="bg-card/60 backdrop-blur-xl rounded-2xl p-6 border border-pink-500/30 hover:shadow-xl hover:shadow-pink-500/20 transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-400 cursor-pointer"
+            className="bg-pink-100/80 dark:bg-pink-900/60 backdrop-blur-xl rounded-2xl p-6 border border-pink-400 dark:border-pink-600 hover:shadow-xl hover:shadow-pink-500/30 transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-400 cursor-pointer"
           >
             <div className="flex items-center gap-4 mb-3">
-              <div className="p-3 bg-pink-500/20 rounded-xl">
-                < ChartNoAxesCombined className="w-8 h-8 text-pink-400" />
+              <div className="p-3 bg-pink-200 dark:bg-pink-800 rounded-xl">
+                < ChartNoAxesCombined className="w-8 h-8 text-pink-700 dark:text-pink-200" />
               </div>
               <h3 className="text-xl lg:text-2xl font-bold text-foreground">Análisis</h3>
             </div>

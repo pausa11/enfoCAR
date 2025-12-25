@@ -79,9 +79,9 @@ export function BusinessDashboard({
                     </p>
                 </div>
                 <Link href="/app/activos">
-                    <Button id="view-assets-button" className="gap-2">
+                    <Button id="view-assets-button" className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
                         <Car className="h-4 w-4" />
-                        Ver mis Naves
+                        Ver Mis Naves
                     </Button>
                 </Link>
             </div>
@@ -104,8 +104,8 @@ export function BusinessDashboard({
                     value={assetCount.toString()}
                     subtitle={`${businessAssetCount} de negocio`}
                     icon={Car}
-                    colorClass="text-blue-600 dark:text-blue-400"
-                    bgClass="from-blue-500/10 via-blue-500/5 to-transparent"
+                    colorClass="text-emerald-600 dark:text-emerald-400"
+                    bgClass="from-emerald-500/10 via-emerald-500/5 to-transparent"
                 />
 
                 <StatCard
@@ -113,16 +113,16 @@ export function BusinessDashboard({
                     value={formatPercentage(profitMargin)}
                     subtitle="Eficiencia de tu operación"
                     icon={TrendingUp} // Using TrendingUp as generic icon for margin
-                    colorClass={profitMargin >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}
-                    bgClass={profitMargin >= 0 ? "from-green-500/10 via-green-500/5 to-transparent" : "from-red-500/10 via-red-500/5 to-transparent"}
+                    colorClass={profitMargin >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}
+                    bgClass={profitMargin >= 0 ? "from-emerald-500/10 via-emerald-500/5 to-transparent" : "from-red-500/10 via-red-500/5 to-transparent"}
                 />
 
                 <StatCard
                     title="Lo que entra (Ingresos)"
                     value={formatCurrency(totalIncome)}
                     icon={TrendingUp}
-                    colorClass="text-green-600 dark:text-green-400"
-                    bgClass="from-green-500/10 via-green-500/5 to-transparent"
+                    colorClass="text-emerald-600 dark:text-emerald-400"
+                    bgClass="from-emerald-500/10 via-emerald-500/5 to-transparent"
                 />
 
                 <StatCard
@@ -141,8 +141,8 @@ export function BusinessDashboard({
                     value={formatCurrency(netIncome)}
                     subtitle="Ingresos - Gastos"
                     icon={TrendingUp} // Using TrendingUp generic
-                    colorClass={netIncome >= 0 ? "text-green-700 dark:text-green-400" : "text-red-700 dark:text-red-400"}
-                    bgClass={netIncome >= 0 ? "from-green-500/10 via-green-500/5 to-transparent" : "from-red-500/10 via-red-500/5 to-transparent"}
+                    colorClass={netIncome >= 0 ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400"}
+                    bgClass={netIncome >= 0 ? "from-emerald-500/10 via-emerald-500/5 to-transparent" : "from-red-500/10 via-red-500/5 to-transparent"}
                 />
             </div>
 
@@ -202,13 +202,13 @@ export function BusinessDashboard({
                             return (
                                 <div key={month} className="grid grid-cols-4 p-3 sm:p-4 border-b last:border-0 hover:bg-muted/10 transition-colors text-sm sm:text-base min-w-[500px]">
                                     <div>{month}</div>
-                                    <div className="text-green-600">
+                                    <div className="text-emerald-600">
                                         {formatCurrency(inc)}
                                     </div>
                                     <div className="text-red-600">
                                         {formatCurrency(exp)}
                                     </div>
-                                    <div className={`font-semibold ${util >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                                    <div className={`font-semibold ${util >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
                                         {formatCurrency(util)}
                                     </div>
                                 </div>
@@ -296,7 +296,7 @@ export function BusinessDashboard({
                                                 </div>
                                                 <div className="text-right">
                                                     {d.expirationDate ? (
-                                                        <p className={`font-semibold ${isUrgent ? 'text-red-500' : 'text-green-600'}`}>
+                                                        <p className={`font-semibold ${isUrgent ? 'text-red-500' : 'text-emerald-600'}`}>
                                                             {daysUntilExpiration && daysUntilExpiration < 0
                                                                 ? 'Vencido'
                                                                 : `${daysUntilExpiration} días`}

@@ -196,9 +196,9 @@ export function PersonalVehicleDashboardAnalysis({
                     usingCache={usingCache}
                     onRefresh={handleRefresh}
                     loadingText="Revisando el motor..."
-                    cardClassName="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/30 dark:to-pink-950/30 border-purple-200 dark:border-purple-800"
-                    titleClassName="text-purple-800 dark:text-purple-300"
-                    refreshButtonClassName="hover:bg-purple-100 dark:hover:bg-purple-900"
+                    cardClassName="bg-blue-100 dark:bg-blue-900/40 border-blue-300 dark:border-blue-700"
+                    titleClassName="text-blue-900 dark:text-blue-200"
+                    refreshButtonClassName="hover:bg-blue-200 dark:hover:bg-blue-800"
                 />
             )}
         </div>

@@ -173,6 +173,9 @@ export function DashboardAnalysis({ stats }: DashboardAnalysisProps) {
             usingCache={usingCache}
             onRefresh={handleRefresh}
             loadingText="Analizando tus finanzas..."
+            cardClassName="bg-emerald-100 dark:bg-emerald-900/40 border-emerald-300 dark:border-emerald-700"
+            titleClassName="text-emerald-900 dark:text-emerald-200"
+            refreshButtonClassName="hover:bg-emerald-200 dark:hover:bg-emerald-800"
         />
     );
 }

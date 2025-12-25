@@ -39,11 +39,17 @@ export function DashboardSwitcher({
     return (
         <Tabs id="dashboard-tabs" value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
-                <TabsTrigger value="business" className="gap-2 data-[state=active]:bg-background dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground">
+                <TabsTrigger
+                    value="business"
+                    className="gap-2 data-[state=active]:bg-emerald-100 data-[state=active]:text-emerald-700 dark:data-[state=active]:bg-emerald-800 dark:data-[state=active]:text-emerald-100 data-[state=active]:border-emerald-400 dark:data-[state=active]:border-emerald-600 transition-all duration-300"
+                >
                     <Briefcase className="h-4 w-4" />
                     <span><span className="hidden sm:inline">Vehículos de </span>Negocio</span>
                 </TabsTrigger>
-                <TabsTrigger value="personal" className="gap-2 data-[state=active]:bg-background dark:data-[state=active]:bg-primary dark:data-[state=active]:text-primary-foreground">
+                <TabsTrigger
+                    value="personal"
+                    className="gap-2 data-[state=active]:bg-blue-100 data-[state=active]:text-blue-700 dark:data-[state=active]:bg-blue-800 dark:data-[state=active]:text-blue-100 data-[state=active]:border-blue-400 dark:data-[state=active]:border-blue-600 transition-all duration-300"
+                >
                     <User className="h-4 w-4" />
                     <span><span className="hidden sm:inline">Vehículos </span>Personales</span>
                 </TabsTrigger>

@@ -66,7 +66,7 @@ export function FinancialCharts({ monthlyStats, incomeByAssetType }: FinancialCh
                                     labelStyle={{ color: "black" }}
                                 />
                                 <Legend />
-                                <Bar dataKey="income" name="Ingresos" fill="#16a34a" radius={[4, 4, 0, 0]} maxBarSize={50} />
+                                <Bar dataKey="income" name="Ingresos" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={50} />
                                 <Bar dataKey="expense" name="Gastos" fill="#dc2626" radius={[4, 4, 0, 0]} maxBarSize={50} />
                             </BarChart>
                         </ResponsiveContainer>
