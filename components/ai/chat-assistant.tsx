@@ -164,7 +164,7 @@ export function ChatAssistant() {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="fixed bottom-4 right-4 left-4 md:bottom-24 md:right-6 md:left-auto z-50 md:w-[400px] h-[calc(100vh-2rem)] md:h-[550px] max-h-[calc(100vh-2rem)] shadow-2xl rounded-3xl overflow-hidden border border-blue-200 bg-background flex flex-col"
+                        className="fixed bottom-8 right-4 left-4 md:bottom-24 md:right-6 md:left-auto z-50 md:w-[400px] h-[calc(100vh-4rem)] md:h-[550px] max-h-[calc(100vh-4rem)] shadow-2xl rounded-3xl overflow-hidden border border-blue-200 bg-background flex flex-col"
                     >
                         {/* Header */}
                         <div className="bg-blue-600 p-5 flex items-center justify-between text-white">
