@@ -1,6 +1,7 @@
 'use client';
 
-import { Sparkles, Send, X, Loader2, DollarSign, Wrench, Ship, Zap } from 'lucide-react';
+import { Sparkles, Send, X, Loader2, DollarSign, Wrench, Ship } from 'lucide-react';
+import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,8 +27,14 @@ function MontoIAAvatar({ size = 'md', className = '' }: { size?: 'sm' | 'md' | '
     return (
         <div className={cn('relative', sizeClasses[size], className)}>
             <div className="absolute inset-0 bg-blue-600 rounded-full" />
-            <div className="absolute inset-0 flex items-center justify-center">
-                <Zap className="text-white fill-white" size={size === 'sm' ? 16 : size === 'md' ? 20 : 24} />
+            <div className="absolute inset-0 flex items-center justify-center p-1.5">
+                <Image
+                    src="/helmet-icon.png"
+                    alt="MontoIA"
+                    width={size === 'sm' ? 20 : size === 'md' ? 28 : 32}
+                    height={size === 'sm' ? 20 : size === 'md' ? 28 : 32}
+                    className="object-contain brightness-0 invert"
+                />
             </div>
             <motion.div
                 className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-white"
@@ -157,7 +164,7 @@ export function ChatAssistant() {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="fixed bottom-4 right-4 left-4 md:bottom-24 md:right-6 md:left-auto z-50 md:w-[400px] h-[calc(100vh-2rem)] md:h-[650px] max-h-[calc(100vh-2rem)] shadow-2xl rounded-3xl overflow-hidden border border-blue-200 bg-background flex flex-col"
+                        className="fixed bottom-4 right-4 left-4 md:bottom-24 md:right-6 md:left-auto z-50 md:w-[400px] h-[calc(100vh-2rem)] md:h-[550px] max-h-[calc(100vh-2rem)] shadow-2xl rounded-3xl overflow-hidden border border-blue-200 bg-background flex flex-col"
                     >
                         {/* Header */}
                         <div className="bg-blue-600 p-5 flex items-center justify-between text-white">
