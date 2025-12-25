@@ -334,7 +334,7 @@
   content: counter(smItem, decimal-leading-zero);
   position: absolute;
   top: 0.1em;
-  right: 2.8em;
+  right: 0;
   font-size: 18px;
   font-weight: 400;
   color: var(--sm-accent, #5227ff);
@@ -394,6 +394,18 @@
   /* Hide menu text on mobile, show only icon */
   .sm-toggle-textWrap {
     display: none;
+  }
+
+  /* Reduce font size on mobile */
+  .sm-panel-item {
+    font-size: 2.5rem;
+    padding-right: 2.5em;
+  }
+
+  /* Adjust numbering position on mobile to prevent overlap */
+  .sm-panel-list[data-numbering] .sm-panel-item::after {
+    right: 0;
+    font-size: 16px;
   }
 }
 

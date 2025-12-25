@@ -375,9 +375,9 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
   }, [open]);
 
   return (
-    <div className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')} style={accentColor ? { ['--sm-accent']: accentColor } : undefined} data-position={position} data-open={open || undefined} >
+    <div id="" className={(className ? className + ' ' : '') + 'staggered-menu-wrapper' + (isFixed ? ' fixed-wrapper' : '')} style={accentColor ? { ['--sm-accent']: accentColor } : undefined} data-position={position} data-open={open || undefined} >
 
-      <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
+      <div id="" ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
         {(() => {
           const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
           let arr = [...raw];
@@ -389,9 +389,9 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
         })()}
       </div>
 
-      <div ref={backdropRef} className="sm-backdrop" onClick={closeMenu} aria-hidden="true" />
+      <div id="" ref={backdropRef} className="sm-backdrop" onClick={closeMenu} aria-hidden="true" />
 
-      <header className="staggered-menu-header" aria-label="Main navigation header">
+      <header id="header" className="staggered-menu-header" aria-label="Main navigation header">
         <button
           ref={toggleBtnRef}
           className="sm-toggle"
@@ -418,9 +418,9 @@ export const StaggeredMenu = ({ position = 'right', colors = ['#B19EEF', '#5227F
       </header>
 
       <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!open} data-lenis-prevent>
-        <div className="sm-panel-inner">
+        <div id="inner-container" className="sm-panel-inner">
 
-          <ul className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
+          <ul id="list" className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
             {items && items.length ? (
               items.map((it, idx) => (
                 <li className="sm-panel-itemWrap" key={it.label + idx}>
