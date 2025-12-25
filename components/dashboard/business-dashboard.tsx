@@ -4,7 +4,7 @@ import { StatCard } from "@/components/ui/stat-card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Car, TrendingUp, TrendingDown } from "lucide-react";
-import { DashboardAnalysis } from "@/components/dashboard/dashboard-analysis";
+import { DashboardAnalysis } from "@/components/ai/dashboard-analysis";
 import { FinancialCharts } from "@/components/financials/financial-charts";
 import SplitText from "@/components/reactBits/SplitText";
 

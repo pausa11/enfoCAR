@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Car, TrendingUp, TrendingDown } from "lucide-react";
-import { PersonalVehicleDashboardAnalysis } from "@/components/dashboard/personal-vehicle-dashboard-analysis";
+import { PersonalVehicleDashboardAnalysis } from "@/components/ai/personal-vehicle-dashboard-analysis";
 import SplitText from "@/components/reactBits/SplitText";
 import { Asset, FinancialRecord } from "@prisma/client";
 
