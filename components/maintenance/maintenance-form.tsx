@@ -163,7 +163,7 @@ export function MaintenanceForm({ assetId, maintenance, open, onOpenChange }: Ma
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+            <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" data-lenis-prevent>
                 <DialogHeader>
                     <DialogTitle>{maintenance ? "Editar Mantenimiento" : "Agregar Mantenimiento"}</DialogTitle>
                     <DialogDescription>

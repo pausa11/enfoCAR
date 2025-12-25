@@ -15,13 +15,6 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 
 interface MaintenanceWithAsset extends Omit<MaintenanceRecord, 'cost'> {
     cost: number; // Converted from Decimal in the server component
@@ -369,7 +362,7 @@ export function MaintenanceOverview({ maintenanceRecords, assets }: MaintenanceO
             )}
 
             <Dialog open={isAssetSelectionOpen} onOpenChange={setIsAssetSelectionOpen}>
-                <DialogContent>
+                <DialogContent >
                     <DialogHeader>
                         <DialogTitle>Seleccionar Vehículo</DialogTitle>
                         <DialogDescription>
