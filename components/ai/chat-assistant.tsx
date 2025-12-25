@@ -164,7 +164,7 @@ export function ChatAssistant() {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="fixed bottom-8 right-4 left-4 md:bottom-24 md:right-6 md:left-auto z-50 md:w-[400px] h-[calc(100vh-4rem)] md:h-[550px] max-h-[calc(100vh-4rem)] shadow-2xl rounded-3xl overflow-hidden border border-blue-200 bg-background flex flex-col"
+                        className="fixed bottom-8 right-4 left-4 md:bottom-24 md:right-6 md:left-auto z-50 md:w-[400px] h-[calc(100vh-4rem)] md:h-[550px] max-h-[calc(100vh-4rem)] shadow-2xl rounded-3xl overflow-hidden border border-blue-200 dark:border-blue-800 bg-background dark:bg-slate-950 flex flex-col"
                     >
                         {/* Header */}
                         <div className="bg-blue-600 p-5 flex items-center justify-between text-white">
@@ -190,7 +190,7 @@ export function ChatAssistant() {
                         </div>
 
                         {/* Messages */}
-                        <div className="flex-1 overflow-y-auto p-5 bg-blue-50/30" ref={scrollRef}>
+                        <div className="flex-1 overflow-y-auto p-5 bg-blue-50/30 dark:bg-slate-950/50" ref={scrollRef}>
                             <div className="flex flex-col gap-4 min-h-full">
                                 {messages.length === 0 && (
                                     <motion.div
@@ -220,7 +220,7 @@ export function ChatAssistant() {
                                                     onClick={() => {
                                                         setLocalInput(suggestion.label);
                                                     }}
-                                                    className="px-3 py-1.5 text-xs rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition-all font-medium flex items-center gap-1.5"
+                                                    className="px-3 py-1.5 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition-all font-medium flex items-center gap-1.5"
                                                 >
                                                     <suggestion.icon className="w-3.5 h-3.5" />
                                                     {suggestion.label}
@@ -249,7 +249,7 @@ export function ChatAssistant() {
                                                 "max-w-[75%] rounded-2xl px-4 py-3 text-sm shadow-lg",
                                                 m.role === 'user'
                                                     ? "bg-blue-600 text-white rounded-br-md font-medium"
-                                                    : "bg-white border border-blue-100 rounded-bl-md text-gray-800"
+                                                    : "bg-white dark:bg-slate-900 border border-blue-100 dark:border-blue-800 rounded-bl-md text-gray-800 dark:text-slate-100"
                                             )}
                                         >
                                             {m.role === 'assistant' ? (
@@ -261,7 +261,7 @@ export function ChatAssistant() {
                                                             ul: ({ children }) => <ul className="list-disc ml-4 mb-2 last:mb-0">{children}</ul>,
                                                             ol: ({ children }) => <ol className="list-decimal ml-4 mb-2 last:mb-0">{children}</ol>,
                                                             li: ({ children }) => <li className="mb-1">{children}</li>,
-                                                            strong: ({ children }) => <strong className="font-bold text-gray-900">{children}</strong>,
+                                                            strong: ({ children }) => <strong className="font-bold text-gray-900 dark:text-white">{children}</strong>,
                                                             em: ({ children }) => <em className="italic">{children}</em>,
                                                         }}
                                                     >
@@ -282,7 +282,7 @@ export function ChatAssistant() {
                                         className="flex justify-start w-full gap-2"
                                     >
                                         <MontoIAAvatar size="sm" className="mt-1" />
-                                        <div className="bg-white border border-blue-100 rounded-2xl rounded-bl-md px-4 py-3 shadow-lg flex items-center gap-2">
+                                        <div className="bg-white dark:bg-slate-900 border border-blue-100 dark:border-blue-800 rounded-2xl rounded-bl-md px-4 py-3 shadow-lg flex items-center gap-2">
                                             <div className="flex gap-1">
                                                 <motion.div
                                                     className="w-2 h-2 bg-blue-500 rounded-full"
@@ -308,7 +308,7 @@ export function ChatAssistant() {
                         </div>
 
                         {/* Input */}
-                        <div className="p-4 bg-white border-t border-blue-100">
+                        <div className="p-4 bg-white dark:bg-slate-950 border-t border-blue-100 dark:border-blue-800">
                             <form
                                 onSubmit={async (e) => {
                                     e.preventDefault();
@@ -324,7 +324,7 @@ export function ChatAssistant() {
                                     value={localInput}
                                     onChange={(e) => setLocalInput(e.target.value)}
                                     placeholder="Escribe tu mensaje..."
-                                    className="rounded-full bg-blue-50 border-blue-200 focus:border-blue-400 focus:bg-white transition-all placeholder:text-blue-300"
+                                    className="rounded-full bg-blue-50 dark:bg-slate-900/50 border-blue-200 dark:border-blue-800 focus:border-blue-400 dark:focus:border-blue-600 focus:bg-white dark:focus:bg-slate-900 transition-all placeholder:text-blue-300 dark:placeholder:text-blue-700/50 dark:text-slate-100"
                                     disabled={isLoading}
                                 />
                                 <Button
