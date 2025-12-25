@@ -85,8 +85,8 @@ export function LoginForm({
   return (
     <div className={cn("w-full", className)} {...props}>
       <form onSubmit={handleLogin} className="space-y-6">
-        {/* Logo/Brand */}
-        <div className="text-center mb-8">
+
+        <div id="logo" className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Car className="w-10 h-10 text-primary" />
             <SplitText
@@ -109,10 +109,9 @@ export function LoginForm({
           </p>
         </div>
 
-        {/* Welcome Message */}
-        <div className="text-center space-y-2">
+        <div id="welcome" className="text-center space-y-2">
           <SplitText
-            text="¡Bienvenido de vuelta!"
+            text="¡Bienvenido!"
             tag="h2"
             className="text-2xl font-semibold text-foreground"
             delay={80}
@@ -130,8 +129,8 @@ export function LoginForm({
           </p>
         </div>
 
-        {/* Google Sign In Button */}
         <Button
+          id="google-auth"
           type="button"
           variant="outline"
           className="w-full h-12 text-base font-medium border-2 transition-all duration-300"
@@ -141,8 +140,7 @@ export function LoginForm({
           <span className="ml-2">Continuar con Google</span>
         </Button>
 
-        {/* Divider */}
-        <div className="relative">
+        <div id="divider" className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t border-border" />
           </div>
@@ -153,8 +151,7 @@ export function LoginForm({
           </div>
         </div>
 
-        {/* Email Field */}
-        <div className="space-y-2">
+        <div id="email-field" className="space-y-2">
           <Label htmlFor="email" className="text-sm font-medium">
             Correo Electrónico
           </Label>
@@ -172,8 +169,7 @@ export function LoginForm({
           </div>
         </div>
 
-        {/* Password Field */}
-        <div className="space-y-2">
+        <div id="password-field" className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="password" className="text-sm font-medium">
               Contraseña
@@ -199,17 +195,16 @@ export function LoginForm({
           </div>
         </div>
 
-        {/* Error Message */}
         {error && (
-          <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-lg text-sm">
+          <div id="error" className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-lg text-sm">
             {error}
           </div>
         )}
 
-        {/* Login Button */}
         <Button
+          id="login-button"
           type="submit"
-          className="w-full h-12 text-base font-semibold bg-gradient-to-r from-primary to-[hsl(74,100%,36%)] hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl"
+          className="w-full h-12 text-base font-semibold bg-[#5b8c5a] hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl"
           disabled={isLoading}
         >
           {isLoading ? (
@@ -222,8 +217,7 @@ export function LoginForm({
           )}
         </Button>
 
-        {/* Sign Up Link */}
-        <div className="text-center text-sm">
+        <div id="sign-up-link" className="text-center text-sm">
           <span className="text-muted-foreground">¿No tienes una cuenta? </span>
           <Link
             href="/auth/sign-up"
@@ -232,6 +226,7 @@ export function LoginForm({
             Regístrate aquí
           </Link>
         </div>
+        
       </form>
     </div>
   );

@@ -95,7 +95,6 @@ html.lenis body {
   h1 {
     font-size: 3.5rem;
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: -2px;
     line-height: 1.1;
     @apply text-foreground;
