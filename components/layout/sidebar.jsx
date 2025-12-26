@@ -3,9 +3,10 @@
 import StaggeredMenu from '../reactBits/StaggeredMenu';
 import { ThemeSwitcher } from "@/components/layout/theme-switcher";
 import { AuthButton } from "@/components/auth/auth-button";
+import { NotificationPermissionButton } from "@/components/notifications/notification-permission-button";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 const navigationItems = [
     {
@@ -62,6 +63,8 @@ export function Sidebar() {
                 <ThemeSwitcher />
                 <span style={{ color: 'white', fontSize: '0.875rem' }}>Tema</span>
             </div>
+
+            <NotificationPermissionButton />
 
             <AuthButton isExpanded={true} />
         </div >

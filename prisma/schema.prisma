@@ -3,59 +3,72 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  createdAt DateTime @default(now())
-  assets    Asset[]
-  hasCompletedOnboarding Boolean @default(false)
+  id                     String             @id @default(uuid())
+  email                  String             @unique
+  createdAt              DateTime           @default(now())
+  assets                 Asset[]
+  hasCompletedOnboarding Boolean            @default(false)
+  pushSubscriptions      PushSubscription[]
+}
 
+model PushSubscription {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dhKey String
+  authKey   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
 }
 
 model Asset {
-  id               String            @id @default(uuid())
-  name             String
-  type             AssetType
-  customAttributes Json?
-  userId           String
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  financialRecords FinancialRecord[]
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  imageUrl         String?
-  ownershipPercentage Float          @default(100.0)
-  value            Decimal?          @db.Decimal(15, 2)
-  driverPercentage Float             @default(0.0)
-  driverPaymentMode DriverPaymentMode?
-  driverSalaries   DriverSalary[]
-  isBusinessAsset  Boolean           @default(true)
-  serviceType      ServiceType       @default(PARTICULAR)
-  documents       AssetDocument[]
-  maintenanceRecords MaintenanceRecord[]
+  id                  String              @id @default(uuid())
+  name                String
+  type                AssetType
+  customAttributes    Json?
+  userId              String
+  user                User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  financialRecords    FinancialRecord[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  imageUrl            String?
+  ownershipPercentage Float               @default(100.0)
+  value               Decimal?            @db.Decimal(15, 2)
+  driverPercentage    Float               @default(0.0)
+  driverPaymentMode   DriverPaymentMode?
+  driverSalaries      DriverSalary[]
+  isBusinessAsset     Boolean             @default(true)
+  serviceType         ServiceType         @default(PARTICULAR)
+  documents           AssetDocument[]
+  maintenanceRecords  MaintenanceRecord[]
 }
 
 model DriverSalary {
   id        String   @id @default(uuid())
   assetId   String
   asset     Asset    @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  month     Int      // 1-12
+  month     Int // 1-12
   year      Int
   amount    Decimal  @db.Decimal(10, 2)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   @@unique([assetId, year, month])
 }
 
 model AssetDocument {
   id             String       @id @default(uuid())
   type           DocumentType
-  identifier     String?      // e.g., policy number
+  identifier     String? // e.g., policy number
   expirationDate DateTime?
   isActive       Boolean      @default(true)
   assetId        String
@@ -112,20 +125,20 @@ enum DocumentType {
 }
 
 model MaintenanceRecord {
-  id                    String            @id @default(uuid())
-  type                  MaintenanceType
-  description           String?
-  cost                  Decimal           @db.Decimal(10, 2)
-  date                  DateTime
-  mileage               Int?              // Kilometraje al momento del mantenimiento
-  nextServiceDate       DateTime?         // Fecha estimada del próximo servicio
-  nextServiceMileage    Int?              // Kilometraje estimado del próximo servicio
-  notes                 String?
-  assetId               String
-  asset                 Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
-  financialRecords      FinancialRecord[]
-  createdAt             DateTime          @default(now())
-  updatedAt             DateTime          @updatedAt
+  id                 String            @id @default(uuid())
+  type               MaintenanceType
+  description        String?
+  cost               Decimal           @db.Decimal(10, 2)
+  date               DateTime
+  mileage            Int? // Kilometraje al momento del mantenimiento
+  nextServiceDate    DateTime? // Fecha estimada del próximo servicio
+  nextServiceMileage Int? // Kilometraje estimado del próximo servicio
+  notes              String?
+  assetId            String
+  asset              Asset             @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  financialRecords   FinancialRecord[]
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
 }
 
 enum MaintenanceType {
