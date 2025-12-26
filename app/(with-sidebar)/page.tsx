@@ -19,8 +19,8 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-background">
-      {/* Hyperspeed Background */}
-      <div className="absolute inset-0 z-0" id="lights-home">
+
+      <div id="hypeerspeed-bg" className="absolute inset-0 z-0">
         <HyperspeedClient />
       </div>
 
