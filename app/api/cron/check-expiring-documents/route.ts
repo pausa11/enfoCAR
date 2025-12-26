@@ -102,10 +102,10 @@ export async function GET(request: NextRequest) {
                     documentId: document.id,
                     assetId: document.assetId,
                 },
-            }).then(result => {
+            }).then(async (result) => {
                 // Clean up expired subscriptions
                 if (result.expired.length > 0) {
-                    return prisma.pushSubscription.deleteMany({
+                    await prisma.pushSubscription.deleteMany({
                         where: {
                             endpoint: {
                                 in: result.expired,
