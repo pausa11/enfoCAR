@@ -18,6 +18,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { HelpCircle, Upload, CheckCircle2, Briefcase, Home } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useSearchParams } from "next/navigation";
 
 const VEHICLE_TYPES = [
@@ -64,6 +65,7 @@ export function CreateAssetWizard() {
     const [assetValue, setAssetValue] = useState("");
 
     // Step 3: Driver (optional)
+    const [isSelfDriver, setIsSelfDriver] = useState(false);
     const [conductor, setConductor] = useState("");
     const [driverPercentage, setDriverPercentage] = useState("0");
     const [driverPaymentMode, setDriverPaymentMode] = useState<"PERCENTAGE" | "FIXED_SALARY">("PERCENTAGE");
@@ -472,6 +474,27 @@ export function CreateAssetWizard() {
                                 </p>
                             </div>
 
+                            <div className="flex items-center space-x-2 p-4 border rounded-lg bg-muted/50">
+                                <Checkbox
+                                    id="self-driver"
+                                    checked={isSelfDriver}
+                                    onCheckedChange={(checked) => {
+                                        setIsSelfDriver(checked as boolean);
+                                        if (checked) {
+                                            setConductor("Yo");
+                                        } else {
+                                            setConductor("");
+                                        }
+                                    }}
+                                />
+                                <Label
+                                    htmlFor="self-driver"
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                                >
+                                    El conductor soy yo
+                                </Label>
+                            </div>
+
                             <div className="grid gap-2">
                                 <Label htmlFor="conductor">Nombre del Conductor</Label>
                                 <Input
@@ -479,6 +502,7 @@ export function CreateAssetWizard() {
                                     placeholder="Ej: Juan Pérez"
                                     value={conductor}
                                     onChange={(e) => setConductor(e.target.value)}
+                                    disabled={isSelfDriver}
                                 />
                             </div>
 

@@ -21,6 +21,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const VEHICLE_TYPES = [
     { value: "CARRO", label: "Carro" },
@@ -58,6 +59,7 @@ export function EditAssetDialog({ asset, open, onOpenChange }: EditAssetDialogPr
     const [año, setAño] = useState(customAttrs.año || "");
     const [placa, setPlaca] = useState(customAttrs.placa || "");
     const [kilometraje, setKilometraje] = useState(customAttrs.kilometraje || "");
+    const [isSelfDriver, setIsSelfDriver] = useState(customAttrs.conductor === "Yo");
     const [conductor, setConductor] = useState(customAttrs.conductor || "");
     const [driverPercentage, setDriverPercentage] = useState(asset.driverPercentage.toString());
     const [driverPaymentMode, setDriverPaymentMode] = useState<"PERCENTAGE" | "FIXED_SALARY">(asset.driverPaymentMode || "PERCENTAGE");
@@ -73,6 +75,7 @@ export function EditAssetDialog({ asset, open, onOpenChange }: EditAssetDialogPr
         setAño(attrs.año || "");
         setPlaca(attrs.placa || "");
         setKilometraje(attrs.kilometraje || "");
+        setIsSelfDriver(attrs.conductor === "Yo");
         setConductor(attrs.conductor || "");
         setDriverPercentage(asset.driverPercentage.toString());
         setDriverPaymentMode(asset.driverPaymentMode || "PERCENTAGE");
@@ -241,6 +244,27 @@ export function EditAssetDialog({ asset, open, onOpenChange }: EditAssetDialogPr
                                     />
                                 </div>
 
+                                <div className="flex items-center space-x-2 p-4 border rounded-lg bg-muted/50">
+                                    <Checkbox
+                                        id="edit-self-driver"
+                                        checked={isSelfDriver}
+                                        onCheckedChange={(checked) => {
+                                            setIsSelfDriver(checked as boolean);
+                                            if (checked) {
+                                                setConductor("Yo");
+                                            } else {
+                                                setConductor("");
+                                            }
+                                        }}
+                                    />
+                                    <Label
+                                        htmlFor="edit-self-driver"
+                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                                    >
+                                        El conductor soy yo
+                                    </Label>
+                                </div>
+
                                 <div className="grid gap-2">
                                     <Label htmlFor="edit-conductor">Conductor</Label>
                                     <Input
@@ -248,6 +272,7 @@ export function EditAssetDialog({ asset, open, onOpenChange }: EditAssetDialogPr
                                         placeholder="Ej: Juan Pérez"
                                         value={conductor}
                                         onChange={(e) => setConductor(e.target.value)}
+                                        disabled={isSelfDriver}
                                     />
                                 </div>
 
