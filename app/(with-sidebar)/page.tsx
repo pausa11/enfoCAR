@@ -24,8 +24,7 @@ export default async function Home() {
         <HyperspeedClient />
       </div>
 
-      {/* Gradient Overlay for depth */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-br from-background/40 via-transparent to-background/60 pointer-events-none" />
+      <div id="gradient-overlay" className="absolute inset-0 z-[1] bg-gradient-to-br from-background/40 via-transparent to-background/60 pointer-events-none" />
 
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 py-16">
