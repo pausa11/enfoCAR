@@ -32,7 +32,7 @@ export default async function Home() {
 
         <div id="header" className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
           <SplitText
-            text="¡Bienvenido a enfoCAR!"
+            text="¡BIENVENIDO A enfoCAR!"
             tag="h1"
             className="text-5xl md:text-7xl font-bold text-foreground mb-4"
             delay={100}
@@ -96,7 +96,7 @@ export default async function Home() {
           >
             <div className="flex items-center gap-4 mb-3">
               <div className="p-3 bg-pink-200 dark:bg-pink-800 rounded-xl">
-                < ChartNoAxesCombined className="w-8 h-8 text-pink-700 dark:text-pink-200" />
+                <ChartNoAxesCombined className="w-8 h-8 text-pink-700 dark:text-pink-200" />
               </div>
               <h3 className="text-xl lg:text-2xl font-bold text-foreground">Análisis</h3>
             </div>
