@@ -1,0 +1,33 @@
+name: Daily Reminder - Night
+
+on:
+  schedule:
+    # Runs at 9:00 PM UTC-5 (02:00 UTC next day) every day
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  send-reminder:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Send Night Reminder
+        run: |
+          echo "📊 Sending night reminder..."
+          
+          response=$(curl -s -w "\n%{http_code}" \
+            -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.APP_URL }}/api/cron/daily-reminder")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+          
+          echo "Response: $body"
+          
+          if [ "$http_code" -eq 200 ]; then
+            echo "✅ Successfully sent night reminder"
+          else
+            echo "❌ Failed with status code: $http_code"
+            exit 1
+          fi

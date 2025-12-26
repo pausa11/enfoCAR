@@ -1,0 +1,33 @@
+name: Check Expiring Documents
+
+on:
+  schedule:
+    # Runs at 9:00 AM UTC-5 (14:00 UTC) every day
+    - cron: '0 14 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  check-documents:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check Expiring Documents
+        run: |
+          echo "🔍 Checking expiring documents..."
+          
+          response=$(curl -s -w "\n%{http_code}" \
+            -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.APP_URL }}/api/cron/check-expiring-documents")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+          
+          echo "Response: $body"
+          
+          if [ "$http_code" -eq 200 ]; then
+            echo "✅ Successfully checked expiring documents"
+          else
+            echo "❌ Failed with status code: $http_code"
+            exit 1
+          fi
