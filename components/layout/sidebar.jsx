@@ -4,6 +4,7 @@ import StaggeredMenu from '../reactBits/StaggeredMenu';
 import { ThemeSwitcher } from "@/components/layout/theme-switcher";
 import { AuthButton } from "@/components/auth/auth-button";
 import { NotificationPermissionButton } from "@/components/notifications/notification-permission-button";
+import { Settings } from "lucide-react";
 
 import { useTheme } from "next-themes";
 import { useState, useEffect } from "react";
@@ -59,9 +60,28 @@ export function Sidebar() {
             paddingTop: '2rem',
             borderTop: '1px solid rgba(255, 255, 255, 0.2)'
         }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <ThemeSwitcher />
-                <span style={{ color: 'white', fontSize: '0.875rem' }}>Tema</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <ThemeSwitcher />
+                    <span style={{ color: 'white', fontSize: '0.875rem' }}>Tema</span>
+                </div>
+                <a
+                    href="/app/configuracion"
+                    style={{
+                        color: 'white',
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '0.5rem',
+                        borderRadius: '0.375rem',
+                        transition: 'background-color 0.2s',
+                        cursor: 'pointer'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    aria-label="Configuración"
+                >
+                    <Settings size={20} />
+                </a>
             </div>
 
             <NotificationPermissionButton />

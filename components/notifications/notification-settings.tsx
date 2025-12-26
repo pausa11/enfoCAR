@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { usePushNotifications } from '@/lib/hooks/use-push-notifications';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { SendReminderButton } from '@/components/notifications/send-reminder-button';
 
 export function NotificationSettings() {
     const {
@@ -153,35 +154,54 @@ export function NotificationSettings() {
                                     defaultChecked={true}
                                 />
                             </div>
+
+                            <div className="flex items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <Label htmlFor="notify-reminders">
+                                        Recordatorios diarios
+                                    </Label>
+                                    <p className="text-xs text-muted-foreground">
+                                        Recordatorios a las 6 PM y 9 PM para registrar movimientos
+                                    </p>
+                                </div>
+                                <Switch
+                                    id="notify-reminders"
+                                    defaultChecked={true}
+                                />
+                            </div>
                         </div>
 
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full"
-                            onClick={async () => {
-                                // Send test notification
-                                const response = await fetch('/api/push/send', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                        userId: 'current', // This would be replaced with actual user ID
-                                        notification: {
-                                            title: '🔔 Notificación de prueba',
-                                            body: 'Si ves esto, ¡las notificaciones funcionan correctamente!',
-                                            icon: '/icons/icon-192.png',
-                                            data: { url: '/' },
-                                        },
-                                    }),
-                                });
+                        <div className="space-y-2">
+                            <SendReminderButton />
 
-                                if (response.ok) {
-                                    console.log('Test notification sent');
-                                }
-                            }}
-                        >
-                            Enviar notificación de prueba
-                        </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full"
+                                onClick={async () => {
+                                    // Send test notification
+                                    const response = await fetch('/api/push/send', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            userId: 'current', // This would be replaced with actual user ID
+                                            notification: {
+                                                title: '🔔 Notificación de prueba',
+                                                body: 'Si ves esto, ¡las notificaciones funcionan correctamente!',
+                                                icon: '/icons/icon-192.png',
+                                                data: { url: '/' },
+                                            },
+                                        }),
+                                    });
+
+                                    if (response.ok) {
+                                        console.log('Test notification sent');
+                                    }
+                                }}
+                            >
+                                Enviar notificación de prueba
+                            </Button>
+                        </div>
                     </div>
                 )}
             </CardContent>

@@ -3,6 +3,14 @@
         {
             "path": "/api/cron/check-expiring-documents",
             "schedule": "0 9 * * *"
+        },
+        {
+            "path": "/api/cron/daily-reminder",
+            "schedule": "0 18 * * *"
+        },
+        {
+            "path": "/api/cron/daily-reminder",
+            "schedule": "0 21 * * *"
         }
     ]
 }
