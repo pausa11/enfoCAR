@@ -21,19 +21,27 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const { endpoint, keys } = body;
 
+        console.log('[SUBSCRIBE] Request body:', { endpoint: endpoint?.substring(0, 50), hasKeys: !!keys });
+
         if (!endpoint || !keys?.p256dh || !keys?.auth) {
+            console.error('[SUBSCRIBE] Invalid subscription data');
             return NextResponse.json(
                 { error: 'Invalid subscription data' },
                 { status: 400 }
             );
         }
 
+        console.log('[SUBSCRIBE] User:', user.id, user.email);
+
         // Check if user exists in our database
         let dbUser = await prisma.user.findUnique({
             where: { email: user.email! },
         });
 
+        console.log('[SUBSCRIBE] DB User found:', !!dbUser);
+
         if (!dbUser) {
+            console.log('[SUBSCRIBE] Creating new user...');
             // Create user if doesn't exist
             dbUser = await prisma.user.create({
                 data: {
@@ -41,12 +49,15 @@ export async function POST(request: NextRequest) {
                     email: user.email!,
                 },
             });
+            console.log('[SUBSCRIBE] User created:', dbUser.id);
         }
 
         // Check if subscription already exists
         const existingSubscription = await prisma.pushSubscription.findUnique({
             where: { endpoint },
         });
+
+        console.log('[SUBSCRIBE] Existing subscription:', !!existingSubscription);
 
         if (existingSubscription) {
             // Update existing subscription
@@ -58,6 +69,8 @@ export async function POST(request: NextRequest) {
                     authKey: keys.auth,
                 },
             });
+
+            console.log('[SUBSCRIBE] Subscription updated:', subscription.id);
 
             return NextResponse.json({
                 success: true,
@@ -77,6 +90,8 @@ export async function POST(request: NextRequest) {
                 authKey: keys.auth,
             },
         });
+
+        console.log('[SUBSCRIBE] New subscription created:', subscription.id);
 
         return NextResponse.json({
             success: true,

@@ -7,6 +7,7 @@ import { ParticleCard } from "@/components/reactBits/MagicBento";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { DocumentForm } from "@/components/documents/document-form";
+import { CheckExpiringDocumentsButton } from "@/components/documents/check-expiring-documents-button";
 import {
     Dialog,
     DialogContent,
@@ -182,10 +183,13 @@ export function DocumentsOverview({ documents, assets }: DocumentsOverviewProps)
                         Vista general de todos los documentos de tus vehículos
                     </p>
                 </div>
-                <Button onClick={handleCreateDocument} className="gap-2">
-                    <Plus className="h-4 w-4" />
-                    Agregar Documento
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-2">
+                    <CheckExpiringDocumentsButton />
+                    <Button onClick={handleCreateDocument} className="gap-2">
+                        <Plus className="h-4 w-4" />
+                        Agregar Documento
+                    </Button>
+                </div>
             </div>
 
             {/* Filters */}

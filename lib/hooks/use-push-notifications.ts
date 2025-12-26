@@ -80,27 +80,37 @@ export function usePushNotifications(): UsePushNotificationsReturn {
 
     // Subscribe to push notifications
     const subscribe = useCallback(async (): Promise<boolean> => {
+        console.log('[HOOK] Subscribe called');
+
         if (!isSupported) {
+            console.error('[HOOK] Push not supported');
             setError('Push notifications are not supported in this browser');
             return false;
         }
 
         if (permission !== 'granted') {
+            console.log('[HOOK] Requesting permission...');
             const granted = await requestPermission();
-            if (!granted) return false;
+            if (!granted) {
+                console.error('[HOOK] Permission denied');
+                return false;
+            }
         }
 
         try {
             setIsLoading(true);
             setError(null);
 
+            console.log('[HOOK] Getting VAPID key...');
             // Get VAPID public key from server
             const keyResponse = await fetch('/api/push/vapid-public-key');
             if (!keyResponse.ok) {
                 throw new Error('Failed to get VAPID public key');
             }
             const { publicKey } = await keyResponse.json();
+            console.log('[HOOK] Got VAPID key:', publicKey?.substring(0, 20));
 
+            console.log('[HOOK] Subscribing to push manager...');
             // Subscribe to push notifications
             const registration = await navigator.serviceWorker.ready;
             const subscription = await registration.pushManager.subscribe({
@@ -108,7 +118,10 @@ export function usePushNotifications(): UsePushNotificationsReturn {
                 applicationServerKey: urlBase64ToUint8Array(publicKey),
             });
 
+            console.log('[HOOK] Got subscription, endpoint:', subscription.endpoint?.substring(0, 50));
+
             // Send subscription to server
+            console.log('[HOOK] Sending subscription to server...');
             const response = await fetch('/api/push/subscribe', {
                 method: 'POST',
                 headers: {
@@ -124,13 +137,19 @@ export function usePushNotifications(): UsePushNotificationsReturn {
             });
 
             if (!response.ok) {
+                const errorData = await response.json();
+                console.error('[HOOK] Server error:', errorData);
                 throw new Error('Failed to save subscription');
             }
+
+            const result = await response.json();
+            console.log('[HOOK] Subscription saved:', result);
 
             setIsSubscribed(true);
             return true;
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Failed to subscribe';
+            console.error('[HOOK] Subscribe error:', err);
             setError(errorMessage);
             return false;
         } finally {
